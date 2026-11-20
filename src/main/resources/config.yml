@@ -1,0 +1,19 @@
+# Configuração inicial do XKL PACK.
+# Valores econômicos e módulos serão adicionados conforme a implementação.
+
+settings:
+  language: pt-BR
+  storage: sqlite
+
+modules:
+  economy: false
+  bank: false
+  jobs: false
+  shops: false
+  selling: false
+  rankings: false
+
+# IMPORTANTE:
+# Coins só podem ser emitidas por salários.
+# Gemas só podem ser emitidas por atividades de profissões e usadas para ferramentas.
+# Os módulos ficam desativados até que suas funcionalidades estejam implementadas.
