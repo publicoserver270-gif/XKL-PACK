@@ -23,15 +23,43 @@ public final class EconomyService {
     }
 
     public String getCurrencyName(String currency) {
-        return plugin.getConfig().getString("economy.currencies." + currency + ".display-name", currency);
+        String id = normalizeCurrency(currency);
+        return plugin.getConfig().getString("economy.currencies." + id + ".display-name", id);
     }
 
     public int getCurrencyDecimals(String currency) {
-        return plugin.getConfig().getInt("economy.currencies." + currency + ".decimals", 2);
+        String id = normalizeCurrency(currency);
+        int decimals = plugin.getConfig().getInt("economy.currencies." + id + ".decimals", 2);
+        if (decimals < 0 || decimals > 8) {
+            throw new IllegalStateException("A moeda " + id + " precisa ter entre 0 e 8 casas decimais.");
+        }
+        return decimals;
+    }
+
+    private String normalizeCurrency(String currency) {
+        if (currency == null || !currency.matches("[a-zA-Z0-9_-]{1,32}")) {
+            throw new IllegalArgumentException("Identificador de moeda inválido.");
+        }
+        return currency.toLowerCase(Locale.ROOT);
+    }
+
+    private BigDecimal validateAmount(String currency, BigDecimal amount) {
+        if (amount == null || amount.signum() <= 0) {
+            throw new IllegalArgumentException("O valor precisa ser maior que zero.");
+        }
+        try {
+            return amount.setScale(getCurrencyDecimals(currency), RoundingMode.UNNECESSARY);
+        } catch (ArithmeticException exception) {
+            throw new IllegalArgumentException("Valor inválido para essa moeda.");
+        }
     }
 
     public boolean isCurrencyEnabled(String currency) {
-        return getCurrencies().contains(currency.toLowerCase(Locale.ROOT));
+        try {
+            return getCurrencies().contains(normalizeCurrency(currency));
+        } catch (IllegalArgumentException exception) {
+            return false;
+        }
     }
 
     public BigDecimal parseAmount(String currency, String input) {
@@ -46,7 +74,7 @@ public final class EconomyService {
     }
 
     public BigDecimal getBalance(UUID playerId, String currency) throws SQLException {
-        requireCurrency(currency);
+        currency = requireCurrency(currency);
         synchronized (storage) {
             try (PreparedStatement statement = storage.connection().prepareStatement(
                     "SELECT amount FROM balances WHERE player_uuid = ? AND currency = ?")) {
@@ -61,15 +89,12 @@ public final class EconomyService {
 
     public void transfer(UUID senderId, String senderName, UUID receiverId, String receiverName,
                          String currency, BigDecimal amount) throws SQLException {
-        requireCurrency(currency);
+        currency = requireCurrency(currency);
+        amount = validateAmount(currency, amount);
         if (!plugin.getConfig().getBoolean("economy.currencies." + currency + ".transfers-enabled", true)) {
             throw new IllegalArgumentException("Transferências dessa moeda estão desativadas.");
         }
         if (senderId.equals(receiverId)) throw new IllegalArgumentException("Você não pode transferir para si mesmo.");
-        if (amount.signum() <= 0 || amount.scale() > getCurrencyDecimals(currency)) {
-            throw new IllegalArgumentException("Valor inválido.");
-        }
-
         synchronized (storage) {
             Connection connection = storage.connection();
             boolean previousAutoCommit = connection.getAutoCommit();
@@ -114,8 +139,8 @@ public final class EconomyService {
 
     private void creditFromAuthorizedSource(UUID playerId, String playerName, String currency,
                                             BigDecimal amount, String type) throws SQLException {
-        requireCurrency(currency);
-        if (amount.signum() <= 0) throw new IllegalArgumentException("A recompensa precisa ser maior que zero.");
+        currency = requireCurrency(currency);
+        amount = validateAmount(currency, amount);
         synchronized (storage) {
             Connection connection = storage.connection();
             boolean previous = connection.getAutoCommit();
@@ -138,8 +163,8 @@ public final class EconomyService {
 
     private boolean debitForPurpose(UUID playerId, String playerName, String currency,
                                     BigDecimal amount, String type) throws SQLException {
-        requireCurrency(currency);
-        if (amount.signum() <= 0) throw new IllegalArgumentException("Valor inválido.");
+        currency = requireCurrency(currency);
+        amount = validateAmount(currency, amount);
         synchronized (storage) {
             Connection connection = storage.connection();
             boolean previous = connection.getAutoCommit();
@@ -166,7 +191,8 @@ public final class EconomyService {
     }
 
     public List<RankingEntry> getTop(String currency, int limit, Set<UUID> onlineOnly) throws SQLException {
-        requireCurrency(currency);
+        currency = requireCurrency(currency);
+        if (limit < 1 || limit > 100) throw new IllegalArgumentException("O limite do ranking deve estar entre 1 e 100.");
         List<RankingEntry> entries = new ArrayList<>();
         synchronized (storage) {
             try (PreparedStatement statement = storage.connection().prepareStatement("""
@@ -194,8 +220,10 @@ public final class EconomyService {
                 + " " + getCurrencyName(currency);
     }
 
-    private void requireCurrency(String currency) {
-        if (!isCurrencyEnabled(currency)) throw new IllegalArgumentException("Moeda não encontrada: " + currency);
+    private String requireCurrency(String currency) {
+        String id = normalizeCurrency(currency);
+        if (!isCurrencyEnabled(id)) throw new IllegalArgumentException("Moeda não encontrada: " + id);
+        return id;
     }
 
     private BigDecimal readBalance(Connection connection, UUID playerId, String currency) throws SQLException {
