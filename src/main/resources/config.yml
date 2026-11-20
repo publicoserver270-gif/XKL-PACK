@@ -1,19 +1,34 @@
-# Configuração inicial do XKL PACK.
-# Valores econômicos e módulos serão adicionados conforme a implementação.
-
+# XKL PACK - configuração inicial
 settings:
   language: pt-BR
   storage: sqlite
 
+database:
+  sqlite-file: data/xklpack.db
+
 modules:
-  economy: false
+  economy: true
   bank: false
   jobs: false
   shops: false
   selling: false
-  rankings: false
+  rankings: true
 
-# IMPORTANTE:
-# Coins só podem ser emitidas por salários.
-# Gemas só podem ser emitidas por atividades de profissões e usadas para ferramentas.
-# Os módulos ficam desativados até que suas funcionalidades estejam implementadas.
+economy:
+  currencies:
+    coins:
+      display-name: Coins
+      symbol: "$"
+      decimals: 2
+      transfers-enabled: true
+    gems:
+      display-name: Gemas
+      symbol: "◆"
+      decimals: 0
+      transfers-enabled: true
+
+# REGRAS DE EMISSÃO:
+# - Coins: somente o sistema de salário pode emitir.
+# - Gemas: somente atividades de profissões podem emitir.
+# - Gemas só podem ser gastas em ferramentas.
+# - Não existe conversão automática entre moedas.
