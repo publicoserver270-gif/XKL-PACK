@@ -29,9 +29,9 @@ economy:
 
 # PROFISSÕES
 # Gemas são emitidas somente por atividade profissional.
-# Coins serão emitidas somente pelo salário, quando as regras de ciclo e metas forem definidas.
+# Coins são emitidas por salários de metas profissionais e vendas confirmadas em /sell.
 jobs:
-  max-level: 30
+  max-level: 140
   leveling:
     base-xp: 100
     xp-per-level: 25
@@ -62,7 +62,7 @@ jobs:
       description: Pesque peixes e tesouros.
 
 # REGRAS DE EMISSÃO:
-# - Coins: somente o sistema de salário pode emitir.
+# - Coins: somente salário profissional e venda confirmada em /sell podem emitir.
 # - Gemas: somente atividades de profissões podem emitir.
 # - Gemas só podem ser gastas em ferramentas.
 # - Não existe conversão automática entre moedas.
