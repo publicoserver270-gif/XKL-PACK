@@ -10,13 +10,13 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - Moedas independentes configuráveis (coins e gems por padrão).
 - Transferência bancária virtual pelo comando `/pay` (destinatário precisa estar online nesta primeira versão).
 - Ranking geral e de jogadores online por moeda: `/top` e `/top online`.
-- Regras de emissão separadas no serviço: coins pelo fluxo de salário; gemas pelo fluxo de atividade profissional.
+- Regras de emissão separadas no serviço: coins pelo fluxo de salário e pelo fluxo de vendas; gemas pelo fluxo de atividade profissional.
 - Débito de gemas reservado ao fluxo de compra de ferramentas.
 - Compilação automatizada com GitHub Actions (Java 21 + Maven).
 
 ## Regras econômicas fundamentais
 
-- **Coins:** única fonte de emissão é o salário.
+- **Coins:** fontes autorizadas de emissão são salários por metas de produção profissional e vendas confirmadas na loja `/sell`.
 - **Salário:** só é pago a quem está empregado e cumpre a meta de produtividade da profissão.
 - **Gemas:** única fonte de emissão são as atividades das profissões.
 - **Uso das gemas:** exclusivamente para comprar ferramentas.
