@@ -7,7 +7,7 @@ import br.com.xklpack.economy.command.TopCommand;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
+import java.sql.SQLException;
 
 public final class XKLPack extends JavaPlugin {
     private EconomyStorage economyStorage;
@@ -48,7 +48,7 @@ public final class XKLPack extends JavaPlugin {
         if (economyStorage != null) {
             try {
                 economyStorage.close();
-            } catch (IOException exception) {
+            } catch (SQLException exception) {
                 getLogger().severe("Erro ao fechar banco de dados: " + exception.getMessage());
             }
         }
