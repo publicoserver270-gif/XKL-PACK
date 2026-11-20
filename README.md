@@ -2,19 +2,17 @@
 
 Plugin modular de economia para Minecraft, distribuído em **um único arquivo JAR**. Os sistemas ficam organizados em módulos internos e podem ser ativados/configurados sem instalar vários plugins separados.
 
-> **Status:** início do desenvolvimento. Esta versão do repositório contém a especificação e a fundação do projeto; os sistemas de jogo ainda serão implementados e testados por etapas.
+> **Status:** desenvolvimento inicial. A fundação da economia virtual foi implementada; banco com GUI, profissões, salários automáticos, kits, lojas e venda ainda estão em desenvolvimento.
 
-## Objetivos
+## O que já está no código
 
-- Economia com múltiplas moedas independentes.
-- Dinheiro físico em itens e saldo virtual.
-- Banco com depósitos, saques, taxas e extrato.
-- Profissões com níveis, atividades, gemas e salários por produtividade.
-- Kits de profissão com ferramentas que evoluem automaticamente.
-- Loja administrativa, venda de itens e mercado de jogadores.
-- Rankings e transferências bancárias.
-- Configuração genérica para diferentes servidores, não apenas XKL Gamer.
-- Compatibilidade Java e Bedrock sempre que a API do servidor permitir.
+- Persistência SQLite para perfis, saldos e histórico de transações.
+- Moedas independentes configuráveis (coins e gems por padrão).
+- Transferência bancária virtual pelo comando `/pay` (destinatário precisa estar online nesta primeira versão).
+- Ranking geral e de jogadores online por moeda: `/top` e `/top online`.
+- Regras de emissão separadas no serviço: coins pelo fluxo de salário; gemas pelo fluxo de atividade profissional.
+- Débito de gemas reservado ao fluxo de compra de ferramentas.
+- Compilação automatizada com GitHub Actions (Java 21 + Maven).
 
 ## Regras econômicas fundamentais
 
@@ -25,30 +23,28 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - Moedas diferentes são independentes; não existe conversão automática.
 - Lojas administrativas usam saldo virtual; lojas de jogadores usam dinheiro físico.
 
-## Comandos principais planejados
+## Comandos implementados nesta etapa
 
-- `/loja`
-- `/sell`
-- `/job`
-- `/top` e `/top online`
-- `/pay`
-- `/atm`
+- `/pay <jogador> <valor> [coins|gems]`
+- `/top [coins|gems]`
+- `/top online [coins|gems]`
 
-Não serão adicionados comandos principais de jogador fora dessa lista sem decisão explícita.
+Os demais comandos planejados ainda não estão implementados. Não serão adicionados comandos principais de jogador fora da lista aprovada sem decisão explícita.
 
 ## Documentação
 
-Consulte [docs/ESPECIFICACAO.md](docs/ESPECIFICACAO.md) para as regras e decisões detalhadas.
+- [Especificação funcional](docs/ESPECIFICACAO.md)
+- [Economia — implementação inicial](docs/ECONOMIA.md)
 
 ## Compilação
 
-Requisitos previstos para a fundação: JDK 21 e Maven 3.9+.
+Requisitos: JDK 21 e Maven 3.9+.
 
 ```bash
 mvn clean package
 ```
 
-O JAR será gerado em `target/`. Esta instrução só será considerada validada depois que o workflow de CI executar com sucesso.
+O JAR será gerado em `target/`. A validação real depende da execução bem-sucedida do workflow de CI.
 
 ## Desenvolvimento
 
