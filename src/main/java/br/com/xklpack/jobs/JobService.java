@@ -106,7 +106,7 @@ public final class JobService {
             newLevel = oldLevel;
             newXp = current.xp() + amount;
             totalXp = current.totalXp() + amount;
-            int maxLevel = plugin.getConfig().getInt("jobs.max-level", 30);
+            int maxLevel = plugin.getConfig().getInt("jobs.max-level", 140);
             while (newLevel < maxLevel && newXp >= xpRequired(newLevel)) {
                 newXp -= xpRequired(newLevel);
                 newLevel++;
