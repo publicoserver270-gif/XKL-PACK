@@ -20,6 +20,13 @@ public final class XKLPack extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        boolean hadJobConfiguration = getConfig().isConfigurationSection("jobs.professions");
+        getConfig().options().copyDefaults(true);
+        if (!hadJobConfiguration) {
+            getConfig().set("modules.jobs", true);
+        }
+        saveConfig();
+
         try {
             economyStorage = new EconomyStorage(this);
             economyStorage.open();
