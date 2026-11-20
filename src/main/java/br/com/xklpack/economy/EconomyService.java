@@ -122,9 +122,14 @@ public final class EconomyService {
         }
     }
 
-    /** Único caminho de emissão de coins: pagamento de salário pelo módulo de profissões. */
+    /** Emissão de coins pelo salário de uma meta de produção profissional concluída. */
     public void paySalary(UUID playerId, String playerName, BigDecimal amount) throws SQLException {
         creditFromAuthorizedSource(playerId, playerName, "coins", amount, "JOB_SALARY");
+    }
+
+    /** Emissão de coins pela venda confirmada na loja /sell. */
+    public void creditSellRevenue(UUID playerId, String playerName, BigDecimal amount) throws SQLException {
+        creditFromAuthorizedSource(playerId, playerName, "coins", amount, "SELL_REVENUE");
     }
 
     /** Único caminho de emissão de gemas: recompensa por atividade profissional elegível. */
