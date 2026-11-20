@@ -9,7 +9,7 @@ database:
 modules:
   economy: true
   bank: false
-  jobs: false
+  jobs: true
   shops: false
   selling: false
   rankings: true
@@ -26,6 +26,40 @@ economy:
       symbol: "◆"
       decimals: 0
       transfers-enabled: true
+
+# PROFISSÕES
+# Gemas são emitidas somente por atividade profissional.
+# Coins serão emitidas somente pelo salário, quando as regras de ciclo e metas forem definidas.
+jobs:
+  max-level: 30
+  leveling:
+    base-xp: 100
+    xp-per-level: 25
+  gems:
+    every-xp: 100
+    amount: 1
+  activity-xp:
+    minerador: 5
+    lenhador: 3
+    fazendeiro: 2
+    cacador: 4
+    pescador: 5
+  professions:
+    minerador:
+      name: Minerador
+      description: Extraia minérios e recursos subterrâneos.
+    lenhador:
+      name: Lenhador
+      description: Colete madeira de árvores.
+    fazendeiro:
+      name: Fazendeiro
+      description: Colha plantações maduras.
+    cacador:
+      name: Caçador
+      description: Cace criaturas hostis e animais.
+    pescador:
+      name: Pescador
+      description: Pesque peixes e tesouros.
 
 # REGRAS DE EMISSÃO:
 # - Coins: somente o sistema de salário pode emitir.
