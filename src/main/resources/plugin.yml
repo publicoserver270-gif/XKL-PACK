@@ -1,5 +1,5 @@
 name: XKL-PACK
-version: 0.2.0-SNAPSHOT
+version: 0.3.0-SNAPSHOT
 main: br.com.xklpack.XKLPack
 api-version: '1.21'
 authors: [XKL]
@@ -12,10 +12,16 @@ commands:
   top:
     description: Mostra o ranking de saldos.
     usage: /top [online] [coins|gems]
+  job:
+    description: Abre o menu de profissões.
+    usage: /job [status|sair]
 permissions:
   xklpack.command.pay:
     description: Permite usar /pay.
     default: true
   xklpack.command.top:
     description: Permite consultar rankings.
+    default: true
+  xklpack.command.job:
+    description: Permite usar o sistema de profissões.
     default: true
