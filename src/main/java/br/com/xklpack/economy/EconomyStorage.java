@@ -61,7 +61,7 @@ public final class EconomyStorage implements AutoCloseable {
         }
     }
 
-    Connection connection() {
+    public Connection connection() {
         if (connection == null) {
             throw new IllegalStateException("Banco de dados ainda não foi aberto.");
         }
