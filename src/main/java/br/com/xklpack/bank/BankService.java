@@ -159,7 +159,12 @@ public final class BankService {
             // Simula a entrega em um inventário temporário antes de debitar o saldo.
             // Isso considera compatibilidade de material, tamanho máximo de pilha e espaços reais.
             org.bukkit.inventory.Inventory simulated = org.bukkit.Bukkit.createInventory(null, 36);
-            simulated.setContents(player.getInventory().getStorageContents().clone());
+            ItemStack[] originalContents = player.getInventory().getStorageContents();
+            ItemStack[] copiedContents = new ItemStack[originalContents.length];
+            for (int i = 0; i < originalContents.length; i++) {
+                copiedContents[i] = originalContents[i] == null ? null : originalContents[i].clone();
+            }
+            simulated.setContents(copiedContents);
             Map<Integer, ItemStack> overflow = simulated.addItem(items.toArray(new ItemStack[0]));
             if (!overflow.isEmpty()) {
                 throw new IllegalArgumentException("Libere espaço no inventário antes de sacar.");
@@ -191,10 +196,17 @@ public final class BankService {
     public List<String> statement(UUID uuid) throws SQLException {
         List<String> rows = new ArrayList<>();
         synchronized (plugin.getEconomyStorage()) {
+            long retentionDays = Math.max(1L, plugin.getBankConfig().getLong("atm.statement.retention-days", 7L));
+            long cutoff = System.currentTimeMillis() - retentionDays * 24L * 60L * 60L * 1000L;
+            try (PreparedStatement cleanup = plugin.getEconomyStorage().connection().prepareStatement(
+                    "DELETE FROM economy_transactions WHERE transaction_type LIKE 'ATM_%' AND created_at < ?")) {
+                cleanup.setLong(1, cutoff);
+                cleanup.executeUpdate();
+            }
             try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
                     "SELECT transaction_type, amount, created_at FROM economy_transactions WHERE (sender_uuid=? OR receiver_uuid=?) AND transaction_type LIKE 'ATM_%' AND created_at >= ? ORDER BY id DESC")) {
                 ps.setString(1, uuid.toString()); ps.setString(2, uuid.toString());
-                ps.setLong(3, System.currentTimeMillis() - 7L * 24 * 60 * 60 * 1000);
+                ps.setLong(3, cutoff);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) rows.add("&7" + new java.text.SimpleDateFormat("dd/MM HH:mm").format(new java.util.Date(rs.getLong("created_at")))
                             + " &f" + rs.getString("transaction_type") + " &e" + rs.getString("amount"));
