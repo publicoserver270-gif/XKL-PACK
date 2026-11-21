@@ -54,6 +54,8 @@ citizens:
 # Saco de couro exclusivo para guardar moedas físicas
 money-pouch:
   enabled: true
+  title: "&8Saco de Coins"
+  inventory-rows: 3
   material: LEATHER
   open-with-right-click: true
   allow-only-authenticated-coins: true
