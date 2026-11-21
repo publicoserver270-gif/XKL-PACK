@@ -34,6 +34,7 @@ atm:
   statement:
     entries-per-page: 7
     max-pages: 10
+    retention-days: 7
   messages:
     prefix: "&6&lBANCO XKL &8» "
     no-permission: "&cVocê não tem permissão para usar o caixa eletrônico."
