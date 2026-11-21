@@ -15,10 +15,12 @@ import org.bukkit.inventory.ItemStack;
 public final class MoneyPouchListener implements Listener {
     private final XKLPack plugin;
     private final MoneyPouchService pouches;
+    private final br.com.xklpack.bank.BankService bank;
 
-    public MoneyPouchListener(XKLPack plugin, MoneyPouchService pouches) {
+    public MoneyPouchListener(XKLPack plugin, MoneyPouchService pouches, br.com.xklpack.bank.BankService bank) {
         this.plugin = plugin;
         this.pouches = pouches;
+        this.bank = bank;
     }
 
     @EventHandler
