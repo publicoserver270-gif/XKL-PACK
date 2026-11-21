@@ -1,0 +1,45 @@
+# BANCO XKL - configurações do caixa eletrônico
+# O menu terá: Depositar, Sacar, Extrato e Taxas.
+# O jogador escolhe a operação e o valor; nunca escolhe manualmente as denominações.
+
+atm:
+  enabled: true
+  command: atm
+  title: "&8Banco XKL"
+  rows: 3
+  menu:
+    deposit-slot: 11
+    withdraw-slot: 13
+    statement-slot: 15
+    fees-slot: 22
+  deposit:
+    allow-all: true
+    allow-custom-amount: true
+    minimum: 1
+  withdraw:
+    allow-custom-amount: true
+    minimum: 1
+    # A distribuição é automática: prioriza os maiores valores disponíveis.
+    automatic-denominations: true
+    denomination-order:
+      - netherite
+      - diamond
+      - emerald
+      - gold_nugget
+      - iron_nugget
+      - copper_nugget
+  fees:
+    deposit-percent: 0.0
+    withdraw-percent: 2.0
+  statement:
+    entries-per-page: 7
+    max-pages: 10
+  messages:
+    prefix: "&6&lBANCO XKL &8» "
+    no-permission: "&cVocê não tem permissão para usar o caixa eletrônico."
+    invalid-amount: "&cInforme um valor válido."
+    insufficient-balance: "&cVocê não possui Coins suficientes."
+    inventory-full: "&cLibere espaço no inventário antes de sacar."
+    deposit-success: "&aDepósito realizado: &f%amount% Coins"
+    withdraw-success: "&aSaque realizado: &f%amount% Coins"
+    cancelled: "&eOperação cancelada."
