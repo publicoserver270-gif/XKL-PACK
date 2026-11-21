@@ -52,7 +52,9 @@ public final class MoneyPouchListener implements Listener {
             event.setCancelled(true);
             return;
         }
-        if (event.isShiftClick() || event.getHotbarButton() >= 0 || event.getClick().isKeyboardClick()) {
+        if (event.isShiftClick() || event.getHotbarButton() >= 0
+                || (event.getClick() != org.bukkit.event.inventory.ClickType.LEFT
+                && event.getClick() != org.bukkit.event.inventory.ClickType.RIGHT)) {
             event.setCancelled(true);
             return;
         }
