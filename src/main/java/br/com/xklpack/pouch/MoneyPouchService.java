@@ -160,8 +160,6 @@ public final class MoneyPouchService {
         player.openInventory(inventory);
     }
 
-    private String rsString(ResultSet rs, String column) throws SQLException { return rs.getString(column); }
-
     public void saveAndClose(Player player, PouchHolder holder, Inventory inventory) {
         UUID id = holder.pouchId();
         if (!player.getUniqueId().equals(holder.ownerId())) return;
