@@ -15,6 +15,9 @@ commands:
   job:
     description: Abre o menu de profissões.
     usage: /job [status|sair]
+  atm:
+    description: Abre o caixa eletrônico do Banco XKL.
+    usage: /atm
 permissions:
   xklpack.command.pay:
     description: Permite usar /pay.
@@ -24,4 +27,7 @@ permissions:
     default: true
   xklpack.command.job:
     description: Permite usar o sistema de profissões.
+    default: true
+  xklpack.command.atm:
+    description: Permite usar o caixa eletrônico.
     default: true
