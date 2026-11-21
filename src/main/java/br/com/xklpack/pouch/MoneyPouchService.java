@@ -87,6 +87,7 @@ public final class MoneyPouchService {
                 color("&8Identificador protegido do XKL PACK")));
         meta.getPersistentDataContainer().set(pouchIdKey, PersistentDataType.STRING, id.toString());
         meta.getPersistentDataContainer().set(tokenKey, PersistentDataType.STRING, token);
+        meta.setMaxStackSize(1);
         meta.addEnchant(org.bukkit.enchantments.Enchantment.UNBREAKING, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(meta);
@@ -112,11 +113,11 @@ public final class MoneyPouchService {
         String newToken = UUID.randomUUID().toString();
         boolean valid = false;
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
-                "UPDATE money_pouches SET access_token=?, updated_at=? WHERE pouch_id=? AND owner_uuid=? AND access_token=?")) {
-            ps.setString(1, newToken);
-            ps.setLong(2, System.currentTimeMillis());
-            ps.setString(3, id.toString());
-            ps.setString(4, player.getUniqueId().toString());
+                "UPDATE money_pouches SET owner_uuid=?, access_token=?, updated_at=? WHERE pouch_id=? AND access_token=?")) {
+            ps.setString(1, player.getUniqueId().toString());
+            ps.setString(2, newToken);
+            ps.setLong(3, System.currentTimeMillis());
+            ps.setString(4, id.toString());
             ps.setString(5, oldToken);
             valid = ps.executeUpdate() == 1;
         } catch (SQLException ex) {
@@ -125,7 +126,7 @@ public final class MoneyPouchService {
         }
         if (!valid) {
             openPouches.remove(id, player.getUniqueId());
-            throw new IllegalArgumentException("Saco inválido, duplicado ou pertencente a outro jogador.");
+            throw new IllegalArgumentException("Saco inválido ou duplicado.");
         }
 
         meta.getPersistentDataContainer().set(tokenKey, PersistentDataType.STRING, newToken);
