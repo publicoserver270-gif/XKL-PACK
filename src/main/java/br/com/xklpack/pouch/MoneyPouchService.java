@@ -17,7 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -57,7 +57,83 @@ public final class MoneyPouchService {
                     FOREIGN KEY (pouch_id) REFERENCES money_pouches(pouch_id) ON DELETE CASCADE
                 )
                 """);
+            statement.execute("""
+                CREATE TABLE IF NOT EXISTS money_pouch_first_claims (
+                    player_uuid TEXT PRIMARY KEY,
+                    pouch_id TEXT NOT NULL UNIQUE,
+                    claimed_at INTEGER NOT NULL,
+                    FOREIGN KEY (pouch_id) REFERENCES money_pouches(pouch_id)
+                )
+                """);
         }
+    }
+
+    /**
+     * Entrega automaticamente um único saco após o primeiro saque bem-sucedido.
+     * A reivindicação e a criação do saco são gravadas na mesma transação.
+     */
+    public boolean giveFirstPouch(Player player) throws SQLException {
+        if (!plugin.getBankConfig().getBoolean("money-pouch.enabled", true)
+                || !plugin.getBankConfig().getBoolean("money-pouch.auto-give-on-first-withdrawal", true)) {
+            return false;
+        }
+
+        UUID pouchId = UUID.randomUUID();
+        String token = UUID.randomUUID().toString();
+        long now = System.currentTimeMillis();
+        Connection connection = plugin.getEconomyStorage().connection();
+
+        synchronized (plugin.getEconomyStorage()) {
+            boolean autoCommit = connection.getAutoCommit();
+            connection.setAutoCommit(false);
+            try {
+                try (PreparedStatement check = connection.prepareStatement(
+                        "SELECT 1 FROM money_pouch_first_claims WHERE player_uuid=?")) {
+                    check.setString(1, player.getUniqueId().toString());
+                    try (ResultSet rs = check.executeQuery()) {
+                        if (rs.next()) {
+                            connection.rollback();
+                            return false;
+                        }
+                    }
+                }
+
+                try (PreparedStatement pouch = connection.prepareStatement(
+                        "INSERT INTO money_pouches(pouch_id,owner_uuid,access_token,created_at,updated_at) VALUES(?,?,?,?,?)");
+                     PreparedStatement claim = connection.prepareStatement(
+                        "INSERT INTO money_pouch_first_claims(player_uuid,pouch_id,claimed_at) VALUES(?,?,?)")) {
+                    pouch.setString(1, pouchId.toString());
+                    pouch.setString(2, player.getUniqueId().toString());
+                    pouch.setString(3, token);
+                    pouch.setLong(4, now);
+                    pouch.setLong(5, now);
+                    pouch.executeUpdate();
+
+                    claim.setString(1, player.getUniqueId().toString());
+                    claim.setString(2, pouchId.toString());
+                    claim.setLong(3, now);
+                    claim.executeUpdate();
+                }
+                connection.commit();
+            } catch (Exception ex) {
+                connection.rollback();
+                if (ex instanceof SQLException sql) throw sql;
+                throw new SQLException("Não foi possível registrar o primeiro Saco de Coins.", ex);
+            } finally {
+                connection.setAutoCommit(autoCommit);
+            }
+        }
+
+        ItemStack pouch = createItem(pouchId, token);
+        Map<Integer, ItemStack> overflow = player.getInventory().addItem(pouch);
+        for (ItemStack item : overflow.values()) {
+            player.getWorld().dropItemNaturally(player.getLocation(), item);
+        }
+        player.sendMessage("§6§lBANCO XKL §8» §aVocê recebeu seu primeiro Saco de Coins! §eClique com o botão direito para abrir.");
+        if (!overflow.isEmpty()) {
+            player.sendMessage("§eSeu inventário estava cheio: o saco foi deixado no chão perto de você.");
+        }
+        return true;
     }
 
     public ItemStack createPouch(Player owner) throws SQLException {
@@ -82,7 +158,7 @@ public final class MoneyPouchService {
         ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(color("&6&lSaco de Coins XKL"));
-        meta.setLore(java.util.List.of(color("&7Guarda somente moedas físicas oficiais."),
+        meta.setLore(List.of(color("&7Guarda somente moedas físicas oficiais."),
                 color("&eClique direito para abrir."),
                 color("&8Identificador protegido do XKL PACK")));
         meta.getPersistentDataContainer().set(pouchIdKey, PersistentDataType.STRING, id.toString());
@@ -111,7 +187,7 @@ public final class MoneyPouchService {
             throw new IllegalArgumentException("Este saco já está aberto em outra sessão.");
 
         String newToken = UUID.randomUUID().toString();
-        boolean valid = false;
+        boolean valid;
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
                 "UPDATE money_pouches SET owner_uuid=?, access_token=?, updated_at=? WHERE pouch_id=? AND access_token=?")) {
             ps.setString(1, player.getUniqueId().toString());
@@ -216,9 +292,13 @@ public final class MoneyPouchService {
                 connection.rollback();
                 if (ex instanceof SQLException sql) throw sql;
                 throw new SQLException("Falha ao persistir o conteúdo do saco.", ex);
-            } finally { connection.setAutoCommit(auto); }
+            } finally {
+                connection.setAutoCommit(auto);
+            }
         }
     }
 
-    private String color(String text) { return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text); }
+    private String color(String text) {
+        return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+    }
 }
