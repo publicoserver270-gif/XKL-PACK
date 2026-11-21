@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -47,52 +48,83 @@ public final class MoneyPouchListener implements Listener {
     @EventHandler
     public void click(InventoryClickEvent event) {
         if (!(event.getView().getTopInventory().getHolder() instanceof PouchHolder holder)) return;
+
         Inventory top = event.getView().getTopInventory();
-        if (event.getClickedInventory() != top) {
-            event.setCancelled(true);
-            return;
-        }
-        if (event.isShiftClick() || event.getHotbarButton() >= 0
-                || (event.getClick() != org.bukkit.event.inventory.ClickType.LEFT
-                && event.getClick() != org.bukkit.event.inventory.ClickType.RIGHT)) {
-            event.setCancelled(true);
-            return;
-        }
+        int rawSlot = event.getRawSlot();
+        boolean touchesPouch = rawSlot >= 0 && rawSlot < top.getSize();
+
         ItemStack current = event.getCurrentItem();
         ItemStack cursor = event.getCursor();
-        if ((current != null && !current.getType().isAir() && bank.identify(current) == null)
-                || (cursor != null && !cursor.getType().isAir() && bank.identify(cursor) == null)) {
-            event.setCancelled(true);
-            return;
+
+        // Nunca permita inserir itens comuns no saco, nem retirar o próprio saco enquanto aberto.
+        if (touchesPouch) {
+            if (isRealItem(current) && (bank.identify(current) == null || pouches.isPouch(current))) {
+                event.setCancelled(true);
+                return;
+            }
+            if (isRealItem(cursor) && (bank.identify(cursor) == null || pouches.isPouch(cursor))) {
+                event.setCancelled(true);
+                return;
+            }
+            if (event.getClick() == ClickType.NUMBER_KEY || event.getClick() == ClickType.SWAP_OFFHAND
+                    || event.getClick() == ClickType.DOUBLE_CLICK) {
+                event.setCancelled(true);
+                return;
+            }
+        } else {
+            // Shift-click de moedas do inventário do jogador pode enviá-las ao saco.
+            if (event.isShiftClick() && isRealItem(current)) {
+                if (bank.identify(current) == null || pouches.isPouch(current)) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+            // Não deixe mover o saco que está aberto para dentro dele mesmo.
+            if (pouches.isPouch(current)) {
+                event.setCancelled(true);
+                return;
+            }
         }
-        if (!event.isCancelled() && event.getWhoClicked() instanceof Player player)
+
+        if (touchesPouch && !event.isCancelled() && event.getWhoClicked() instanceof Player player) {
             scheduleSave(player, holder, top);
+        } else if (!touchesPouch && event.isShiftClick() && isRealItem(current)
+                && bank.identify(current) != null && !event.isCancelled()
+                && event.getWhoClicked() instanceof Player player) {
+            scheduleSave(player, holder, top);
+        }
     }
 
     @EventHandler
     public void drag(InventoryDragEvent event) {
         if (!(event.getView().getTopInventory().getHolder() instanceof PouchHolder holder)) return;
         Inventory top = event.getView().getTopInventory();
-        int topSize = top.getSize();
-        if (event.getRawSlots().stream().anyMatch(slot -> slot >= topSize)) {
-            event.setCancelled(true);
-            return;
-        }
-        for (ItemStack item : event.getNewItems().values()) {
-            if (item != null && !item.getType().isAir() && bank.identify(item) == null) {
-                event.setCancelled(true);
-                return;
+        boolean touchesPouch = event.getRawSlots().stream().anyMatch(slot -> slot < top.getSize());
+        if (!touchesPouch) return;
+
+        for (var entry : event.getNewItems().entrySet()) {
+            if (entry.getKey() < top.getSize()) {
+                ItemStack item = entry.getValue();
+                if (isRealItem(item) && (bank.identify(item) == null || pouches.isPouch(item))) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
         if (!event.isCancelled() && event.getWhoClicked() instanceof Player player)
             scheduleSave(player, holder, top);
     }
 
+    private boolean isRealItem(ItemStack item) {
+        return item != null && !item.getType().isAir();
+    }
+
     private void scheduleSave(Player player, PouchHolder holder, Inventory inventory) {
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (player.isOnline() && player.getOpenInventory().getTopInventory() == inventory) {
-                try { pouches.saveSnapshot(holder, inventory); }
-                catch (Exception ex) {
+                try {
+                    pouches.saveSnapshot(holder, inventory);
+                } catch (Exception ex) {
                     player.sendMessage("§cNão foi possível salvar o conteúdo do saco: " + ex.getMessage());
                     plugin.getLogger().severe("Falha ao salvar saco " + holder.pouchId() + ": " + ex.getMessage());
                 }
