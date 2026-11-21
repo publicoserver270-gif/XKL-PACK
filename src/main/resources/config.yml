@@ -1,4 +1,4 @@
-# XKL PACK - configuração inicial
+# XKL PACK - configuração principal
 settings:
   language: pt-BR
   storage: sqlite
@@ -25,25 +25,58 @@ economy:
       display-name: Gemas
       symbol: "◆"
       decimals: 0
-      transfers-enabled: true
+      # Gemas não podem ser transferidas: são pessoais e exclusivas para ferramentas.
+      transfers-enabled: false
 
 # PROFISSÕES
-# Gemas são emitidas somente por atividade profissional.
-# Coins são emitidas por salários de metas profissionais e vendas confirmadas em /sell.
+# Uma profissão ativa por jogador. O progresso de cada profissão fica salvo separadamente.
 jobs:
   max-level: 140
+
   leveling:
+    # XP próprio do XKL PACK; não usa a barra de XP vanilla.
     base-xp: 100
     xp-per-level: 25
+    # Marcos de progressão para kits/equipamentos profissionais.
+    tiers:
+      madeira: {min-level: 1, max-level: 10}
+      pedra: {min-level: 11, max-level: 25}
+      ferro: {min-level: 26, max-level: 45}
+      ouro: {min-level: 46, max-level: 70}
+      diamante: {min-level: 71, max-level: 100}
+      netherita: {min-level: 101, max-level: 140}
+
+  # A cada 100 XP profissional acumulado, recebe 1 gema.
+  # Ajuste os valores sem alterar o código.
   gems:
     every-xp: 100
     amount: 1
+
+  # XP por atividade; mineração usa os valores de raridade abaixo.
   activity-xp:
     minerador: 5
     lenhador: 3
     fazendeiro: 2
     cacador: 4
     pescador: 5
+
+  mining-xp:
+    common: 3
+    uncommon: 5
+    rare: 10
+    epic: 20
+
+  # Cada atividade elegível conta como 1 unidade de produção para a meta.
+  # A meta e o salário crescem permanentemente por profissão.
+  salary:
+    production-goal: 100
+    goal-increase-per-cycle: 25
+    base-reward: 500.0
+    reward-increase-per-cycle: 50.0
+    multiplier-start: 1.3
+    multiplier-every-goals: 40
+    multiplier-increase-every-40-goals: 0.1
+
   professions:
     minerador:
       name: Minerador
@@ -56,13 +89,14 @@ jobs:
       description: Colha plantações maduras.
     cacador:
       name: Caçador
-      description: Cace criaturas hostis e animais.
+      description: Cace criaturas e obtenha experiência de caça.
     pescador:
       name: Pescador
       description: Pesque peixes e tesouros.
 
-# REGRAS DE EMISSÃO:
-# - Coins: somente salário profissional e venda confirmada em /sell podem emitir.
-# - Gemas: somente atividades de profissões podem emitir.
-# - Gemas só podem ser gastas em ferramentas.
-# - Não existe conversão automática entre moedas.
+# REGRAS DE EMISSÃO (fontes autorizadas):
+# - Coins: salários por metas de produção profissional e vendas confirmadas em /sell.
+# - Gemas: atividades profissionais elegíveis, calculadas pelo XP próprio acumulado.
+# - Gemas não podem ser transferidas nem convertidas; só podem comprar ferramentas.
+# - /pay apenas transfere saldo já existente; não cria moeda.
+# - Não existe conversão automática entre Coins e Gemas.
