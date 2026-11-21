@@ -64,7 +64,7 @@ public final class MoneyPouchListener implements Listener {
             return;
         }
         for (ItemStack item : event.getNewItems().values()) {
-            if (item != null && !item.getType().isAir() && plugin.getBankService().identify(item) == null) {
+            if (item != null && !item.getType().isAir() && bank.identify(item) == null) {
                 event.setCancelled(true);
                 return;
             }
