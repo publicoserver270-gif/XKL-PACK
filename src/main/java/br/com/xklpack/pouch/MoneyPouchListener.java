@@ -49,7 +49,7 @@ public final class MoneyPouchListener implements Listener {
         }
         ItemStack current = event.getCurrentItem();
         ItemStack cursor = event.getCursor();
-        if ((current != null && !current.getType().isAir() && plugin.getBankService().identify(current) == null)
+        if ((current != null && !current.getType().isAir() && bank.identify(current) == null)
                 || (cursor != null && !cursor.getType().isAir() && plugin.getBankService().identify(cursor) == null)) {
             event.setCancelled(true);
         }
