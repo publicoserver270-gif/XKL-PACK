@@ -1,5 +1,7 @@
 package br.com.xklpack;
 
+import br.com.xklpack.bank.AtmNpcCommand;
+import br.com.xklpack.bank.AtmNpcListener;
 import br.com.xklpack.bank.BankCommand;
 import br.com.xklpack.bank.BankListener;
 import br.com.xklpack.bank.BankMenu;
@@ -55,6 +57,13 @@ public final class XKLPack extends JavaPlugin {
                 bankService = new BankService(this);
                 BankMenu bankMenu = new BankMenu(this, bankService);
                 registerCommand("atm", new BankCommand(bankMenu));
+                registerCommand("xklatm", new AtmNpcCommand(this));
+                getServer().getPluginManager().registerEvents(new AtmNpcListener(this, bankMenu), this);
+                if (getServer().getPluginManager().getPlugin("Citizens") == null) {
+                    getLogger().warning("Citizens não encontrado: os caixas por NPC ficarão indisponíveis até instalar o Citizens.");
+                } else {
+                    getLogger().info("Integração com NPCs do Citizens ativada. Use /xklatm npc link <id>.");
+                }
                 getServer().getPluginManager().registerEvents(new BankListener(this, bankService, bankMenu), this);
                 if (bankConfig.getBoolean("money-pouch.enabled", true)) {
                     moneyPouchService = new MoneyPouchService(this, bankService);
