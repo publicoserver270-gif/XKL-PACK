@@ -142,8 +142,9 @@ public final class MoneyPouchService {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     int slot = rs.getInt("slot");
+                    String denominationId = rs.getString("denomination_id");
                     var denomination = bank.denominations().stream()
-                            .filter(d -> d.id().equals(rsString(rs, "denomination_id"))).findFirst().orElse(null);
+                            .filter(d -> d.id().equals(denominationId)).findFirst().orElse(null);
                     int amount = rs.getInt("amount");
                     if (denomination != null && slot >= 0 && slot < inventory.getSize()
                             && amount > 0 && amount <= denomination.material().getMaxStackSize()) {
