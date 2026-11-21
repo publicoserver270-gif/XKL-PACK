@@ -1,6 +1,8 @@
 package br.com.xklpack.pouch;
 
 import br.com.xklpack.XKLPack;
+import br.com.xklpack.bank.BankService;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,9 +17,9 @@ import org.bukkit.inventory.ItemStack;
 public final class MoneyPouchListener implements Listener {
     private final XKLPack plugin;
     private final MoneyPouchService pouches;
-    private final br.com.xklpack.bank.BankService bank;
+    private final BankService bank;
 
-    public MoneyPouchListener(XKLPack plugin, MoneyPouchService pouches, br.com.xklpack.bank.BankService bank) {
+    public MoneyPouchListener(XKLPack plugin, MoneyPouchService pouches, BankService bank) {
         this.plugin = plugin;
         this.pouches = pouches;
         this.bank = bank;
@@ -31,13 +33,20 @@ public final class MoneyPouchListener implements Listener {
         ItemStack item = event.getItem();
         if (!pouches.isPouch(item)) return;
         event.setCancelled(true);
-        try { pouches.open(event.getPlayer(), item); }
-        catch (Exception ex) { event.getPlayer().sendMessage("§cNão foi possível abrir o saco: " + ex.getMessage()); }
+        try {
+            pouches.open(event.getPlayer(), item);
+            if (event.getHand() == org.bukkit.inventory.EquipmentSlot.OFF_HAND)
+                event.getPlayer().getInventory().setItemInOffHand(item);
+            else
+                event.getPlayer().getInventory().setItemInMainHand(item);
+        } catch (Exception ex) {
+            event.getPlayer().sendMessage("§cNão foi possível abrir o saco: " + ex.getMessage());
+        }
     }
 
     @EventHandler
     public void click(InventoryClickEvent event) {
-        if (!(event.getView().getTopInventory().getHolder() instanceof PouchHolder)) return;
+        if (!(event.getView().getTopInventory().getHolder() instanceof PouchHolder holder)) return;
         Inventory top = event.getView().getTopInventory();
         if (event.getClickedInventory() != top) {
             event.setCancelled(true);
@@ -52,13 +61,17 @@ public final class MoneyPouchListener implements Listener {
         if ((current != null && !current.getType().isAir() && bank.identify(current) == null)
                 || (cursor != null && !cursor.getType().isAir() && bank.identify(cursor) == null)) {
             event.setCancelled(true);
+            return;
         }
+        if (!event.isCancelled() && event.getWhoClicked() instanceof Player player)
+            scheduleSave(player, holder, top);
     }
 
     @EventHandler
     public void drag(InventoryDragEvent event) {
-        if (!(event.getView().getTopInventory().getHolder() instanceof PouchHolder)) return;
-        int topSize = event.getView().getTopInventory().getSize();
+        if (!(event.getView().getTopInventory().getHolder() instanceof PouchHolder holder)) return;
+        Inventory top = event.getView().getTopInventory();
+        int topSize = top.getSize();
         if (event.getRawSlots().stream().anyMatch(slot -> slot >= topSize)) {
             event.setCancelled(true);
             return;
@@ -69,6 +82,20 @@ public final class MoneyPouchListener implements Listener {
                 return;
             }
         }
+        if (!event.isCancelled() && event.getWhoClicked() instanceof Player player)
+            scheduleSave(player, holder, top);
+    }
+
+    private void scheduleSave(Player player, PouchHolder holder, Inventory inventory) {
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (player.isOnline() && player.getOpenInventory().getTopInventory() == inventory) {
+                try { pouches.saveSnapshot(holder, inventory); }
+                catch (Exception ex) {
+                    player.sendMessage("§cNão foi possível salvar o conteúdo do saco: " + ex.getMessage());
+                    plugin.getLogger().severe("Falha ao salvar saco " + holder.pouchId() + ": " + ex.getMessage());
+                }
+            }
+        });
     }
 
     @EventHandler
