@@ -200,16 +200,17 @@ public final class JobService {
             }
 
             if (goalsCompleted > 0) {
-                BigDecimal baseReward = BigDecimal.valueOf(plugin.getConfig().getDouble("jobs.salary.base-reward", 500.0));
-                BigDecimal rewardIncrease = BigDecimal.valueOf(plugin.getConfig().getDouble("jobs.salary.reward-increase-per-cycle", 50.0));
+                // O salário é sempre o valor-base da meta multiplicado pelo multiplicador.
+                // A meta de produção (100, 125, 150...) não aumenta o valor-base do salário.
+                BigDecimal goalValue = BigDecimal.valueOf(
+                        plugin.getConfig().getDouble("jobs.salary.base-reward", 500.0));
                 double multiplierStart = plugin.getConfig().getDouble("jobs.salary.multiplier-start", 1.3);
                 double multiplierIncrease = plugin.getConfig().getDouble("jobs.salary.multiplier-increase-every-40-goals", 0.1);
                 int multiplierEvery = Math.max(1, plugin.getConfig().getInt("jobs.salary.multiplier-every-goals", 40));
                 for (int i = 0; i < goalsCompleted; i++) {
-                    int cycle = completedGoals - goalsCompleted + i;
-                    BigDecimal cycleBase = baseReward.add(rewardIncrease.multiply(BigDecimal.valueOf(cycle)));
-                    double multiplier = multiplierStart + (cycle / multiplierEvery) * multiplierIncrease;
-                    BigDecimal payment = cycleBase.multiply(BigDecimal.valueOf(multiplier))
+                    int goalNumber = completedGoals - goalsCompleted + i + 1;
+                    double multiplier = multiplierStart + (goalNumber / multiplierEvery) * multiplierIncrease;
+                    BigDecimal payment = goalValue.multiply(BigDecimal.valueOf(multiplier))
                             .setScale(2, RoundingMode.HALF_UP);
                     economy.paySalary(uuid, playerName, payment);
                     salaryPaid = salaryPaid.add(payment);
