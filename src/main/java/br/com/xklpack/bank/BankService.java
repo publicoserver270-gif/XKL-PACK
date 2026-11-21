@@ -156,13 +156,15 @@ public final class BankService {
                 remaining %= d.value();
             }
             if (remaining != 0) throw new IllegalStateException("As denominações configuradas não conseguem formar esse valor.");
-            int free = 0;
-            for (ItemStack item : player.getInventory().getStorageContents()) {
-                if (item == null || item.getType().isAir()) free += 64;
-                else if (item.getAmount() < item.getMaxStackSize()) free += item.getMaxStackSize() - item.getAmount();
+            // Simula a entrega em um inventário temporário antes de debitar o saldo.
+            // Isso considera compatibilidade de material, tamanho máximo de pilha e espaços reais.
+            org.bukkit.inventory.Inventory simulated = org.bukkit.Bukkit.createInventory(null, 36);
+            simulated.setContents(player.getInventory().getStorageContents().clone());
+            Map<Integer, ItemStack> overflow = simulated.addItem(items.toArray(new ItemStack[0]));
+            if (!overflow.isEmpty()) {
+                throw new IllegalArgumentException("Libere espaço no inventário antes de sacar.");
             }
-            int needed = items.stream().mapToInt(ItemStack::getAmount).sum();
-            if (free < needed) throw new IllegalArgumentException("Libere espaço no inventário antes de sacar.");
+            ItemStack[] deliveryContents = simulated.getContents();
             Connection c = plugin.getEconomyStorage().connection();
             boolean auto = c.getAutoCommit();
             c.setAutoCommit(false);
@@ -180,10 +182,8 @@ public final class BankService {
                 if (e instanceof IllegalArgumentException ia) throw ia;
                 throw new SQLException("Falha no saque.", e);
             } finally { c.setAutoCommit(auto); }
-            for (ItemStack item : items) {
-                Map<Integer, ItemStack> overflow = player.getInventory().addItem(item);
-                if (!overflow.isEmpty()) plugin.getLogger().severe("Falha inesperada ao entregar moedas do ATM a " + player.getName());
-            }
+            // A cópia simulada já foi validada; aplica a entrega de uma só vez após o commit.
+            player.getInventory().setStorageContents(deliveryContents);
             return payout;
         }
     }
@@ -192,8 +192,9 @@ public final class BankService {
         List<String> rows = new ArrayList<>();
         synchronized (plugin.getEconomyStorage()) {
             try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
-                    "SELECT transaction_type, amount, created_at FROM economy_transactions WHERE (sender_uuid=? OR receiver_uuid=?) AND transaction_type LIKE 'ATM_%' ORDER BY id DESC LIMIT 7")) {
+                    "SELECT transaction_type, amount, created_at FROM economy_transactions WHERE (sender_uuid=? OR receiver_uuid=?) AND transaction_type LIKE 'ATM_%' AND created_at >= ? ORDER BY id DESC")) {
                 ps.setString(1, uuid.toString()); ps.setString(2, uuid.toString());
+                ps.setLong(3, System.currentTimeMillis() - 7L * 24 * 60 * 60 * 1000);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) rows.add("&7" + new java.text.SimpleDateFormat("dd/MM HH:mm").format(new java.util.Date(rs.getLong("created_at")))
                             + " &f" + rs.getString("transaction_type") + " &e" + rs.getString("amount"));
