@@ -22,6 +22,9 @@ commands:
   xklpouch:
     description: Administração dos sacos de moedas XKL.
     usage: /xklpouch give <jogador>
+  xklatm:
+    description: Administração dos NPCs de caixa eletrônico.
+    usage: /xklatm npc <link|unlink|list> [id]
 permissions:
   xklpack.command.pay:
     description: Permite usar /pay.
@@ -37,4 +40,7 @@ permissions:
     default: true
   xklpack.admin.pouch:
     description: Permite criar e entregar sacos de moedas.
+    default: op
+  xklpack.admin.atm:
+    description: Permite vincular e desvincular NPCs de caixa eletrônico.
     default: op
