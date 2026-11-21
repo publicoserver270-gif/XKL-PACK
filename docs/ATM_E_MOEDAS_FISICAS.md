@@ -2,14 +2,14 @@
 
 ## Menu principal
 
-O comando público será `/atm`. A interface terá quatro opções:
+O comando `/atm` abre uma GUI com quatro opções:
 
-1. **Depositar** — depositar todas as moedas físicas válidas ou informar uma quantidade.
-2. **Sacar** — informar um valor predefinido ou digitar um valor personalizado.
-3. **Extrato** — consultar depósitos, saques e taxas.
-4. **Taxas** — consultar as tarifas atuais.
+1. **Depositar** — recolhe todas as moedas físicas autenticadas do inventário.
+2. **Sacar** — o jogador digita um valor inteiro no chat; `cancelar` interrompe.
+3. **Extrato** — mostra as últimas sete movimentações do ATM.
+4. **Taxas** — mostra as taxas configuradas.
 
-O jogador escolhe a operação e o valor, nunca as denominações individuais.
+O jogador escolhe o valor do saque, mas não escolhe as denominações. O sistema calcula automaticamente as moedas.
 
 ## Denominações oficiais
 
@@ -22,42 +22,42 @@ O jogador escolhe a operação e o valor, nunca as denominações individuais.
 | Diamante (`diamond`) | 100 Coins |
 | Netherite (`netherite_ingot`) | 200 Coins |
 
-A denominação Netherite usa lingote de netherite como item-base. A pepita de cobre usa o identificador informado pelo administrador do servidor (`copper_nugget`); a disponibilidade precisa ser validada na API/material registry do servidor alvo.
+A denominação Netherite usa lingote de netherite como item-base. A pepita de cobre usa o identificador informado para o servidor (`copper_nugget`). O material precisa existir na API/material registry do servidor alvo.
 
 ## Aparência e autenticidade
 
-- Todas as moedas terão brilho de encantamento.
-- Nome personalizado e valor visível na lore.
-- Cada moeda receberá PersistentDataContainer (PDC) com namespace do XKL PACK, identificador da denominação e valor.
+- Moedas geradas pelo ATM recebem nome personalizado, valor na lore e brilho.
+- O PDC do XKL PACK identifica a moeda e a denominação.
 - Nome, lore e brilho não são prova de autenticidade.
-- Itens sem PDC válido não poderão ser depositados.
-- Itens com valor/denominação adulterados serão recusados.
+- Itens sem PDC válido ou com material diferente da denominação são recusados.
+- **Limite de segurança atual:** o PDC autentica o formato do item, mas ainda não há número de série individual nem livro-razão de emissão para detectar cópias de uma moeda legítima. Não tratar isso como proteção completa contra duplicação por exploits externos.
 
 ## Saque automático
 
-O sistema calcula a menor quantidade possível de moedas, priorizando a maior denominação:
-netherite, diamante, esmeralda, ouro, ferro e cobre.
+O cálculo prioriza as maiores denominações: netherite, diamante, esmeralda, ouro, ferro e cobre.
 
-Exemplo: 356 Coins = 1 netherite (200) + 1 diamante (100) + 1 esmeralda (50) + 1 pepita de ferro (5) + 1 pepita de cobre (1).
+Exemplo sem taxa: 356 Coins = 1 netherite (200) + 1 diamante (100) + 1 esmeralda (50) + 1 pepita de ferro (5) + 1 pepita de cobre (1).
+
+A taxa de saque é descontada do valor debitado. O valor líquido entregue é arredondado para baixo até um número inteiro de Coins que possa ser representado pelas moedas físicas.
 
 ## Taxas iniciais
 
 - Depósito: 0%.
 - Saque: 2%.
 
-Ambas serão editáveis em `bank/settings.yml`.
+Os valores ficam em `plugins/XKL-PACK/bank/settings.yml`.
 
-## Regras financeiras e segurança
+## Segurança e transações
 
-- Saldo virtual e moedas físicas são representações separadas de Coins.
-- Depósito remove moedas físicas autenticadas e credita Coins virtuais.
-- Saque debita Coins virtuais e entrega moedas físicas.
-- O saque só deve ser confirmado se houver espaço suficiente no inventário.
-- Extrato registra valor bruto, taxa, valor líquido, operação e data.
-- Transações devem ser protegidas contra clique duplo, reentrada e falhas.
-- Fechar o menu ou cancelar uma confirmação não pode consumir itens nem saldo.
-- Moedas físicas não podem ser criadas por renomear itens em bigorna ou usar comandos comuns.
+- O saldo virtual e as moedas físicas são representações separadas de Coins.
+- O depósito só aceita itens com PDC válido.
+- O saque verifica saldo e espaço no inventário antes de debitar.
+- Depósitos e saques são registrados na tabela de transações do banco SQLite.
+- Fechar a GUI não executa uma operação.
+- Ações da GUI são processadas no servidor e os cliques no inventário são cancelados.
 
-## Estado
+## Estado da implementação
 
-Este documento e os arquivos YAML registram a especificação aprovada. A implementação Java do comando, GUI, PDC, transações e extrato ainda precisa ser concluída e testada antes de considerar o ATM funcional.
+**Programado no repositório:** comando `/atm`, GUI de quatro opções, depósito de todas as moedas válidas, saque por valor digitado no chat, cálculo automático de denominações, consulta das últimas movimentações e visualização das taxas.
+
+**Ainda pendente:** depósito por quantidade personalizada, serialização/controle anti-cópia robusto, testes automatizados de transações e teste real em servidor Paper 26.3. A implementação foi enviada ao GitHub, mas ainda não há confirmação de compilação bem-sucedida para esta versão.
