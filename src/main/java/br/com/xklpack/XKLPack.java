@@ -11,6 +11,9 @@ import br.com.xklpack.economy.command.TopCommand;
 import br.com.xklpack.jobs.JobCommand;
 import br.com.xklpack.jobs.JobListener;
 import br.com.xklpack.jobs.JobService;
+import br.com.xklpack.pouch.MoneyPouchCommand;
+import br.com.xklpack.pouch.MoneyPouchListener;
+import br.com.xklpack.pouch.MoneyPouchService;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,6 +28,8 @@ public final class XKLPack extends JavaPlugin {
     private JobService jobService;
     private FileConfiguration bankConfig;
     private FileConfiguration physicalCoinsConfig;
+    private BankService bankService;
+    private MoneyPouchService moneyPouchService;
 
     @Override
     public void onEnable() {
@@ -47,10 +52,17 @@ public final class XKLPack extends JavaPlugin {
             registerCommand("top", new TopCommand(economyService));
 
             if (getConfig().getBoolean("modules.bank", false) && bankConfig.getBoolean("atm.enabled", true)) {
-                BankService bankService = new BankService(this);
+                bankService = new BankService(this);
                 BankMenu bankMenu = new BankMenu(this, bankService);
                 registerCommand("atm", new BankCommand(bankMenu));
                 getServer().getPluginManager().registerEvents(new BankListener(this, bankService, bankMenu), this);
+                if (bankConfig.getBoolean("money-pouch.enabled", true)) {
+                    moneyPouchService = new MoneyPouchService(this, bankService);
+                    moneyPouchService.initialize();
+                    registerCommand("xklpouch", new MoneyPouchCommand(moneyPouchService));
+                    getServer().getPluginManager().registerEvents(new MoneyPouchListener(this, moneyPouchService, bankService), this);
+                    getLogger().info("Saco de moedas físicas ativado.");
+                }
                 getLogger().info("Sistema bancário ATM ativado.");
             }
 
@@ -86,6 +98,8 @@ public final class XKLPack extends JavaPlugin {
     public FileConfiguration getPhysicalCoinsConfig() { return physicalCoinsConfig; }
     public EconomyService getEconomyService() { return economyService; }
     public EconomyStorage getEconomyStorage() { return economyStorage; }
+    public BankService getBankService() { return bankService; }
+    public MoneyPouchService getMoneyPouchService() { return moneyPouchService; }
 
     @Override
     public void onDisable() {
