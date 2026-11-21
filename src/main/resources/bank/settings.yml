@@ -43,3 +43,17 @@ atm:
     deposit-success: "&aDepósito realizado: &f%amount% Coins"
     withdraw-success: "&aSaque realizado: &f%amount% Coins"
     cancelled: "&eOperação cancelada."
+
+# Caixas eletrônicos em NPCs do Citizens
+citizens:
+  enabled: true
+  require-linked-npc: true
+  click-to-open: true
+
+# Saco de couro exclusivo para guardar moedas físicas
+money-pouch:
+  enabled: true
+  material: LEATHER
+  open-with-right-click: true
+  allow-only-authenticated-coins: true
+  inventory-rows: 3
