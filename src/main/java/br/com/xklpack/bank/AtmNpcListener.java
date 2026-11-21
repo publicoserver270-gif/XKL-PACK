@@ -23,19 +23,19 @@ public final class AtmNpcListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onNpcRightClick(PlayerInteractEntityEvent event) {
         if (!plugin.getBankConfig().getBoolean("citizens.enabled", true)
-                || !plugin.getBankConfig().getBoolean("citizens.click-to-open", true)
-                || !plugin.getBankConfig().getBoolean("citizens.require-linked-npc", true)) {
+                || !plugin.getBankConfig().getBoolean("citizens.click-to-open", true)) {
             return;
         }
 
         Entity entity = event.getRightClicked();
         if (!entity.hasMetadata("NPC")) return;
 
-        Integer npcId = resolveNpcId(entity);
-        if (npcId == null) return;
-
-        List<Integer> linked = plugin.getBankConfig().getIntegerList("citizens.linked-npcs");
-        if (!linked.contains(npcId)) return;
+        if (plugin.getBankConfig().getBoolean("citizens.require-linked-npc", true)) {
+            Integer npcId = resolveNpcId(entity);
+            if (npcId == null) return;
+            List<Integer> linked = plugin.getBankConfig().getIntegerList("citizens.linked-npcs");
+            if (!linked.contains(npcId)) return;
+        }
 
         Player player = event.getPlayer();
         menu.open(player);
@@ -46,7 +46,8 @@ public final class AtmNpcListener implements Listener {
             Class<?> citizensApi = Class.forName("net.citizensnpcs.api.CitizensAPI");
             Object registry = citizensApi.getMethod("getNPCRegistry").invoke(null);
             if (registry == null) return null;
-            Method getNpc = registry.getClass().getMethod("getNPC", Entity.class);
+            Class<?> registryType = Class.forName("net.citizensnpcs.api.npc.NPCRegistry");
+            Method getNpc = registryType.getMethod("getNPC", Entity.class);
             Object npc = getNpc.invoke(registry, entity);
             if (npc == null) return null;
             Object id = npc.getClass().getMethod("getId").invoke(npc);
