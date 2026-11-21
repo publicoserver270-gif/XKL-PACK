@@ -8,7 +8,7 @@ database:
 
 modules:
   economy: true
-  bank: false
+  bank: true
   jobs: true
   shops: false
   selling: false
