@@ -1,0 +1,42 @@
+# MOEDAS FÍSICAS XKL
+# Os itens precisam receber PDC do XKL PACK. Nome/lore sozinhos nunca autenticam moeda.
+# Material é configurável para permitir materiais adicionados por plugins/servidor.
+# Se o servidor não reconhecer copper_nugget na API Bukkit, o plugin deverá avisar no log.
+
+physical-coins:
+  enabled: true
+  currency: coins
+  item-name: "&6Coin XKL"
+  enchantment-glint: true
+  prevent-anvil-renaming: true
+  denominations:
+    copper_nugget:
+      material: copper_nugget
+      display-name: "&6Moeda de Cobre"
+      value: 1
+      order: 1
+    iron_nugget:
+      material: iron_nugget
+      display-name: "&fMoeda de Ferro"
+      value: 5
+      order: 2
+    gold_nugget:
+      material: gold_nugget
+      display-name: "&eMoeda de Ouro"
+      value: 10
+      order: 3
+    emerald:
+      material: emerald
+      display-name: "&aMoeda de Esmeralda"
+      value: 50
+      order: 4
+    diamond:
+      material: diamond
+      display-name: "&bMoeda de Diamante"
+      value: 100
+      order: 5
+    netherite:
+      material: netherite_ingot
+      display-name: "&8Moeda de Netherite"
+      value: 200
+      order: 6
