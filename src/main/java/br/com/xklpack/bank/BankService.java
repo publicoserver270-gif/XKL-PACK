@@ -1,0 +1,228 @@
+package br.com.xklpack.bank;
+
+import br.com.xklpack.XKLPack;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.*;
+import java.util.*;
+
+public final class BankService {
+    private final XKLPack plugin;
+    private final NamespacedKey coinKey;
+    private final NamespacedKey denominationKey;
+
+    public BankService(XKLPack plugin) {
+        this.plugin = plugin;
+        this.coinKey = new NamespacedKey(plugin, "physical_coin");
+        this.denominationKey = new NamespacedKey(plugin, "coin_denomination");
+    }
+
+    public record Denomination(String id, Material material, int value, int order, String name) {}
+
+    public List<Denomination> denominations() {
+        var section = plugin.getConfig().getConfigurationSection("economy.currencies.coins");
+        var yaml = plugin.getConfig();
+        // A lista vem do arquivo dedicado, carregado pelo plugin.
+        var coins = plugin.getPhysicalCoinsConfig().getConfigurationSection("physical-coins.denominations");
+        List<Denomination> result = new ArrayList<>();
+        if (coins == null) return result;
+        for (String id : coins.getKeys(false)) {
+            String path = "physical-coins.denominations." + id + ".";
+            Material material = Material.matchMaterial(plugin.getPhysicalCoinsConfig().getString(path + "material", ""));
+            int value = plugin.getPhysicalCoinsConfig().getInt(path + "value", 0);
+            if (material == null || value <= 0) {
+                plugin.getLogger().warning("Moeda física ignorada por configuração inválida: " + id);
+                continue;
+            }
+            result.add(new Denomination(id, material, value,
+                    plugin.getPhysicalCoinsConfig().getInt(path + "order", 999),
+                    plugin.getPhysicalCoinsConfig().getString(path + "display-name", id)));
+        }
+        result.sort(Comparator.comparingInt(Denomination::order).reversed());
+        return result;
+    }
+
+    public ItemStack createCoin(Denomination denomination, int amount) {
+        ItemStack item = new ItemStack(denomination.material(), amount);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(color(denomination.name()));
+        meta.setLore(List.of(color("&7Valor: &e" + denomination.value() + " Coins"),
+                color("&8Moeda oficial do Banco XKL")));
+        meta.getPersistentDataContainer().set(coinKey, PersistentDataType.STRING, "xklpack_coin_v1");
+        meta.getPersistentDataContainer().set(denominationKey, PersistentDataType.STRING, denomination.id());
+        if (plugin.getPhysicalCoinsConfig().getBoolean("physical-coins.enchantment-glint", true)) {
+            meta.addEnchant(org.bukkit.enchantments.Enchantment.UNBREAKING, 1, true);
+            meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
+        }
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public Denomination identify(ItemStack item) {
+        if (item == null || item.getType().isAir() || !item.hasItemMeta()) return null;
+        ItemMeta meta = item.getItemMeta();
+        if (!"xklpack_coin_v1".equals(meta.getPersistentDataContainer().get(coinKey, PersistentDataType.STRING))) return null;
+        String id = meta.getPersistentDataContainer().get(denominationKey, PersistentDataType.STRING);
+        if (id == null) return null;
+        return denominations().stream().filter(d -> d.id().equals(id) && d.material() == item.getType()).findFirst().orElse(null);
+    }
+
+    public BigDecimal balance(UUID uuid) throws SQLException {
+        synchronized (plugin.getEconomyStorage()) {
+            try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                    "SELECT amount FROM balances WHERE player_uuid=? AND currency='coins'")) {
+                ps.setString(1, uuid.toString());
+                try (ResultSet rs = ps.executeQuery()) {
+                    return rs.next() ? new BigDecimal(rs.getString(1)) : BigDecimal.ZERO.setScale(2);
+                }
+            }
+        }
+    }
+
+    public BigDecimal depositAll(Player player) throws SQLException {
+        synchronized (plugin.getEconomyStorage()) {
+            Map<Denomination, Integer> found = new LinkedHashMap<>();
+            int totalItems = 0;
+            BigDecimal total = BigDecimal.ZERO.setScale(2);
+            for (ItemStack item : player.getInventory().getStorageContents()) {
+                Denomination d = identify(item);
+                if (d == null) continue;
+                found.merge(d, item.getAmount(), Integer::sum);
+                totalItems += item.getAmount();
+                total = total.add(BigDecimal.valueOf((long) d.value() * item.getAmount()));
+            }
+            if (totalItems == 0) return BigDecimal.ZERO;
+            // Remove apenas itens autenticados. Em falha SQL, restaura os itens removidos.
+            for (int slot = 0; slot < player.getInventory().getStorageContents().length; slot++) {
+                ItemStack item = player.getInventory().getItem(slot);
+                if (identify(item) != null) player.getInventory().setItem(slot, null);
+            }
+            try {
+                Connection c = plugin.getEconomyStorage().connection();
+                boolean auto = c.getAutoCommit();
+                c.setAutoCommit(false);
+                try {
+                    touch(c, player);
+                    BigDecimal old = read(c, player.getUniqueId());
+                    write(c, player.getUniqueId(), old.add(total));
+                    log(c, null, player.getUniqueId(), total, "ATM_DEPOSIT");
+                    c.commit();
+                } catch (Exception e) {
+                    c.rollback();
+                    throw e;
+                } finally { c.setAutoCommit(auto); }
+            } catch (Exception ex) {
+                for (var entry : found.entrySet()) {
+                    int left = entry.getValue();
+                    while (left > 0) {
+                        int amount = Math.min(left, entry.getKey().material().getMaxStackSize());
+                        player.getInventory().addItem(createCoin(entry.getKey(), amount));
+                        left -= amount;
+                    }
+                }
+                if (ex instanceof SQLException sql) throw sql;
+                throw new SQLException("Falha ao depositar moedas.", ex);
+            }
+            return total;
+        }
+    }
+
+    public BigDecimal withdraw(Player player, BigDecimal requested) throws SQLException {
+        if (requested == null || requested.signum() <= 0 || requested.stripTrailingZeros().scale() > 0)
+            throw new IllegalArgumentException("Digite um valor inteiro maior que zero.");
+        synchronized (plugin.getEconomyStorage()) {
+            BigDecimal feePercent = BigDecimal.valueOf(plugin.getBankConfig().getDouble("atm.fees.withdraw-percent", 2.0));
+            BigDecimal fee = requested.multiply(feePercent).divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING);
+            BigDecimal payout = requested.subtract(fee).setScale(0, RoundingMode.DOWN);
+            if (payout.signum() <= 0) throw new IllegalArgumentException("O valor é muito baixo para o saque com taxa.");
+            List<Denomination> list = denominations();
+            List<ItemStack> items = new ArrayList<>();
+            long remaining = payout.longValueExact();
+            for (Denomination d : list) {
+                int count = (int) Math.min(Integer.MAX_VALUE, remaining / d.value());
+                while (count > 0) {
+                    int stack = Math.min(count, d.material().getMaxStackSize());
+                    items.add(createCoin(d, stack));
+                    count -= stack;
+                }
+                remaining %= d.value();
+            }
+            if (remaining != 0) throw new IllegalStateException("As denominações configuradas não conseguem formar esse valor.");
+            int free = 0;
+            for (ItemStack item : player.getInventory().getStorageContents()) {
+                if (item == null || item.getType().isAir()) free += 64;
+                else if (item.getAmount() < item.getMaxStackSize()) free += item.getMaxStackSize() - item.getAmount();
+            }
+            int needed = items.stream().mapToInt(ItemStack::getAmount).sum();
+            if (free < needed) throw new IllegalArgumentException("Libere espaço no inventário antes de sacar.");
+            Connection c = plugin.getEconomyStorage().connection();
+            boolean auto = c.getAutoCommit();
+            c.setAutoCommit(false);
+            try {
+                touch(c, player);
+                BigDecimal old = read(c, player.getUniqueId());
+                if (old.compareTo(requested) < 0) throw new IllegalArgumentException("Saldo insuficiente. Saldo: " + old.toPlainString());
+                write(c, player.getUniqueId(), old.subtract(requested));
+                log(c, player.getUniqueId(), null, requested, "ATM_WITHDRAW");
+                if (fee.signum() > 0) log(c, player.getUniqueId(), null, fee, "ATM_FEE");
+                c.commit();
+            } catch (Exception e) {
+                c.rollback();
+                if (e instanceof SQLException sql) throw sql;
+                if (e instanceof IllegalArgumentException ia) throw ia;
+                throw new SQLException("Falha no saque.", e);
+            } finally { c.setAutoCommit(auto); }
+            for (ItemStack item : items) {
+                Map<Integer, ItemStack> overflow = player.getInventory().addItem(item);
+                if (!overflow.isEmpty()) plugin.getLogger().severe("Falha inesperada ao entregar moedas do ATM a " + player.getName());
+            }
+            return payout;
+        }
+    }
+
+    public List<String> statement(UUID uuid) throws SQLException {
+        List<String> rows = new ArrayList<>();
+        synchronized (plugin.getEconomyStorage()) {
+            try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                    "SELECT transaction_type, amount, created_at FROM economy_transactions WHERE (sender_uuid=? OR receiver_uuid=?) AND transaction_type LIKE 'ATM_%' ORDER BY id DESC LIMIT 7")) {
+                ps.setString(1, uuid.toString()); ps.setString(2, uuid.toString());
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) rows.add("&7" + new java.text.SimpleDateFormat("dd/MM HH:mm").format(new java.util.Date(rs.getLong("created_at")))
+                            + " &f" + rs.getString("transaction_type") + " &e" + rs.getString("amount"));
+                }
+            }
+        }
+        return rows;
+    }
+
+    private BigDecimal read(Connection c, UUID uuid) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement("SELECT amount FROM balances WHERE player_uuid=? AND currency='coins'")) {
+            ps.setString(1, uuid.toString());
+            try (ResultSet rs = ps.executeQuery()) { return rs.next() ? new BigDecimal(rs.getString(1)) : BigDecimal.ZERO.setScale(2); }
+        }
+    }
+    private void write(Connection c, UUID uuid, BigDecimal amount) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement("INSERT INTO balances(player_uuid,currency,amount) VALUES(?,'coins',?) ON CONFLICT(player_uuid,currency) DO UPDATE SET amount=excluded.amount")) {
+            ps.setString(1, uuid.toString()); ps.setString(2, amount.toPlainString()); ps.executeUpdate();
+        }
+    }
+    private void touch(Connection c, Player p) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement("INSERT INTO player_profiles(uuid,last_name,last_seen) VALUES(?,?,?) ON CONFLICT(uuid) DO UPDATE SET last_name=excluded.last_name,last_seen=excluded.last_seen")) {
+            ps.setString(1,p.getUniqueId().toString()); ps.setString(2,p.getName()); ps.setLong(3,System.currentTimeMillis()); ps.executeUpdate();
+        }
+    }
+    private void log(Connection c, UUID sender, UUID receiver, BigDecimal amount, String type) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement("INSERT INTO economy_transactions(sender_uuid,receiver_uuid,currency,amount,transaction_type,created_at) VALUES(?,?, 'coins',?,?,?)")) {
+            ps.setString(1,sender == null ? null : sender.toString()); ps.setString(2,receiver == null ? null : receiver.toString());
+            ps.setString(3,amount.toPlainString()); ps.setString(4,type); ps.setLong(5,System.currentTimeMillis()); ps.executeUpdate();
+        }
+    }
+    private String color(String text) { return org.bukkit.ChatColor.translateAlternateColorCodes('&', text == null ? "" : text); }
+}
