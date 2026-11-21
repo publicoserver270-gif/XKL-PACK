@@ -82,9 +82,14 @@ public final class JobCommand implements CommandExecutor, Listener {
         if (!jobs.isValidJob(id)) return;
         JobService.JobProgress progress = jobs.getProgress(player.getUniqueId(), id);
         List<String> lore = new ArrayList<>();
-        lore.add("§7Nível: §f" + progress.level() + " §8/ §f" + plugin.getConfig().getInt("jobs.max-level", 30));
+        lore.add("§7Nível: §f" + progress.level() + " §8/ §f" + plugin.getConfig().getInt("jobs.max-level", 140));
         lore.add("§7Experiência: §f" + progress.xp() + "§7/§f" + jobs.xpRequired(progress.level()));
         lore.add("§7XP total: §f" + progress.totalXp());
+        JobService.SalaryProgress salary = jobs.getSalaryProgress(player.getUniqueId(), id);
+        int goal = jobs.currentGoal(salary.completedGoals());
+        lore.add("§7Meta salarial: §a" + salary.productionProgress() + "§7/§a" + goal);
+        lore.add("§7Metas concluídas: §f" + salary.completedGoals());
+        lore.add("§7Multiplicador: §d" + String.format(java.util.Locale.US, "%.1f", jobs.currentMultiplier(salary.completedGoals())) + "x");
         lore.add("");
         lore.add(progress.active() ? "§a§lPROFISSÃO ATIVA" : "§eClique para trabalhar nesta profissão");
         inventory.setItem(slot, item(icon, "§6§l" + jobs.getJobName(id), lore.toArray(String[]::new)));
