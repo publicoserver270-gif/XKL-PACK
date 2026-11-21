@@ -50,6 +50,8 @@ citizens:
   enabled: true
   require-linked-npc: true
   click-to-open: true
+  # IDs dos NPCs vinculados pelo comando /xklatm npc link <id>.
+  linked-npcs: []
 
 # Saco de couro exclusivo para guardar moedas físicas
 money-pouch:
@@ -59,4 +61,3 @@ money-pouch:
   material: LEATHER
   open-with-right-click: true
   allow-only-authenticated-coins: true
-  inventory-rows: 3
