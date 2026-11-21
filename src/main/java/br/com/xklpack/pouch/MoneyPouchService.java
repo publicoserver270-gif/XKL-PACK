@@ -160,53 +160,62 @@ public final class MoneyPouchService {
         player.openInventory(inventory);
     }
 
+    public void saveSnapshot(PouchHolder holder, Inventory inventory) throws SQLException {
+        persistContents(holder.pouchId(), inventory);
+    }
+
     public void saveAndClose(Player player, PouchHolder holder, Inventory inventory) {
         UUID id = holder.pouchId();
         if (!player.getUniqueId().equals(holder.ownerId())) return;
         try {
-            Connection connection = plugin.getEconomyStorage().connection();
-            synchronized (plugin.getEconomyStorage()) {
-                boolean auto = connection.getAutoCommit();
-                connection.setAutoCommit(false);
-                try {
-                    try (PreparedStatement delete = connection.prepareStatement(
-                            "DELETE FROM money_pouch_items WHERE pouch_id=?")) {
-                        delete.setString(1, id.toString());
-                        delete.executeUpdate();
-                    }
-                    try (PreparedStatement insert = connection.prepareStatement(
-                            "INSERT INTO money_pouch_items(pouch_id,slot,denomination_id,amount) VALUES(?,?,?,?)")) {
-                        for (int slot = 0; slot < inventory.getSize(); slot++) {
-                            ItemStack item = inventory.getItem(slot);
-                            if (item == null || item.getType().isAir()) continue;
-                            BankService.Denomination denomination = bank.identify(item);
-                            if (denomination == null || item.getAmount() > denomination.material().getMaxStackSize())
-                                throw new SQLException("Item inválido detectado no saco; conteúdo não foi salvo.");
-                            insert.setString(1, id.toString());
-                            insert.setInt(2, slot);
-                            insert.setString(3, denomination.id());
-                            insert.setInt(4, item.getAmount());
-                            insert.addBatch();
-                        }
-                        insert.executeBatch();
-                    }
-                    try (PreparedStatement update = connection.prepareStatement(
-                            "UPDATE money_pouches SET updated_at=? WHERE pouch_id=?")) {
-                        update.setLong(1, System.currentTimeMillis());
-                        update.setString(2, id.toString());
-                        update.executeUpdate();
-                    }
-                    connection.commit();
-                } catch (Exception ex) {
-                    connection.rollback();
-                    throw ex;
-                } finally { connection.setAutoCommit(auto); }
-            }
+            persistContents(id, inventory);
         } catch (Exception ex) {
             player.sendMessage("§cErro ao salvar o saco de moedas. Avise a administração: " + ex.getMessage());
             plugin.getLogger().severe("Falha ao salvar saco " + id + ": " + ex.getMessage());
         } finally {
             openPouches.remove(id, player.getUniqueId());
+        }
+    }
+
+    private void persistContents(UUID id, Inventory inventory) throws SQLException {
+        Connection connection = plugin.getEconomyStorage().connection();
+        synchronized (plugin.getEconomyStorage()) {
+            boolean auto = connection.getAutoCommit();
+            connection.setAutoCommit(false);
+            try {
+                try (PreparedStatement delete = connection.prepareStatement(
+                        "DELETE FROM money_pouch_items WHERE pouch_id=?")) {
+                    delete.setString(1, id.toString());
+                    delete.executeUpdate();
+                }
+                try (PreparedStatement insert = connection.prepareStatement(
+                        "INSERT INTO money_pouch_items(pouch_id,slot,denomination_id,amount) VALUES(?,?,?,?)")) {
+                    for (int slot = 0; slot < inventory.getSize(); slot++) {
+                        ItemStack item = inventory.getItem(slot);
+                        if (item == null || item.getType().isAir()) continue;
+                        BankService.Denomination denomination = bank.identify(item);
+                        if (denomination == null || item.getAmount() > denomination.material().getMaxStackSize())
+                            throw new SQLException("Item inválido detectado no saco; conteúdo não foi salvo.");
+                        insert.setString(1, id.toString());
+                        insert.setInt(2, slot);
+                        insert.setString(3, denomination.id());
+                        insert.setInt(4, item.getAmount());
+                        insert.addBatch();
+                    }
+                    insert.executeBatch();
+                }
+                try (PreparedStatement update = connection.prepareStatement(
+                        "UPDATE money_pouches SET updated_at=? WHERE pouch_id=?")) {
+                    update.setLong(1, System.currentTimeMillis());
+                    update.setString(2, id.toString());
+                    update.executeUpdate();
+                }
+                connection.commit();
+            } catch (Exception ex) {
+                connection.rollback();
+                if (ex instanceof SQLException sql) throw sql;
+                throw new SQLException("Falha ao persistir o conteúdo do saco.", ex);
+            } finally { connection.setAutoCommit(auto); }
         }
     }
 
