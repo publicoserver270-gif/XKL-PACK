@@ -141,6 +141,7 @@ public final class BankService {
             BigDecimal feePercent = BigDecimal.valueOf(plugin.getBankConfig().getDouble("atm.fees.withdraw-percent", 2.0));
             BigDecimal fee = requested.multiply(feePercent).divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING);
             BigDecimal payout = requested.subtract(fee).setScale(0, RoundingMode.DOWN);
+            BigDecimal chargedFee = requested.subtract(payout);
             if (payout.signum() <= 0) throw new IllegalArgumentException("O valor é muito baixo para o saque com taxa.");
             List<Denomination> list = denominations();
             List<ItemStack> items = new ArrayList<>();
@@ -171,7 +172,7 @@ public final class BankService {
                 if (old.compareTo(requested) < 0) throw new IllegalArgumentException("Saldo insuficiente. Saldo: " + old.toPlainString());
                 write(c, player.getUniqueId(), old.subtract(requested));
                 log(c, player.getUniqueId(), null, requested, "ATM_WITHDRAW");
-                if (fee.signum() > 0) log(c, player.getUniqueId(), null, fee, "ATM_FEE");
+                if (chargedFee.signum() > 0) log(c, player.getUniqueId(), null, chargedFee, "ATM_FEE");
                 c.commit();
             } catch (Exception e) {
                 c.rollback();
