@@ -884,3 +884,5 @@ items:
     - '&7Minera uma área de 3x3 blocos.'
     - '&7Consome durabilidade.'
     - '&7Respeita as proteções do servidor.'
+    required-profession: minerador
+    required-level: 200
