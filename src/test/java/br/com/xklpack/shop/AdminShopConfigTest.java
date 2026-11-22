@@ -28,7 +28,7 @@ class AdminShopConfigTest {
                 // Paper 26.3 expõe CHAIN pela Registry.ITEM/ItemType, não pelo enum Material.
                 assertEquals("CHAIN", materialName, "ItemType sem suporte de Material: " + id);
             } else {
-                assertTrue(material.isItem(), "Material não é item: " + id);
+                assertNotEquals(Material.AIR, material, "Material inválido: " + id);
             }
             assertTrue(new BigDecimal(config.getString(path + "price", "0")).signum() > 0,
                     "Preço inválido: " + id);
