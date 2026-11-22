@@ -34,7 +34,7 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 ### 2.4 Dinheiro físico e virtual
 
 - Dinheiro físico é representado por itens configuráveis (moedas/cédulas).
-- Dinheiro virtual é mantido em saldo bancário.
+- Dinheiro virtual é mantido em saldo próprio de Coins/Gemas. A GUI `/carteira` mostra os saldos virtuais e o histórico; não é o saco físico nem o ATM.
 - Lojas de jogadores aceitam somente dinheiro físico.
 - Lojas administrativas aceitam somente saldo virtual.
 - Transferência física ocorre pela entrega dos itens.
@@ -48,14 +48,14 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 - Profissões iniciais previstas: Minerador, Lenhador, Fazendeiro, Pescador e Caçador.
 - As atividades válidas, metas, XP, recompensas e salários devem ser configuráveis.
 - Gems são concedidas por atividades elegíveis das profissões.
-- Coins são concedidas somente por salário, após as regras de produtividade.
+- Coins são concedidas por salário após as regras de produtividade e por vendas confirmadas em `/sell`.
 
 ## 4. Kits e ferramentas de profissão
 
 - Ao entrar em uma profissão, o jogador recebe o kit correspondente.
 - Ferramentas do kit podem ser movidas livremente entre slots do próprio inventário.
 - Não podem ser dropadas, guardadas em baús, barris, shulkers ou transferidas para outros jogadores/inventários; bloquear também funis e meios alternativos.
-- Ao sair da profissão, as ferramentas do kit devem desaparecer da posse do jogador.
+- Ao sair da profissão, as ferramentas do kit são removidas do inventário e seu estado é guardado por profissão; ao voltar, o kit é restaurado.
 - Kits evoluem automaticamente conforme o nível da profissão.
 - A evolução substitui a ferramenta antiga por uma versão superior; não deve duplicar ferramentas.
 - A ferramenta nova recebe os encantamentos previstos para o novo nível.
@@ -64,7 +64,7 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 - Limites de equipamentos especiais são desbloqueados por nível: progressão de espaços disponíveis e limite de equipamentos simultaneamente equipados/ativos.
 - Exemplo ilustrativo para minerador, ainda configurável: madeira no nível 1, pedra no 5, ferro no 10, ouro no 15, diamante no 20 e netherita no 30.
 
-**Pendente:** confirmar se o progresso/durabilidade do kit é guardado quando o jogador sai da profissão e volta posteriormente. A regra já confirmada é que o kit sai do inventário ao deixar a profissão.
+**Implementação inicial:** o estado e a durabilidade do kit são guardados ao sair e restaurados ao retornar. A evolução automática está configurada nos níveis 1, 5, 10, 15, 20 e 30.
 
 ## 5. Lojas, venda e mercado
 
@@ -72,7 +72,7 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 
 - Catálogo administrativo em GUI.
 - Categorias previstas: comidas, blocos de construção, pedras/tijolos, madeiras, vidros, redstone, ferramentas e materiais.
-- Compras pagas exclusivamente com saldo virtual.
+- Compras pagas exclusivamente com saldo virtual; ferramentas usam Gemas e as demais categorias usam Coins.
 - Preços e categorias configuráveis.
 
 ### 5.2 `/sell`
@@ -97,12 +97,12 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 
 ### 6.1 `/atm`
 
-Interface de caixa eletrônico para:
-- Consultar saldo e extrato.
-- Depositar dinheiro físico.
-- Sacar dinheiro virtual em itens físicos.
-- Escolher moeda.
-- Exibir taxas de depósito e saque.
+Interface de caixa eletrônico com GUI para:
+- Depositar moedas físicas autenticadas e creditar Coins virtuais.
+- Sacar Coins virtuais em moedas físicas, com denominações automáticas.
+- Consultar extrato e taxas.
+- Acesso de jogadores somente por NPC Citizens vinculado; `/atm` direto fica reservado à administração.
+- A bolsa física é um item de couro separado, entregue no primeiro saque e aberta com botão direito; não é a carteira virtual.
 
 ### 6.2 `/pay`
 
@@ -121,7 +121,8 @@ Interface de caixa eletrônico para:
 
 ## 7. Comandos principais
 
-Somente estes comandos principais foram solicitados:
+Comandos principais para jogadores:
+- `/carteira` — carteira virtual de Coins/Gemas e histórico.
 - `/loja`
 - `/sell`
 - `/job`
