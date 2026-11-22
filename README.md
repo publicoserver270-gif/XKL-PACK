@@ -2,7 +2,7 @@
 
 Plugin modular de economia para Minecraft, distribuído em **um único arquivo JAR**. Os sistemas ficam organizados em módulos internos e podem ser ativados/configurados sem instalar vários plugins separados.
 
-> **Status:** desenvolvimento. Economia virtual, transferências, ranking, profissões, salários, ATM, moedas físicas autenticadas por HMAC, saco físico persistente, `/loja`, `/sell` e Picareta Escavadora 3x3 já possuem código. Kits profissionais evolutivos e painel administrativo já possuem implementação inicial. O limite de ferramentas por nível ainda depende da definição final das regras; os módulos ainda precisam de testes integrados antes de produção.
+> **Status:** desenvolvimento. Economia virtual, transferências, ranking, profissões, salários, ATM, moedas físicas autenticadas por HMAC, saco físico persistente, `/loja`, `/sell` e Picareta Escavadora 3x3 já possuem código. Kits profissionais evolutivos e painel administrativo já possuem implementação inicial. Os limites de ferramentas já possuem implementação configurável, com valores iniciais por nível da profissão ativa; falta confirmar se a referência deve ser nível geral ou profissional e validar no servidor real.
 
 ## O que já está no código
 
