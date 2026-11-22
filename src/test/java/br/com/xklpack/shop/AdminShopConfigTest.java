@@ -46,6 +46,15 @@ class AdminShopConfigTest {
     }
 
     @Test
+    void redstoneHasFourRequestedSubcategories() throws Exception {
+        YamlConfiguration config = loadConfig();
+        assertEquals(java.util.List.of("redstone_componentes", "redstone_maquinas", "redstone_carrinhos", "redstone_mecanismos"),
+                config.getStringList("categories.redstone.children"));
+        assertEquals("redstone_componentes", config.getString("items.repeater.category"));
+        assertEquals("redstone_maquinas", config.getString("items.hopper.category"));
+    }
+
+    @Test
     void gemsAreReservedForTools() throws Exception {
         YamlConfiguration config = loadConfig();
         ConfigurationSection items = config.getConfigurationSection("items");
