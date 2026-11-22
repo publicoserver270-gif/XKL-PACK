@@ -1,0 +1,460 @@
+settings:
+  title: "&8&lLOJA XKL"
+  category-title: "&8&l{category}"
+  page-size: 45
+
+categories:
+  minerios:
+    name: "&b&lMINÉRIOS"
+    icon: DIAMOND
+    slot: 10
+  agricultura:
+    name: "&a&lAGRICULTURA"
+    icon: WHEAT
+    slot: 11
+  mob_drops:
+    name: "&c&lDROPS DE MONSTROS"
+    icon: ROTTEN_FLESH
+    slot: 12
+  construcao:
+    name: "&2&lCONSTRUÇÃO"
+    icon: GRASS_BLOCK
+    slot: 13
+  redstone:
+    name: "&c&lREDSTONE E AUTOMAÇÃO"
+    icon: REDSTONE
+    slot: 14
+  ferramentas:
+    name: "&d&lFERRAMENTAS"
+    icon: DIAMOND_PICKAXE
+    slot: 15
+  variados:
+    name: "&6&lITENS VARIADOS"
+    icon: CHEST
+    slot: 16
+
+items:
+  coal:
+    material: COAL
+    category: minerios
+    amount: 1
+    price: 10
+    currency: coins
+    display-name: "&8Carvão"
+  iron_ingot:
+    material: IRON_INGOT
+    category: minerios
+    amount: 1
+    price: 25
+    currency: coins
+    display-name: "&fBarra de Ferro"
+  gold_ingot:
+    material: GOLD_INGOT
+    category: minerios
+    amount: 1
+    price: 50
+    currency: coins
+    display-name: "&6Barra de Ouro"
+  diamond:
+    material: DIAMOND
+    category: minerios
+    amount: 1
+    price: 200
+    currency: coins
+    display-name: "&bDiamante"
+  netherite_ingot:
+    material: NETHERITE_INGOT
+    category: minerios
+    amount: 1
+    price: 1500
+    currency: coins
+    display-name: "&8Barra de Netherita"
+
+  wheat:
+    material: WHEAT
+    category: agricultura
+    amount: 1
+    price: 4
+    currency: coins
+    display-name: "&eTrigo"
+  carrot:
+    material: CARROT
+    category: agricultura
+    amount: 1
+    price: 5
+    currency: coins
+    display-name: "&6Cenoura"
+  potato:
+    material: POTATO
+    category: agricultura
+    amount: 1
+    price: 5
+    currency: coins
+    display-name: "&eBatata"
+  sugar_cane:
+    material: SUGAR_CANE
+    category: agricultura
+    amount: 1
+    price: 6
+    currency: coins
+    display-name: "&aCana-de-açúcar"
+
+  rotten_flesh:
+    material: ROTTEN_FLESH
+    category: mob_drops
+    amount: 1
+    price: 2
+    currency: coins
+    display-name: "&cCarne Podre"
+  bone:
+    material: BONE
+    category: mob_drops
+    amount: 1
+    price: 6
+    currency: coins
+    display-name: "&fOsso"
+  gunpowder:
+    material: GUNPOWDER
+    category: mob_drops
+    amount: 1
+    price: 15
+    currency: coins
+    display-name: "&7Pólvora"
+  ender_pearl:
+    material: ENDER_PEARL
+    category: mob_drops
+    amount: 1
+    price: 40
+    currency: coins
+    display-name: "&5Pérola do End"
+
+  stone:
+    material: STONE
+    category: construcao
+    amount: 32
+    price: 120
+    currency: coins
+    display-name: "&7Pedra"
+  cobblestone:
+    material: COBBLESTONE
+    category: construcao
+    amount: 32
+    price: 80
+    currency: coins
+    display-name: "&7Pedregulho"
+  bricks:
+    material: BRICKS
+    category: construcao
+    amount: 32
+    price: 250
+    currency: coins
+    display-name: "&cTijolos"
+  stone_bricks:
+    material: STONE_BRICKS
+    category: construcao
+    amount: 32
+    price: 180
+    currency: coins
+    display-name: "&fTijolos de Pedra"
+  oak_planks:
+    material: OAK_PLANKS
+    category: construcao
+    amount: 32
+    price: 100
+    currency: coins
+    display-name: "&6Tábuas de Carvalho"
+  oak_log:
+    material: OAK_LOG
+    category: construcao
+    amount: 32
+    price: 100
+    currency: coins
+    display-name: "&6Tronco de Carvalho"
+  glass:
+    material: GLASS
+    category: construcao
+    amount: 32
+    price: 160
+    currency: coins
+    display-name: "&fVidro"
+  glass_pane:
+    material: GLASS_PANE
+    category: construcao
+    amount: 32
+    price: 120
+    currency: coins
+    display-name: "&fPainel de Vidro"
+
+  redstone:
+    material: REDSTONE
+    category: redstone
+    amount: 1
+    price: 25
+    currency: coins
+    display-name: "&cPó de Redstone"
+  redstone_torch:
+    material: REDSTONE_TORCH
+    category: redstone
+    amount: 1
+    price: 60
+    currency: coins
+    display-name: "&cTocha de Redstone"
+  repeater:
+    material: REPEATER
+    category: redstone
+    amount: 1
+    price: 250
+    currency: coins
+    display-name: "&fRepetidor"
+  comparator:
+    material: COMPARATOR
+    category: redstone
+    amount: 1
+    price: 350
+    currency: coins
+    display-name: "&fComparador"
+  observer:
+    material: OBSERVER
+    category: redstone
+    amount: 1
+    price: 500
+    currency: coins
+    display-name: "&7Observador"
+  piston:
+    material: PISTON
+    category: redstone
+    amount: 1
+    price: 450
+    currency: coins
+    display-name: "&fPistão"
+  sticky_piston:
+    material: STICKY_PISTON
+    category: redstone
+    amount: 1
+    price: 750
+    currency: coins
+    display-name: "&aPistão Grudento"
+  hopper:
+    material: HOPPER
+    category: redstone
+    amount: 1
+    price: 1200
+    currency: coins
+    display-name: "&7Funil"
+
+  iron_hoe:
+    material: IRON_HOE
+    category: ferramentas
+    amount: 1
+    price: 50
+    currency: gems
+    display-name: "&fEnxada de Ferro"
+  iron_shovel:
+    material: IRON_SHOVEL
+    category: ferramentas
+    amount: 1
+    price: 75
+    currency: gems
+    display-name: "&fPá de Ferro"
+  iron_pickaxe:
+    material: IRON_PICKAXE
+    category: ferramentas
+    amount: 1
+    price: 100
+    currency: gems
+    display-name: "&fPicareta de Ferro"
+  iron_axe:
+    material: IRON_AXE
+    category: ferramentas
+    amount: 1
+    price: 150
+    currency: gems
+    display-name: "&fMachado de Ferro"
+  golden_hoe:
+    material: GOLDEN_HOE
+    category: ferramentas
+    amount: 1
+    price: 250
+    currency: gems
+    display-name: "&6Enxada de Ouro"
+  golden_shovel:
+    material: GOLDEN_SHOVEL
+    category: ferramentas
+    amount: 1
+    price: 275
+    currency: gems
+    display-name: "&6Pá de Ouro"
+  golden_pickaxe:
+    material: GOLDEN_PICKAXE
+    category: ferramentas
+    amount: 1
+    price: 300
+    currency: gems
+    display-name: "&6Picareta de Ouro"
+  golden_axe:
+    material: GOLDEN_AXE
+    category: ferramentas
+    amount: 1
+    price: 350
+    currency: gems
+    display-name: "&6Machado de Ouro"
+  diamond_hoe:
+    material: DIAMOND_HOE
+    category: ferramentas
+    amount: 1
+    price: 400
+    currency: gems
+    display-name: "&bEnxada de Diamante"
+  diamond_shovel:
+    material: DIAMOND_SHOVEL
+    category: ferramentas
+    amount: 1
+    price: 600
+    currency: gems
+    display-name: "&bPá de Diamante"
+  diamond_pickaxe:
+    material: DIAMOND_PICKAXE
+    category: ferramentas
+    amount: 1
+    price: 800
+    currency: gems
+    display-name: "&bPicareta de Diamante"
+  diamond_axe:
+    material: DIAMOND_AXE
+    category: ferramentas
+    amount: 1
+    price: 980
+    currency: gems
+    display-name: "&bMachado de Diamante"
+  excavator_3x3:
+    material: NETHERITE_PICKAXE
+    category: ferramentas
+    amount: 1
+    price: 20000
+    currency: gems
+    display-name: "&d&lPicareta Escavadora 3x3"
+    special: excavator_3x3
+    lore:
+      - "&7Minera uma área de 3x3 blocos."
+      - "&7Consome durabilidade."
+      - "&7Respeita as proteções do servidor."
+
+  torch:
+    material: TORCH
+    category: variados
+    amount: 32
+    price: 80
+    currency: coins
+    display-name: "&eTocha"
+  arrow:
+    material: ARROW
+    category: variados
+    amount: 16
+    price: 50
+    currency: coins
+    display-name: "&fFlecha"
+  shield:
+    material: SHIELD
+    category: variados
+    amount: 1
+    price: 100
+    currency: coins
+    display-name: "&fEscudo"
+  bucket:
+    material: BUCKET
+    category: variados
+    amount: 1
+    price: 80
+    currency: coins
+    display-name: "&fBalde"
+  water_bucket:
+    material: WATER_BUCKET
+    category: variados
+    amount: 1
+    price: 100
+    currency: coins
+    display-name: "&bBalde de Água"
+  lava_bucket:
+    material: LAVA_BUCKET
+    category: variados
+    amount: 1
+    price: 120
+    currency: coins
+    display-name: "&6Balde de Lava"
+  red_bed:
+    material: RED_BED
+    category: variados
+    amount: 1
+    price: 120
+    currency: coins
+    display-name: "&cCama"
+  flint_and_steel:
+    material: FLINT_AND_STEEL
+    category: variados
+    amount: 1
+    price: 80
+    currency: coins
+    display-name: "&fPederneira"
+  name_tag:
+    material: NAME_TAG
+    category: variados
+    amount: 1
+    price: 200
+    currency: coins
+    display-name: "&fEtiqueta"
+  book:
+    material: BOOK
+    category: variados
+    amount: 8
+    price: 80
+    currency: coins
+    display-name: "&fLivro"
+  ender_chest:
+    material: ENDER_CHEST
+    category: variados
+    amount: 1
+    price: 1500
+    currency: coins
+    display-name: "&5Baú do Ender"
+  bookshelf:
+    material: BOOKSHELF
+    category: variados
+    amount: 4
+    price: 250
+    currency: coins
+    display-name: "&6Estante de Livros"
+  enchanting_table:
+    material: ENCHANTING_TABLE
+    category: variados
+    amount: 1
+    price: 600
+    currency: coins
+    display-name: "&dMesa de Encantamentos"
+  anvil:
+    material: ANVIL
+    category: variados
+    amount: 1
+    price: 400
+    currency: coins
+    display-name: "&7Bigorna"
+  grindstone:
+    material: GRINDSTONE
+    category: variados
+    amount: 1
+    price: 150
+    currency: coins
+    display-name: "&fRebolo"
+  stonecutter:
+    material: STONECUTTER
+    category: variados
+    amount: 1
+    price: 200
+    currency: coins
+    display-name: "&7Cortador de Pedras"
+  experience_bottle:
+    material: EXPERIENCE_BOTTLE
+    category: variados
+    amount: 1
+    price: 1
+    currency: coins
+    display-name: "&aFrasco de XP"
