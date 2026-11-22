@@ -2,11 +2,11 @@
 
 Plugin modular de economia para Minecraft, distribuído em **um único arquivo JAR**. Os sistemas ficam organizados em módulos internos e podem ser ativados/configurados sem instalar vários plugins separados.
 
-> **Status:** desenvolvimento. Economia virtual, transferências, ranking, profissões, salários, ATM, moedas físicas autenticadas por HMAC, saco físico persistente, `/loja`, `/sell` e Picareta Escavadora 3x3 já possuem código. Kits profissionais evolutivos, limites de equipamentos e painel administrativo ainda precisam ser finalizados; os módulos não devem ser considerados prontos para produção.
+> **Status:** desenvolvimento. Economia virtual, transferências, ranking, profissões, salários, ATM, moedas físicas autenticadas por HMAC, saco físico persistente, `/loja`, `/sell` e Picareta Escavadora 3x3 já possuem código. Kits profissionais evolutivos e painel administrativo já possuem implementação inicial. O limite de ferramentas por nível ainda depende da definição final das regras; os módulos ainda precisam de testes integrados antes de produção.
 
 ## O que já está no código
 
-- Persistência SQLite para perfis, saldos, histórico de transações, progresso profissional e conteúdo dos sacos físicos.\n- ATM com depósito/saque, extrato, taxas e acesso de jogadores por NPC Citizens vinculado; comando direto reservado à administração.\n- Moedas físicas com assinatura HMAC e saco de couro que guarda apenas moedas autenticadas.\n- Profissões com progresso de XP, metas salariais independentes por profissão e recompensas de gemas.
+- Persistência SQLite para perfis, saldos, histórico de transações, progresso profissional e conteúdo dos sacos físicos.\n- ATM com depósito/saque, extrato, taxas e acesso de jogadores por NPC Citizens vinculado; comando direto reservado à administração.\n- Moedas físicas com assinatura HMAC e saco de couro que guarda apenas moedas autenticadas.\n- Profissões com progresso de XP, metas salariais independentes por profissão, recompensas de gemas e kits automáticos por nível.\n- Kits profissionais vinculados ao jogador, com evolução automática, durabilidade proporcional e bloqueio de transferência.\n- Painel administrativo dentro do jogo para editar parâmetros econômicos, taxas, preços e materiais dos kits.
 - Moedas independentes configuráveis (coins e gems por padrão).
 - Transferência bancária virtual pelo comando `/pay` (destinatário precisa estar online nesta primeira versão).
 - Ranking geral e de jogadores online por moeda: `/top` e `/top online`.
@@ -30,7 +30,7 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - `/job` — seleção e status das profissões.
 - `/pay <jogador> <valor> [coins|gems]`.
 - `/top [coins|gems]` e `/top online [coins|gems]`.
-- `/atm` — acesso direto reservado à administração; jogadores usam NPC Citizens vinculado.
+- `/atm` — acesso direto reservado à administração; jogadores usam NPC Citizens vinculado.\n- `/xkladmin` — painel administrativo para editar salários, taxas, preços das lojas e materiais dos kits.
 - `/xklatm npc link|unlink|list <id>` e `/xklpouch give <jogador>` — administração.
 
 ## Documentação
