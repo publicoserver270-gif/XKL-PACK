@@ -204,7 +204,6 @@ public final class EquipmentService implements Listener {
         if (event.getClickedInventory() == player.getInventory()) {
             int slot = event.getSlot();
             if (limitsEnabled() && slot >= 0 && slot < 9 && isSpecialTool(cursor) && !isSpecialTool(current)
-                    && limitsEnabled()
                     && countEquipped(player) >= getLimit("equipped-slots", getLevel(player))) {
                 event.setCancelled(true);
                 player.sendMessage("§cVocê atingiu o limite de ferramentas equipadas para seu nível.");
@@ -214,6 +213,7 @@ public final class EquipmentService implements Listener {
                     && slot >= 9 && slot < 36
                     && isSpecialTool(current)
                     && !isSpecialTool(player.getInventory().getItem(event.getHotbarButton()))
+                    && limitsEnabled()
                     && countEquipped(player) >= getLimit("equipped-slots", getLevel(player))) {
                 event.setCancelled(true);
                 player.sendMessage("§cVocê atingiu o limite de ferramentas equipadas para seu nível.");
@@ -221,6 +221,7 @@ public final class EquipmentService implements Listener {
             }
             if (event.getClick() == org.bukkit.event.inventory.ClickType.SWAP_OFFHAND
                     && isSpecialTool(current) && !isSpecialTool(player.getInventory().getItemInOffHand())
+                    && limitsEnabled()
                     && countEquipped(player) >= getLimit("equipped-slots", getLevel(player))) {
                 event.setCancelled(true);
                 player.sendMessage("§cVocê atingiu o limite de ferramentas equipadas para seu nível.");
@@ -236,7 +237,6 @@ public final class EquipmentService implements Listener {
             return;
         }
         if (event.getWhoClicked() instanceof Player player) {
-            int topSize = event.getView().getTopInventory().getSize();
             long newHotbarTools = event.getNewItems().entrySet().stream()
                     .filter(entry -> event.getView().getSlotType(entry.getKey()) == org.bukkit.event.inventory.InventoryType.SlotType.QUICKBAR)
                     .filter(entry -> isSpecialTool(entry.getValue()))
