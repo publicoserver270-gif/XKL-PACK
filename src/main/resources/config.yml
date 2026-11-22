@@ -154,3 +154,21 @@ jobs:
 # - Gemas não podem ser transferidas nem convertidas; só podem comprar ferramentas.
 # - /pay apenas transfere saldo já existente; não cria moeda.
 # - Não existe conversão automática entre Coins e Gemas.
+
+# Limites iniciais editáveis para ferramentas especiais.
+# O nível de referência atual é o da profissão ativa; os valores são pontos de partida.
+equipment-limits:
+  enabled: true
+  level-source: active-profession
+  owned-slots:
+    1: 1
+    5: 2
+    10: 3
+    20: 4
+    30: 5
+  equipped-slots:
+    1: 1
+    5: 2
+    10: 3
+    20: 4
+    30: 5
