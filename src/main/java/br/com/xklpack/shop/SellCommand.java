@@ -48,6 +48,11 @@ public final class SellCommand implements CommandExecutor, Listener {
         loadPrices();
     }
 
+    public void reloadPrices() {
+        prices.clear();
+        loadPrices();
+    }
+
     private void loadPrices() {
         ConfigurationSection items = plugin.getSellShopConfig().getConfigurationSection("items");
         if (items == null) {
