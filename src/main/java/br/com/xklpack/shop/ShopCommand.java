@@ -69,6 +69,7 @@ public final class ShopCommand implements CommandExecutor, Listener {
         }
         for (String id : categories.getKeys(false)) {
             String path = "categories." + id + ".";
+            if (plugin.getAdminShopConfig().contains(path + "parent")) continue;
             int slot = plugin.getAdminShopConfig().getInt(path + "slot", -1);
             Material material = Material.matchMaterial(plugin.getAdminShopConfig().getString(path + "icon", "CHEST"));
             if (slot < 0 || slot >= inventory.getSize() || material == null) continue;
@@ -76,6 +77,31 @@ public final class ShopCommand implements CommandExecutor, Listener {
             inventory.setItem(slot, button(material, color(name), List.of("§7Clique para abrir esta categoria.")));
             holder.actions.put(slot, id);
         }
+        player.openInventory(inventory);
+    }
+
+    private void openSubcategories(Player player, String parent) {
+        ConfigurationSection categories = plugin.getAdminShopConfig().getConfigurationSection("categories");
+        if (categories == null) return;
+        List<String> children = categories.getStringList(parent + ".children");
+        ShopHolder holder = new ShopHolder(player.getUniqueId(), "__parent:" + parent, 0);
+        Inventory inventory = Bukkit.createInventory(holder, 27,
+                color(plugin.getAdminShopConfig().getString("settings.category-title", "&8&l{category}")
+                        .replace("{category}", stripColor(categories.getString(parent + ".name", parent)))));
+        holder.inventory = inventory;
+        int fallbackSlot = 10;
+        for (String child : children) {
+            String path = "categories." + child + ".";
+            int slot = plugin.getAdminShopConfig().getInt(path + "slot", fallbackSlot++);
+            Material icon = Material.matchMaterial(plugin.getAdminShopConfig().getString(path + "icon", "CHEST"));
+            if (slot < 0 || slot >= inventory.getSize() || icon == null) continue;
+            inventory.setItem(slot, button(icon,
+                    color(plugin.getAdminShopConfig().getString(path + "name", child)),
+                    List.of("§7Clique para abrir esta categoria.")));
+            holder.actions.put(slot, child);
+        }
+        inventory.setItem(22, button(Material.ARROW, "§eVoltar", List.of("§7Voltar à loja principal.")));
+        holder.actions.put(22, "__main");
         player.openInventory(inventory);
     }
 
@@ -88,6 +114,7 @@ public final class ShopCommand implements CommandExecutor, Listener {
         ShopHolder holder = new ShopHolder(player.getUniqueId(), category, page);
         Inventory inventory = Bukkit.createInventory(holder, 54, title);
         holder.inventory = inventory;
+        holder.parentCategory = categories == null ? null : categories.getString(category + ".parent");
 
         List<String> products = productsFor(category);
         int pages = Math.max(1, (int) Math.ceil(products.size() / (double) PAGE_SIZE));
@@ -193,12 +220,21 @@ public final class ShopCommand implements CommandExecutor, Listener {
         String action = holder.actions.get(event.getRawSlot());
         if (action == null) return;
         if (action.equals("__back")) {
+            if (holder.parentCategory != null) openSubcategories(player, holder.parentCategory);
+            else openMain(player);
+        } else if (action.equals("__main")) {
             openMain(player);
         } else if (action.equals("__previous")) {
             openCategory(player, holder.category, holder.page - 1);
         } else if (action.equals("__next")) {
             openCategory(player, holder.category, holder.page + 1);
         } else if (holder.category == null) {
+            if (!plugin.getAdminShopConfig().getStringList("categories." + action + ".children").isEmpty()) {
+                openSubcategories(player, action);
+            } else {
+                openCategory(player, action, 0);
+            }
+        } else if (holder.category.startsWith("__parent:")) {
             openCategory(player, action, 0);
         } else {
             purchase(player, action);
@@ -280,6 +316,7 @@ public final class ShopCommand implements CommandExecutor, Listener {
         private int page;
         private final Map<Integer, String> actions = new HashMap<>();
         private Inventory inventory;
+        private String parentCategory;
 
         private ShopHolder(java.util.UUID owner, String category, int page) {
             this.owner = owner;
