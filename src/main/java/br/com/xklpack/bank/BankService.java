@@ -126,7 +126,18 @@ public final class BankService {
         if (denomination == null) return null;
         byte[] expected = signature(denomination).getBytes(java.nio.charset.StandardCharsets.UTF_8);
         byte[] supplied = suppliedSignature.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-        return MessageDigest.isEqual(expected, supplied) ? denomination : null;
+        if (!MessageDigest.isEqual(expected, supplied)) return null;
+
+        // Atualiza o valor exibido quando a administração reajusta uma denominação.
+        String expectedName = color(denomination.name());
+        List<String> expectedLore = List.of(color("&7Valor: &e" + denomination.value() + " Coins"),
+                color("&8Moeda oficial do Banco XKL"));
+        if (!expectedName.equals(meta.getDisplayName()) || !expectedLore.equals(meta.getLore())) {
+            meta.setDisplayName(expectedName);
+            meta.setLore(expectedLore);
+            item.setItemMeta(meta);
+        }
+        return denomination;
     }
 
     public BigDecimal balance(UUID uuid) throws SQLException {
