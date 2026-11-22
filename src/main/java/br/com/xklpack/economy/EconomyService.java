@@ -137,6 +137,11 @@ public final class EconomyService {
         creditFromAuthorizedSource(playerId, playerName, "gems", amount, "JOB_ACTIVITY");
     }
 
+    /** Coins podem ser debitadas somente por compras da loja administrativa. */
+    public boolean spendCoinsForShop(UUID playerId, String playerName, BigDecimal amount) throws SQLException {
+        return debitForPurpose(playerId, playerName, "coins", amount, "SHOP_PURCHASE");
+    }
+
     /** Gemas só podem ser debitadas pelo fluxo de compra de ferramentas. */
     public boolean spendGemsForTool(UUID playerId, String playerName, BigDecimal amount) throws SQLException {
         return debitForPurpose(playerId, playerName, "gems", amount, "TOOL_PURCHASE");
