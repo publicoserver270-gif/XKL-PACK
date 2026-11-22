@@ -186,15 +186,13 @@ public final class MoneyPouchService {
         if (openPouches.putIfAbsent(id, player.getUniqueId()) != null)
             throw new IllegalArgumentException("Este saco já está aberto em outra sessão.");
 
-        String newToken = UUID.randomUUID().toString();
         boolean valid;
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
-                "UPDATE money_pouches SET owner_uuid=?, access_token=?, updated_at=? WHERE pouch_id=? AND access_token=?")) {
+                "UPDATE money_pouches SET owner_uuid=?, updated_at=? WHERE pouch_id=? AND access_token=?")) {
             ps.setString(1, player.getUniqueId().toString());
-            ps.setString(2, newToken);
-            ps.setLong(3, System.currentTimeMillis());
-            ps.setString(4, id.toString());
-            ps.setString(5, oldToken);
+            ps.setLong(2, System.currentTimeMillis());
+            ps.setString(3, id.toString());
+            ps.setString(4, oldToken);
             valid = ps.executeUpdate() == 1;
         } catch (SQLException ex) {
             openPouches.remove(id, player.getUniqueId());
@@ -205,8 +203,9 @@ public final class MoneyPouchService {
             throw new IllegalArgumentException("Saco inválido ou duplicado.");
         }
 
-        meta.getPersistentDataContainer().set(tokenKey, PersistentDataType.STRING, newToken);
-        pouchItem.setItemMeta(meta);
+        // O token permanece estável: o conteúdo fica ligado ao UUID no SQLite.
+        // Cópias do item não duplicam moedas; todas apontam para o mesmo saco e
+        // a trava openPouches impede que ele seja aberto simultaneamente.
 
         int rows = Math.max(1, Math.min(6, plugin.getBankConfig().getInt("money-pouch.inventory-rows", 3)));
         PouchHolder holder = new PouchHolder(id, player.getUniqueId());
