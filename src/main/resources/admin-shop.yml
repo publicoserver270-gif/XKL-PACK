@@ -42,6 +42,11 @@ categories:
     name: '&c&lREDSTONE E AUTOMAÇÃO'
     icon: REDSTONE
     slot: 17
+    children:
+    - redstone_componentes
+    - redstone_maquinas
+    - redstone_carrinhos
+    - redstone_mecanismos
   itens_especiais:
     name: '&5&lITENS ESPECIAIS'
     icon: ENDER_PEARL
@@ -76,6 +81,26 @@ categories:
     icon: LANTERN
     slot: 15
     parent: construcao
+  redstone_componentes:
+    name: '&c&lCOMPONENTES'
+    icon: REDSTONE
+    slot: 10
+    parent: redstone
+  redstone_maquinas:
+    name: '&6&lMÁQUINAS'
+    icon: PISTON
+    slot: 11
+    parent: redstone
+  redstone_carrinhos:
+    name: '&b&lCARRINHOS'
+    icon: MINECART
+    slot: 12
+    parent: redstone
+  redstone_mecanismos:
+    name: '&e&lMECANISMOS'
+    icon: LEVER
+    slot: 13
+    parent: redstone
 items:
   tijolos_tijolos:
     material: BRICKS
@@ -660,42 +685,42 @@ items:
     display-name: '&5Pérola do End'
   redstone:
     material: REDSTONE
-    category: redstone
+    category: redstone_componentes
     price: 25
     display-name: '&cPó de Redstone'
   redstone_torch:
     material: REDSTONE_TORCH
-    category: redstone
+    category: redstone_componentes
     price: 60
     display-name: '&cTocha de Redstone'
   repeater:
     material: REPEATER
-    category: redstone
+    category: redstone_componentes
     price: 250
     display-name: '&fRepetidor'
   comparator:
     material: COMPARATOR
-    category: redstone
+    category: redstone_componentes
     price: 350
     display-name: '&fComparador'
   observer:
     material: OBSERVER
-    category: redstone
+    category: redstone_componentes
     price: 500
     display-name: '&7Observador'
   piston:
     material: PISTON
-    category: redstone
+    category: redstone_maquinas
     price: 450
     display-name: '&fPistão'
   sticky_piston:
     material: STICKY_PISTON
-    category: redstone
+    category: redstone_maquinas
     price: 750
     display-name: '&aPistão Grudento'
   hopper:
     material: HOPPER
-    category: redstone
+    category: redstone_maquinas
     price: 1200
     display-name: '&7Funil'
   arrow:
