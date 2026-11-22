@@ -1,7 +1,7 @@
 name: XKL-PACK
 version: 0.3.0-SNAPSHOT
 main: br.com.xklpack.XKLPack
-api-version: '1.21'
+api-version: '26.3'
 authors: [XKL]
 description: Plugin modular de economia, banco e profissões.
 website: https://github.com/publicoserver270-gif/XKL-PACK
