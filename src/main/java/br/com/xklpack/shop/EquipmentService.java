@@ -111,6 +111,8 @@ public final class EquipmentService implements Listener {
     private int countOwned(Player player) {
         int count = 0;
         for (ItemStack item : player.getInventory().getStorageContents()) if (isSpecialTool(item)) count++;
+        if (isSpecialTool(player.getInventory().getItemInOffHand())) count++;
+        if (isSpecialTool(player.getOpenInventory().getCursor())) count++;
         for (ItemStack item : player.getEnderChest().getContents()) if (isSpecialTool(item)) count++;
         return count;
     }
