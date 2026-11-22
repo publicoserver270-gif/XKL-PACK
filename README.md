@@ -2,11 +2,11 @@
 
 Plugin modular de economia para Minecraft, distribuído em **um único arquivo JAR**. Os sistemas ficam organizados em módulos internos e podem ser ativados/configurados sem instalar vários plugins separados.
 
-> **Status:** desenvolvimento inicial. A fundação da economia virtual foi implementada; banco com GUI, profissões, salários automáticos, kits, lojas e venda ainda estão em desenvolvimento.
+> **Status:** desenvolvimento. Economia virtual, transferências, ranking, profissões, salários, ATM, moedas físicas autenticadas por HMAC e saco físico persistente já possuem código. Lojas `/loja` e `/sell`, kits evolutivos, limites de equipamentos e painel administrativo ainda não estão implementados; os módulos não devem ser considerados prontos para produção.
 
 ## O que já está no código
 
-- Persistência SQLite para perfis, saldos e histórico de transações.
+- Persistência SQLite para perfis, saldos, histórico de transações, progresso profissional e conteúdo dos sacos físicos.\n- ATM com depósito/saque, extrato, taxas e acesso de jogadores por NPC Citizens vinculado; comando direto reservado à administração.\n- Moedas físicas com assinatura HMAC e saco de couro que guarda apenas moedas autenticadas.\n- Profissões com progresso de XP, metas salariais independentes por profissão e recompensas de gemas.
 - Moedas independentes configuráveis (coins e gems por padrão).
 - Transferência bancária virtual pelo comando `/pay` (destinatário precisa estar online nesta primeira versão).
 - Ranking geral e de jogadores online por moeda: `/top` e `/top online`.
