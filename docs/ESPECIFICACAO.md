@@ -19,11 +19,11 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 
 ### 2.2 Coins
 
-- A única fonte de emissão de coins é o salário.
+- Fontes autorizadas de emissão de coins: salário por meta profissional concluída e venda confirmada na loja do servidor `/sell`.
 - O salário só pode ser pago enquanto o jogador estiver empregado em uma profissão.
 - O pagamento depende de produtividade e metas de atividade, não apenas de tempo online.
 - Exemplos de metas: minerador quebra uma quantidade configurada de blocos; caçador derrota uma quantidade configurada de criaturas.
-- **Pendente:** definir se o salário é pago imediatamente ao completar cada meta ou em ciclos de pagamento.
+- O salário é pago imediatamente após a conclusão de cada meta. O valor-base configurado da meta é multiplicado pelo multiplicador atual da profissão.
 
 ### 2.3 Gemas
 
@@ -86,7 +86,7 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 - Totem da imortalidade (Totem of Undying) fica fora da lista de venda.
 - Lista de itens e preços configurável; evitar itens que desequilibrem a economia.
 
-**PENDÊNCIA CRÍTICA:** ainda não foi definida a moeda/recompensa paga pelo `/sell`. Não pagar coins automaticamente, pois coins só podem ser emitidas por salário. Não pagar gemas, pois gemas são exclusivas das atividades profissionais e da compra de ferramentas. Essa regra precisa ser decidida antes de implementar pagamentos de venda.
+**Regra confirmada:** vendas aprovadas em `/sell` podem emitir Coins. Essa é a única exceção à emissão salarial de Coins. `/sell` não pode emitir Gemas. A venda precisa registrar a transação e só concluir depois de validar os itens e o pagamento.
 
 ### 5.3 Lojas de jogadores e mercado
 
