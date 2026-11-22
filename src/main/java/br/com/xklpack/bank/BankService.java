@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
+import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import javax.crypto.Mac;
@@ -62,7 +63,7 @@ public final class BankService {
                 + denomination.material().name() + "|" + denomination.value();
         try {
             Mac mac = Mac.getInstance("HmacSHA256");
-            mac.init(new SecretKeySpec(secret, "HmacSHA256"));
+            mac.init(new SecretKeySpec(signingSecret, "HmacSHA256"));
             return Base64.getEncoder().encodeToString(mac.doFinal(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
         } catch (GeneralSecurityException exception) {
             throw new IllegalStateException("Falha ao autenticar moeda física.", exception);
