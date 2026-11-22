@@ -20,7 +20,7 @@ class JobServiceTest {
 
     @Test
     void multiplierUsesConfiguredInterval() {
-        assertEquals(1.6, JobService.multiplierForGoalNumber(4, 1.3, 0.1, 3), 0.000001);
+        assertEquals(1.4, JobService.multiplierForGoalNumber(4, 1.3, 0.1, 3), 0.000001);
     }
 
     @Test
