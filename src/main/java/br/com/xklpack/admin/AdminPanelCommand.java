@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -217,7 +218,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
     }
 
     private void applyEdit(Player player, PendingEdit pendingEdit, String input) {
-        if (!player.isOnline()) {
+        if (!player.isOnline() || !player.hasPermission("xklpack.admin.panel")) {
             pending.remove(player.getUniqueId());
             return;
         }
@@ -319,6 +320,11 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
         }
         Entry entry = holder.entries.get(slot);
         if (entry != null) beginEdit(player, holder, entry);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        pending.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
