@@ -13,7 +13,7 @@ Este documento acompanha a implementação. Uma compilação bem-sucedida compro
 | Banco de dados bloqueando a thread principal | Travamentos durante picos | A implementação inicial usa SQLite síncrono e uma conexão compartilhada protegida por lock. Antes de produção, migrar operações de I/O para execução assíncrona com fila/serialização de transações e retorno seguro à thread principal. |
 | Perda/duplicação de itens em depósito, saque ou venda | Exploit econômico | ATM, dinheiro físico e venda ainda não foram implementados. Exigir operação idempotente, journal de transação e protocolo de recuperação antes de liberar esses módulos. |
 | Kits transferidos por inventários alternativos | Perda de item exclusivo e exploits | Sistema de kits ainda não implementado. Cobrir clique, shift-click, número de hotbar, Q, drop, morte, baús, barris, shulkers, funis, carrinhos com baú, crafting, offhand e plugins de inventário. |
-| Compatibilidade com servidor beta | Falha de inicialização ou eventos incompatíveis | O build atual usa Paper API 1.21.4. O servidor-alvo informado usa uma API 26.3 beta; ainda precisa de teste específico. Não instalar no servidor principal. |
+| Compatibilidade com servidor Paper 26.3 | Falha de inicialização ou eventos incompatíveis | O projeto agora compila com Java 25 e Paper API 26.3; ainda precisa concluir CI e teste real no servidor-alvo. Não instalar no servidor principal. |
 | Migração de economia antiga | Saldos incorretos ou duplicados | Não migrar automaticamente nem desligar Vault/Mineconomy. Criar importação com backup, relatório, validação e modo somente leitura antes da troca. |
 | Ranking incompleto | Jogadores offline ausentes | Atualmente o perfil só é criado quando ocorre uma operação econômica. Implementar sincronização de nomes/perfis no login e importação antes de tratar o ranking como definitivo. |
 
@@ -24,12 +24,12 @@ Este documento acompanha a implementação. Uma compilação bem-sucedida compro
 - Rejeitar valores não positivos e valores com precisão acima da moeda.
 - Não somar moedas diferentes no mesmo ranking.
 - Não emitir coins/gemas por venda, eventos ou comandos comuns.
-- Não habilitar ATM, lojas, venda ou profissões até cada módulo ter validação e testes próprios.
+- ATM e profissões possuem implementação inicial; não tratar como produção até testes de integração. Lojas `/loja` e `/sell` seguem desativadas até serem implementadas.
 - Manter o plugin em paralelo com os plugins atuais até a migração ser aprovada.
 
 ## Critérios mínimos antes de produção
 
-1. Testes unitários de transferência, precisão, moedas desconhecidas, saldo insuficiente e rollback.
+1. Testes unitários de transferência, precisão, moedas desconhecidas, saldo insuficiente, rollback e limites dos multiplicadores salariais.
 2. Testes de concorrência e recuperação após encerramento inesperado.
 3. Testes de exploit de inventário para dinheiro físico e kits.
 4. Teste em servidor descartável com a mesma versão/API do servidor-alvo.
