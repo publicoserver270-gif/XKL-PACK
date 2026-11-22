@@ -32,7 +32,8 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 
 - `/loja` — loja administrativa com categorias configuráveis.
 - `/sell` — loja de vendas com prévia, confirmação e catálogo de 585 materiais.
-- `/carteira` — saldo virtual de Coins/Gemas e histórico de transações; não é o saco físico nem o ATM.\n- `/job` — seleção e status das profissões.
+- `/carteira` — saldo virtual de Coins/Gemas e histórico de transações; não é o saco físico nem o ATM.
+- `/job` — seleção e status das profissões.
 - `/pay <jogador> <valor> [coins|gems]`.
 - `/top [coins|gems]` e `/top online [coins|gems]`.
 - `/atm` — acesso direto reservado à administração; jogadores usam NPC Citizens vinculado.
