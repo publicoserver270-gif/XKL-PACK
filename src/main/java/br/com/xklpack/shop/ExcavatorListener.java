@@ -78,13 +78,16 @@ public final class ExcavatorListener implements Listener {
     }
 
     private boolean canExcavate(Block block) {
-        if (block.getType().isAir() || !block.getType().isSolid()) return false;
-        if (block.getState() instanceof Container) return false;
-        return switch (block.getType()) {
-            case BEDROCK, BARRIER, END_PORTAL, END_PORTAL_FRAME, NETHER_PORTAL,
-                    REINFORCED_DEEPSLATE, COMMAND_BLOCK, CHAIN_COMMAND_BLOCK,
-                    REPEATING_COMMAND_BLOCK, STRUCTURE_BLOCK, JIGSAW -> false;
-            default -> true;
+        Material type = block.getType();
+        if (type.isAir() || !type.isSolid() || block.getState() instanceof Container) return false;
+        if (type.name().endsWith("_ORE") || type == Material.ANCIENT_DEBRIS) return true;
+        return switch (type) {
+            case STONE, COBBLESTONE, DEEPSLATE, COBBLED_DEEPSLATE, TUFF, CALCITE,
+                    GRANITE, DIORITE, ANDESITE, NETHERRACK, BASALT, SMOOTH_BASALT,
+                    BLACKSTONE, END_STONE, MOSSY_COBBLESTONE, DRIPSTONE_BLOCK,
+                    OBSIDIAN, CRYING_OBSIDIAN, PRISMARINE, DARK_PRISMARINE,
+                    PRISMARINE_BRICKS, SANDSTONE, RED_SANDSTONE -> true;
+            default -> false;
         };
     }
 
