@@ -280,6 +280,23 @@ public final class SellCommand implements CommandExecutor, Listener {
     private void updatePreview(Inventory inventory) {
         SaleQuote quote = quote(inventory);
         List<String> lore = new ArrayList<>();
+        lore.add("§7Itens e valores:");
+        int shown = 0;
+        int remaining = 0;
+        for (int slot = 0; slot < SELL_SLOTS; slot++) {
+            ItemStack item = inventory.getItem(slot);
+            if (!isRealItem(item) || !isSellable(item)) continue;
+            if (shown >= 5) {
+                remaining++;
+                continue;
+            }
+            BigDecimal line = prices.get(item.getType()).multiply(BigDecimal.valueOf(item.getAmount()));
+            lore.add("§f" + item.getType().name() + " x" + item.getAmount()
+                    + " §8= §e" + line.setScale(2, RoundingMode.HALF_UP).toPlainString());
+            shown++;
+        }
+        if (remaining > 0) lore.add("§7... e mais " + remaining + " tipo(s) de item.");
+        lore.add("");
         lore.add("§7Valor estimado: §a" + quote.total().toPlainString() + " Coins");
         lore.add("§7Itens inválidos: §c" + quote.invalidItems().size());
         lore.add("");
