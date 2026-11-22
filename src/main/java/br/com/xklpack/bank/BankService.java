@@ -139,11 +139,13 @@ public final class BankService {
         byte[] supplied = suppliedSignature.getBytes(java.nio.charset.StandardCharsets.UTF_8);
         byte[] expected = signature(denomination).getBytes(java.nio.charset.StandardCharsets.UTF_8);
         boolean valid = MessageDigest.isEqual(expected, supplied);
+        boolean legacyMigrated = false;
         if (!valid) {
             byte[] legacy = legacySignature(denomination).getBytes(java.nio.charset.StandardCharsets.UTF_8);
             valid = MessageDigest.isEqual(legacy, supplied);
             if (valid) {
                 meta.getPersistentDataContainer().set(signatureKey, PersistentDataType.STRING, signature(denomination));
+                legacyMigrated = true;
             }
         }
         if (!valid) return null;
@@ -152,7 +154,7 @@ public final class BankService {
         String expectedName = color(denomination.name());
         List<String> expectedLore = List.of(color("&7Valor: &e" + denomination.value() + " Coins"),
                 color("&8Moeda oficial do Banco XKL"));
-        if (!expectedName.equals(meta.getDisplayName()) || !expectedLore.equals(meta.getLore())) {
+        if (legacyMigrated || !expectedName.equals(meta.getDisplayName()) || !expectedLore.equals(meta.getLore())) {
             meta.setDisplayName(expectedName);
             meta.setLore(expectedLore);
             item.setItemMeta(meta);
