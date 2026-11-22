@@ -479,11 +479,11 @@ items:
     category: "mining"
     display-name: "<aqua>Pepita de Cobre</aqua>"
     buy-price: 999999.00
-    sell-price: 1.3333333333
+    sell-price: 1.33
     min-buy-price: 999999.00
     max-buy-price: 999999.00
-    min-sell-price: 0.6666666667
-    max-sell-price: 2.6666666667
+    min-sell-price: 0.67
+    max-sell-price: 2.66
 
   copper_block:
     material: "COPPER_BLOCK"
@@ -997,7 +997,8 @@ items:
     display-name: "<gray>Pedregulho</gray>"
     buy-price: 1.00
     sell-price: 0.50
-    min-buy-price: 0.50    max-buy-price: 4.00
+    min-buy-price: 0.50
+    max-buy-price: 4.00
     min-sell-price: 0.25
     max-sell-price: 1.00
 
@@ -1996,7 +1997,8 @@ items:
     category: "wood"
     display-name: "<gold>Tronco Descascado de Carvalho Pálido</gold>"
     buy-price: 999999.00
-    sell-price: 5.00    min-buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
     max-buy-price: 999999.00
     min-sell-price: 2.50
     max-sell-price: 10.00
@@ -2995,7 +2997,8 @@ items:
     material: "CYAN_CONCRETE_SLAB"
     category: "blocks"
     display-name: "<gray>Lajes de Concreto Cyan</gray>"
-    buy-price: 999999.00    sell-price: 6.00
+    buy-price: 999999.00
+    sell-price: 6.00
     min-buy-price: 999999.00
     max-buy-price: 999999.00
     min-sell-price: 3.00
@@ -3994,7 +3997,8 @@ items:
   birch_button:
     material: "BIRCH_BUTTON"
     category: "wood"
-    display-name: "<gold>Botões de Birch</gold>"    buy-price: 999999.00
+    display-name: "<gold>Botões de Birch</gold>"
+    buy-price: 999999.00
     sell-price: 2.00
     min-buy-price: 999999.00
     max-buy-price: 999999.00
@@ -4993,7 +4997,8 @@ items:
 
   bamboo_stairs:
     material: "BAMBOO_STAIRS"
-    category: "wood"    display-name: "<gold>Escadas de Bambu</gold>"
+    category: "wood"
+    display-name: "<gold>Escadas de Bambu</gold>"
     buy-price: 999999.00
     sell-price: 8.00
     min-buy-price: 999999.00
@@ -5992,7 +5997,8 @@ items:
     max-sell-price: 8.00
 
   mossy_stone_bricks:
-    material: "MOSSY_STONE_BRICKS"    category: "blocks"
+    material: "MOSSY_STONE_BRICKS"
+    category: "blocks"
     display-name: "<gold>Tijolos de Pedra Musgosos</gold>"
     buy-price: 999999.00
     sell-price: 5.00
