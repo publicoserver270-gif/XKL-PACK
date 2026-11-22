@@ -1,3 +1,5 @@
+config-version: 2
+
 # XKL PACK - configuração principal
 settings:
   language: pt-BR
