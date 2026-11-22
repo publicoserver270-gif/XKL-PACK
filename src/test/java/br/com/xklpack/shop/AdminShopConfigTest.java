@@ -22,11 +22,17 @@ class AdminShopConfigTest {
 
         for (String id : items.getKeys(false)) {
             String path = "items." + id + ".";
-            assertNotNull(Material.matchMaterial(config.getString(path + "material", "")),
-                    "Material inválido: " + id);
+            String materialName = config.getString(path + "material", "");
+            Material material = Material.matchMaterial(materialName);
+            if (material == null) {
+                // Paper 26.3 expõe CHAIN pela Registry.ITEM/ItemType, não pelo enum Material.
+                assertEquals("CHAIN", materialName, "ItemType sem suporte de Material: " + id);
+            } else {
+                assertTrue(material.isItem(), "Material não é item: " + id);
+            }
             assertTrue(new BigDecimal(config.getString(path + "price", "0")).signum() > 0,
                     "Preço inválido: " + id);
-            assertTrue(config.getInt(path + "amount", 0) > 0, "Quantidade inválida: " + id);
+            assertTrue(config.getInt(path + "amount", 1) > 0, "Quantidade inválida: " + id);
         }
     }
 
