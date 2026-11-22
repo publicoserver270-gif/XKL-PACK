@@ -129,7 +129,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
             if (items != null) {
                 for (String id : items.getKeys(false)) {
                     String path = "items." + id + ".";
-                    String name = ChatColor.stripColor(plugin.getSellShopConfig().getString(path + "display-name", id));
+                    String name = plugin.getSellShopConfig().getString(path + "display-name", id).replaceAll("<[^>]+>", "");
                     Material icon = Material.matchMaterial(plugin.getSellShopConfig().getString(path + "material", "CHEST"));
                     result.add(new Entry(name + " (Coins)", icon == null ? Material.CHEST : icon,
                             FileType.SELL_SHOP, path + "sell-price", 10, false));
@@ -223,7 +223,9 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
                 setValue(entry, material.name());
             } else {
                 BigDecimal value = new BigDecimal(input.replace(',', '.'));
-                if (value.signum() <= 0) throw new IllegalArgumentException("O valor precisa ser maior que zero.");
+                if (value.signum() < 0 || (value.signum() == 0 && entry.file() != FileType.BANK)) {
+                    throw new IllegalArgumentException("O valor precisa ser maior que zero.");
+                }
                 value = value.setScale(entry.scale(), RoundingMode.UNNECESSARY);
                 if (entry.file() == FileType.BANK && value.compareTo(new BigDecimal("100")) >= 0) {
                     throw new IllegalArgumentException("A taxa precisa ser menor que 100%.");
