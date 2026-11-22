@@ -13,6 +13,7 @@ import br.com.xklpack.economy.command.TopCommand;
 import br.com.xklpack.jobs.JobCommand;
 import br.com.xklpack.jobs.JobListener;
 import br.com.xklpack.jobs.JobService;
+import br.com.xklpack.jobs.KitService;
 import br.com.xklpack.pouch.MoneyPouchCommand;
 import br.com.xklpack.pouch.MoneyPouchListener;
 import br.com.xklpack.pouch.MoneyPouchService;
@@ -31,6 +32,7 @@ public final class XKLPack extends JavaPlugin {
     private EconomyStorage economyStorage;
     private EconomyService economyService;
     private JobService jobService;
+    private KitService kitService;
     private FileConfiguration bankConfig;
     private FileConfiguration physicalCoinsConfig;
     private FileConfiguration sellShopConfig;
@@ -98,10 +100,13 @@ public final class XKLPack extends JavaPlugin {
             if (getConfig().getBoolean("modules.jobs", true)) {
                 jobService = new JobService(this, economyService);
                 jobService.initialize(economyStorage.connection());
-                JobCommand jobCommand = new JobCommand(this, jobService);
+                kitService = new KitService(this);
+                kitService.initialize(economyStorage.connection());
+                JobCommand jobCommand = new JobCommand(this, jobService, kitService);
                 registerCommand("job", jobCommand);
                 getServer().getPluginManager().registerEvents(jobCommand, this);
-                getServer().getPluginManager().registerEvents(new JobListener(this, jobService), this);
+                getServer().getPluginManager().registerEvents(new JobListener(this, jobService, kitService), this);
+                getServer().getPluginManager().registerEvents(kitService, this);
             }
 
             if (getConfig().getBoolean("modules.selling", true)) {
