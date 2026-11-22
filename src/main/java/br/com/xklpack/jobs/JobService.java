@@ -209,7 +209,7 @@ public final class JobService {
                 int multiplierEvery = Math.max(1, plugin.getConfig().getInt("jobs.salary.multiplier-every-goals", 40));
                 for (int i = 0; i < goalsCompleted; i++) {
                     int goalNumber = completedGoals - goalsCompleted + i + 1;
-                    double multiplier = multiplierStart + (goalNumber / multiplierEvery) * multiplierIncrease;
+                    double multiplier = multiplierStart + ((goalNumber - 1) / multiplierEvery) * multiplierIncrease;
                     BigDecimal payment = goalValue.multiply(BigDecimal.valueOf(multiplier))
                             .setScale(2, RoundingMode.HALF_UP);
                     economy.paySalary(uuid, playerName, payment);
