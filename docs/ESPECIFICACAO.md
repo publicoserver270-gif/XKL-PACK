@@ -129,13 +129,12 @@ Somente estes comandos principais foram solicitados:
 - `/pay`
 - `/atm`
 
-Não criar comandos principais extras para jogadores sem autorização. Comandos administrativos e permissões serão definidos na implementação.
+Não criar comandos principais extras para jogadores sem autorização. Comandos administrativos usam permissões separadas; `/xkladmin` abre o painel de configuração e é restrito à administração.
 
 ## 8. Pendências antes de fechar o comportamento
 
-1. Forma e frequência exatas do pagamento salarial após cumprir metas.
-2. Moeda/recompensa da venda em `/sell`, respeitando as fontes exclusivas de coins e gemas.
-3. Se o progresso/durabilidade do kit é preservado ao sair e retornar à profissão.
-4. Definição final das taxas, limites, denominações e destino das taxas.
-5. Forma de acesso ao mercado de jogadores.
-6. Versão exata da API Paper para compilar e testar contra o servidor-alvo.
+1. Definir se os limites de ferramentas usam nível geral do jogador ou nível da profissão ativa.
+2. Confirmar os valores finais de espaços para possuir ferramentas e quantidade equipada simultaneamente; os valores atuais são configuráveis e iniciais.
+3. Definir o destino contábil das taxas bancárias.
+4. Definir acesso e regras do mercado de jogadores, caso ainda seja desejado.
+5. Concluir testes integrados em servidor Paper 26.3 com Citizens, EasyClaim e os inventários do servidor.
