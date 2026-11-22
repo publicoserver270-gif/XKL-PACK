@@ -1,0 +1,6464 @@
+settings:
+  dynamic-shift-rate: 0.0005
+  menu-title: "<dark_gray><bold>LOJA DE VENDAS</bold></dark_gray>"
+
+categories:
+  farming:
+    display-name: "<green><bold>AGRICULTURA</bold></green>"
+    icon: "WHEAT"
+    description: "Plantações, colheitas e alimentos."
+    slot: 10
+
+  mining:
+    display-name: "<aqua><bold>MINÉRIOS</bold></aqua>"
+    icon: "DIAMOND_PICKAXE"
+    description: "Minérios, materiais brutos, pepitas, barras e gemas."
+    slot: 12
+
+  mob_drops:
+    display-name: "<red><bold>DROPS DE MONSTROS</bold></red>"
+    icon: "ROTTEN_FLESH"
+    description: "Itens obtidos de monstros e animais."
+    slot: 14
+
+  blocks:
+    display-name: "<gold><bold>BLOCOS E PEDRAS</bold></gold>"
+    icon: "BRICKS"
+    description: "Pedras, blocos processados e materiais de construção."
+    slot: 16
+
+  wood:
+    display-name: "<dark_green><bold>MADEIRAS</bold></dark_green>"
+    icon: "OAK_LOG"
+    description: "Troncos, madeiras, tábuas, folhas e mudas."
+    slot: 22
+
+items:
+  wheat:
+    material: "WHEAT"
+    category: "farming"
+    display-name: "<green>Trigo</green>"
+    buy-price: 4.00
+    sell-price: 3.00
+    min-buy-price: 2.00
+    max-buy-price: 10.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  wheat_seeds:
+    material: "WHEAT_SEEDS"
+    category: "farming"
+    display-name: "<green>Sementes de Trigo</green>"
+    buy-price: 999999.00
+    sell-price: 0.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.25
+    max-sell-price: 1.00
+
+  carrot:
+    material: "CARROT"
+    category: "farming"
+    display-name: "<green>Cenoura</green>"
+    buy-price: 5.00
+    sell-price: 3.00
+    min-buy-price: 2.50
+    max-buy-price: 12.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  potato:
+    material: "POTATO"
+    category: "farming"
+    display-name: "<green>Batata</green>"
+    buy-price: 5.00
+    sell-price: 3.00
+    min-buy-price: 2.50
+    max-buy-price: 12.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  poisonous_potato:
+    material: "POISONOUS_POTATO"
+    category: "farming"
+    display-name: "<green>Batata Venenosa</green>"
+    buy-price: 999999.00
+    sell-price: 0.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.25
+    max-sell-price: 1.00
+
+  beetroot:
+    material: "BEETROOT"
+    category: "farming"
+    display-name: "<green>Beterraba</green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  beetroot_seeds:
+    material: "BEETROOT_SEEDS"
+    category: "farming"
+    display-name: "<green>Sementes de Beterraba</green>"
+    buy-price: 999999.00
+    sell-price: 0.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.25
+    max-sell-price: 1.00
+
+  sugar_cane:
+    material: "SUGAR_CANE"
+    category: "farming"
+    display-name: "<green>Cana-de-açúcar</green>"
+    buy-price: 6.00
+    sell-price: 4.00
+    min-buy-price: 3.00
+    max-buy-price: 15.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  pumpkin:
+    material: "PUMPKIN"
+    category: "farming"
+    display-name: "<green>Abóbora</green>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  melon_slice:
+    material: "MELON_SLICE"
+    category: "farming"
+    display-name: "<green>Fatia de Melancia</green>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  melon:
+    material: "MELON"
+    category: "farming"
+    display-name: "<green>Bloco de Melancia</green>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  pumpkin_seeds:
+    material: "PUMPKIN_SEEDS"
+    category: "farming"
+    display-name: "<green>Sementes de Abóbora</green>"
+    buy-price: 999999.00
+    sell-price: 0.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.25
+    max-sell-price: 1.00
+
+  melon_seeds:
+    material: "MELON_SEEDS"
+    category: "farming"
+    display-name: "<green>Sementes de Melancia</green>"
+    buy-price: 999999.00
+    sell-price: 0.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.25
+    max-sell-price: 1.00
+
+  cocoa_beans:
+    material: "COCOA_BEANS"
+    category: "farming"
+    display-name: "<green>Sementes de Cacau</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  sweet_berries:
+    material: "SWEET_BERRIES"
+    category: "farming"
+    display-name: "<green>Frutas Silvestres</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  glow_berries:
+    material: "GLOW_BERRIES"
+    category: "farming"
+    display-name: "<green>Bagas Luminosas</green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  bamboo:
+    material: "BAMBOO"
+    category: "farming"
+    display-name: "<green>Bambu</green>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  cactus:
+    material: "CACTUS"
+    category: "farming"
+    display-name: "<green>Cacto</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  kelp:
+    material: "KELP"
+    category: "farming"
+    display-name: "<green>Alga</green>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  dried_kelp:
+    material: "DRIED_KELP"
+    category: "farming"
+    display-name: "<green>Alga Seca</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  apple:
+    material: "APPLE"
+    category: "farming"
+    display-name: "<green>Maçã</green>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  bread:
+    material: "BREAD"
+    category: "farming"
+    display-name: "<green>Pão</green>"
+    buy-price: 999999.00
+    sell-price: 10.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 5.00
+    max-sell-price: 20.00
+
+  cookie:
+    material: "COOKIE"
+    category: "farming"
+    display-name: "<green>Biscoito</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  sugar:
+    material: "SUGAR"
+    category: "farming"
+    display-name: "<green>Açúcar</green>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  hay_block:
+    material: "HAY_BLOCK"
+    category: "farming"
+    display-name: "<green>Fardo de Feno</green>"
+    buy-price: 999999.00
+    sell-price: 30.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 15.00
+    max-sell-price: 60.00
+
+  honeycomb:
+    material: "HONEYCOMB"
+    category: "farming"
+    display-name: "<green>Favo de Mel</green>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  honey_bottle:
+    material: "HONEY_BOTTLE"
+    category: "farming"
+    display-name: "<green>Garrafa de Mel</green>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  egg:
+    material: "EGG"
+    category: "farming"
+    display-name: "<green>Ovo</green>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  coal:
+    material: "COAL"
+    category: "mining"
+    display-name: "<aqua>Carvão</aqua>"
+    buy-price: 10.00
+    sell-price: 5.00
+    min-buy-price: 5.00
+    max-buy-price: 25.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  charcoal:
+    material: "CHARCOAL"
+    category: "mining"
+    display-name: "<aqua>Carvão Vegetal</aqua>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  raw_iron:
+    material: "RAW_IRON"
+    category: "mining"
+    display-name: "<aqua>Ferro Bruto</aqua>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  iron_nugget:
+    material: "IRON_NUGGET"
+    category: "mining"
+    display-name: "<aqua>Pepita de Ferro</aqua>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  iron_ingot:
+    material: "IRON_INGOT"
+    category: "mining"
+    display-name: "<aqua>Barra de Ferro</aqua>"
+    buy-price: 25.00
+    sell-price: 18.00
+    min-buy-price: 12.50
+    max-buy-price: 60.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  iron_block:
+    material: "IRON_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Ferro</aqua>"
+    buy-price: 999999.00
+    sell-price: 180.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 90.00
+    max-sell-price: 360.00
+
+  raw_gold:
+    material: "RAW_GOLD"
+    category: "mining"
+    display-name: "<aqua>Ouro Bruto</aqua>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  gold_nugget:
+    material: "GOLD_NUGGET"
+    category: "mining"
+    display-name: "<aqua>Pepita de Ouro</aqua>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  gold_ingot:
+    material: "GOLD_INGOT"
+    category: "mining"
+    display-name: "<aqua>Barra de Ouro</aqua>"
+    buy-price: 50.00
+    sell-price: 18.00
+    min-buy-price: 25.00
+    max-buy-price: 120.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  gold_block:
+    material: "GOLD_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Ouro</aqua>"
+    buy-price: 999999.00
+    sell-price: 190.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 95.00
+    max-sell-price: 380.00
+
+  raw_copper:
+    material: "RAW_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Bruto</aqua>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  copper_ingot:
+    material: "COPPER_INGOT"
+    category: "mining"
+    display-name: "<aqua>Barra de Cobre</aqua>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  copper_nugget:
+    material: "COPPER_NUGGET"
+    category: "mining"
+    display-name: "<aqua>Pepita de Cobre</aqua>"
+    buy-price: 999999.00
+    sell-price: 1.33
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.67
+    max-sell-price: 2.66
+
+  copper_block:
+    material: "COPPER_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Cobre</aqua>"
+    buy-price: 999999.00
+    sell-price: 125.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 62.50
+    max-sell-price: 250.00
+
+  diamond:
+    material: "DIAMOND"
+    category: "mining"
+    display-name: "<aqua>Diamante</aqua>"
+    buy-price: 200.00
+    sell-price: 100.00
+    min-buy-price: 100.00
+    max-buy-price: 500.00
+    min-sell-price: 50.00
+    max-sell-price: 200.00
+
+  diamond_block:
+    material: "DIAMOND_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Diamante</aqua>"
+    buy-price: 999999.00
+    sell-price: 1050.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 525.00
+    max-sell-price: 2100.00
+
+  emerald:
+    material: "EMERALD"
+    category: "mining"
+    display-name: "<aqua>Esmeralda</aqua>"
+    buy-price: 999999.00
+    sell-price: 75.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 37.50
+    max-sell-price: 150.00
+
+  emerald_block:
+    material: "EMERALD_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Esmeralda</aqua>"
+    buy-price: 999999.00
+    sell-price: 800.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 400.00
+    max-sell-price: 1600.00
+
+  lapis_lazuli:
+    material: "LAPIS_LAZULI"
+    category: "mining"
+    display-name: "<aqua>Lápis-Lazúli</aqua>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  lapis_block:
+    material: "LAPIS_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Lápis-Lazúli</aqua>"
+    buy-price: 999999.00
+    sell-price: 40.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 20.00
+    max-sell-price: 80.00
+
+  redstone:
+    material: "REDSTONE"
+    category: "mining"
+    display-name: "<aqua>Pó de Redstone</aqua>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  redstone_block:
+    material: "REDSTONE_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Redstone</aqua>"
+    buy-price: 999999.00
+    sell-price: 30.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 15.00
+    max-sell-price: 60.00
+
+  quartz:
+    material: "QUARTZ"
+    category: "mining"
+    display-name: "<aqua>Quartzo do Nether</aqua>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  quartz_block:
+    material: "QUARTZ_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Quartzo</aqua>"
+    buy-price: 999999.00
+    sell-price: 85.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 42.50
+    max-sell-price: 170.00
+
+  amethyst_shard:
+    material: "AMETHYST_SHARD"
+    category: "mining"
+    display-name: "<aqua>Fragmento de Ametista</aqua>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  amethyst_block:
+    material: "AMETHYST_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Ametista</aqua>"
+    buy-price: 999999.00
+    sell-price: 55.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 27.50
+    max-sell-price: 110.00
+
+  netherite_scrap:
+    material: "NETHERITE_SCRAP"
+    category: "mining"
+    display-name: "<aqua>Fragmento de Netherita</aqua>"
+    buy-price: 999999.00
+    sell-price: 180.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 90.00
+    max-sell-price: 360.00
+
+  netherite_ingot:
+    material: "NETHERITE_INGOT"
+    category: "mining"
+    display-name: "<aqua>Barra de Netherita</aqua>"
+    buy-price: 1500.00
+    sell-price: 800.00
+    min-buy-price: 800.00
+    max-buy-price: 3500.00
+    min-sell-price: 400.00
+    max-sell-price: 1600.00
+
+  netherite_block:
+    material: "NETHERITE_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Netherita</aqua>"
+    buy-price: 999999.00
+    sell-price: 8500.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4250.00
+    max-sell-price: 17000.00
+
+  ancient_debris:
+    material: "ANCIENT_DEBRIS"
+    category: "mining"
+    display-name: "<aqua>Detrito Ancestral</aqua>"
+    buy-price: 999999.00
+    sell-price: 120.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 60.00
+    max-sell-price: 240.00
+
+  rotten_flesh:
+    material: "ROTTEN_FLESH"
+    category: "mob_drops"
+    display-name: "<red>Carne Podre</red>"
+    buy-price: 2.00
+    sell-price: 1.00
+    min-buy-price: 1.00
+    max-buy-price: 5.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  bone:
+    material: "BONE"
+    category: "mob_drops"
+    display-name: "<red>Osso</red>"
+    buy-price: 6.00
+    sell-price: 3.00
+    min-buy-price: 3.00
+    max-buy-price: 15.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  bone_meal:
+    material: "BONE_MEAL"
+    category: "mob_drops"
+    display-name: "<red>Farinha de Osso</red>"
+    buy-price: 999999.00
+    sell-price: 1.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.75
+    max-sell-price: 3.00
+
+  string:
+    material: "STRING"
+    category: "mob_drops"
+    display-name: "<red>Linha</red>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  gunpowder:
+    material: "GUNPOWDER"
+    category: "mob_drops"
+    display-name: "<red>Pólvora</red>"
+    buy-price: 15.00
+    sell-price: 8.00
+    min-buy-price: 7.50
+    max-buy-price: 35.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  ender_pearl:
+    material: "ENDER_PEARL"
+    category: "mob_drops"
+    display-name: "<red>Pérola do Fim</red>"
+    buy-price: 40.00
+    sell-price: 20.00
+    min-buy-price: 20.00
+    max-buy-price: 100.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  spider_eye:
+    material: "SPIDER_EYE"
+    category: "mob_drops"
+    display-name: "<red>Olho de Aranha</red>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  fermented_spider_eye:
+    material: "FERMENTED_SPIDER_EYE"
+    category: "mob_drops"
+    display-name: "<red>Olho de Aranha Fermentado</red>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  blaze_rod:
+    material: "BLAZE_ROD"
+    category: "mob_drops"
+    display-name: "<red>Vara Incandescente</red>"
+    buy-price: 999999.00
+    sell-price: 15.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 7.50
+    max-sell-price: 30.00
+
+  blaze_powder:
+    material: "BLAZE_POWDER"
+    category: "mob_drops"
+    display-name: "<red>Pó de Blaze</red>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  ghast_tear:
+    material: "GHAST_TEAR"
+    category: "mob_drops"
+    display-name: "<red>Lágrima de Ghast</red>"
+    buy-price: 999999.00
+    sell-price: 25.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 12.50
+    max-sell-price: 50.00
+
+  magma_cream:
+    material: "MAGMA_CREAM"
+    category: "mob_drops"
+    display-name: "<red>Creme de Magma</red>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  slime_ball:
+    material: "SLIME_BALL"
+    category: "mob_drops"
+    display-name: "<red>Bola de Slime</red>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  phantom_membrane:
+    material: "PHANTOM_MEMBRANE"
+    category: "mob_drops"
+    display-name: "<red>Membrana de Phantom</red>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  shulker_shell:
+    material: "SHULKER_SHELL"
+    category: "mob_drops"
+    display-name: "<red>Casco de Shulker</red>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  rabbit_hide:
+    material: "RABBIT_HIDE"
+    category: "mob_drops"
+    display-name: "<red>Pele de Coelho</red>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  rabbit_foot:
+    material: "RABBIT_FOOT"
+    category: "mob_drops"
+    display-name: "<red>Pé de Coelho</red>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  leather:
+    material: "LEATHER"
+    category: "mob_drops"
+    display-name: "<red>Couro</red>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  feather:
+    material: "FEATHER"
+    category: "mob_drops"
+    display-name: "<red>Pena</red>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  ink_sac:
+    material: "INK_SAC"
+    category: "mob_drops"
+    display-name: "<red>Bolsa de Tinta</red>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  glow_ink_sac:
+    material: "GLOW_INK_SAC"
+    category: "mob_drops"
+    display-name: "<red>Bolsa de Tinta Brilhante</red>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  nautilus_shell:
+    material: "NAUTILUS_SHELL"
+    category: "mob_drops"
+    display-name: "<red>Concha de Náutilo</red>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  prismarine_shard:
+    material: "PRISMARINE_SHARD"
+    category: "mob_drops"
+    display-name: "<red>Fragmento de Prismarinho</red>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  prismarine_crystals:
+    material: "PRISMARINE_CRYSTALS"
+    category: "mob_drops"
+    display-name: "<red>Cristais de Prismarinho</red>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  turtle_scute:
+    material: "TURTLE_SCUTE"
+    category: "mob_drops"
+    display-name: "<red>Escama de Tartaruga</red>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  armadillo_scute:
+    material: "ARMADILLO_SCUTE"
+    category: "mob_drops"
+    display-name: "<red>Escama de Tatu</red>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  breeze_rod:
+    material: "BREEZE_ROD"
+    category: "mob_drops"
+    display-name: "<red>Vara de Breeze</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  wind_charge:
+    material: "WIND_CHARGE"
+    category: "mob_drops"
+    display-name: "<red>Carga de Vento</red>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  stone:
+    material: "STONE"
+    category: "blocks"
+    display-name: "<gray>Pedra</gray>"
+    buy-price: 2.00
+    sell-price: 1.00
+    min-buy-price: 1.00
+    max-buy-price: 6.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  cobblestone:
+    material: "COBBLESTONE"
+    category: "blocks"
+    display-name: "<gray>Pedregulho</gray>"
+    buy-price: 1.00
+    sell-price: 0.50
+    min-buy-price: 0.50    max-buy-price: 4.00
+    min-sell-price: 0.25
+    max-sell-price: 1.00
+
+  deepslate:
+    material: "DEEPSLATE"
+    category: "blocks"
+    display-name: "<gray>Ardósia</gray>"
+    buy-price: 999999.00
+    sell-price: 1.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.75
+    max-sell-price: 3.00
+
+  cobbled_deepslate:
+    material: "COBBLED_DEEPSLATE"
+    category: "blocks"
+    display-name: "<gray>Ardósia Rochosa</gray>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  granite:
+    material: "GRANITE"
+    category: "blocks"
+    display-name: "<gray>Granito</gray>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  diorite:
+    material: "DIORITE"
+    category: "blocks"
+    display-name: "<gray>Diorito</gray>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  andesite:
+    material: "ANDESITE"
+    category: "blocks"
+    display-name: "<gray>Andesito</gray>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  tuff:
+    material: "TUFF"
+    category: "blocks"
+    display-name: "<gray>Tufo</gray>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  calcite:
+    material: "CALCITE"
+    category: "blocks"
+    display-name: "<gray>Calcita</gray>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  dripstone_block:
+    material: "DRIPSTONE_BLOCK"
+    category: "blocks"
+    display-name: "<gray>Bloco de Espeleotema</gray>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  basalt:
+    material: "BASALT"
+    category: "blocks"
+    display-name: "<gray>Basalto</gray>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  blackstone:
+    material: "BLACKSTONE"
+    category: "blocks"
+    display-name: "<gray>Pedra-Negra</gray>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  netherrack:
+    material: "NETHERRACK"
+    category: "blocks"
+    display-name: "<gray>Netherrack</gray>"
+    buy-price: 999999.00
+    sell-price: 0.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.25
+    max-sell-price: 1.00
+
+  end_stone:
+    material: "END_STONE"
+    category: "blocks"
+    display-name: "<gray>Pedra do End</gray>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  obsidian:
+    material: "OBSIDIAN"
+    category: "blocks"
+    display-name: "<gray>Obsidiana</gray>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  crying_obsidian:
+    material: "CRYING_OBSIDIAN"
+    category: "blocks"
+    display-name: "<gray>Obsidiana Chorona</gray>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  bricks:
+    material: "BRICKS"
+    category: "blocks"
+    display-name: "<gray>Bloco de Tijolos</gray>"
+    buy-price: 999999.00
+    sell-price: 15.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 7.50
+    max-sell-price: 30.00
+
+  stone_bricks:
+    material: "STONE_BRICKS"
+    category: "blocks"
+    display-name: "<gray>Tijolos de Pedra</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  clay_ball:
+    material: "CLAY_BALL"
+    category: "blocks"
+    display-name: "<gray>Bola de Argila</gray>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  clay:
+    material: "CLAY"
+    category: "blocks"
+    display-name: "<gray>Bloco de Argila</gray>"
+    buy-price: 999999.00
+    sell-price: 10.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 5.00
+    max-sell-price: 20.00
+
+  terracotta:
+    material: "TERRACOTTA"
+    category: "blocks"
+    display-name: "<gray>Terracota</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  glass:
+    material: "GLASS"
+    category: "blocks"
+    display-name: "<gray>Vidro</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  mud:
+    material: "MUD"
+    category: "blocks"
+    display-name: "<gray>Lama</gray>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  packed_mud:
+    material: "PACKED_MUD"
+    category: "blocks"
+    display-name: "<gray>Lama Compactada</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  mud_bricks:
+    material: "MUD_BRICKS"
+    category: "blocks"
+    display-name: "<gray>Tijolos de Lama</gray>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  prismarine:
+    material: "PRISMARINE"
+    category: "blocks"
+    display-name: "<gray>Prismarinho</gray>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  sea_lantern:
+    material: "SEA_LANTERN"
+    category: "blocks"
+    display-name: "<gray>Lanterna do Mar</gray>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  resin_clump:
+    material: "RESIN_CLUMP"
+    category: "blocks"
+    display-name: "<gray>Grumo de Resina</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  resin_brick:
+    material: "RESIN_BRICK"
+    category: "blocks"
+    display-name: "<gray>Tijolo de Resina</gray>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  resin_block:
+    material: "RESIN_BLOCK"
+    category: "blocks"
+    display-name: "<gray>Bloco de Resina</gray>"
+    buy-price: 999999.00
+    sell-price: 75.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 37.50
+    max-sell-price: 150.00
+
+  creaking_heart:
+    material: "CREAKING_HEART"
+    category: "blocks"
+    display-name: "<gray>Coração Rangente</gray>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  pale_moss_block:
+    material: "PALE_MOSS_BLOCK"
+    category: "blocks"
+    display-name: "<gray>Bloco de Musgo Pálido</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  pale_hanging_moss:
+    material: "PALE_HANGING_MOSS"
+    category: "blocks"
+    display-name: "<gray>Musgo Pálido Suspenso</gray>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  pale_moss_carpet:
+    material: "PALE_MOSS_CARPET"
+    category: "blocks"
+    display-name: "<gray>Tapete de Musgo Pálido</gray>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  wildflowers:
+    material: "WILDFLOWERS"
+    category: "farming"
+    display-name: "<green>Flores Silvestres</green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  leaf_litter:
+    material: "LEAF_LITTER"
+    category: "blocks"
+    display-name: "<gray>Folhiço</gray>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  bush:
+    material: "BUSH"
+    category: "farming"
+    display-name: "<green>Arbusto</green>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  firefly_bush:
+    material: "FIREFLY_BUSH"
+    category: "farming"
+    display-name: "<green>Arbusto de Vaga-lumes</green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  cactus_flower:
+    material: "CACTUS_FLOWER"
+    category: "farming"
+    display-name: "<green>Flor de Cacto</green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  short_dry_grass:
+    material: "SHORT_DRY_GRASS"
+    category: "farming"
+    display-name: "<green>Grama Seca Baixa</green>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  tall_dry_grass:
+    material: "TALL_DRY_GRASS"
+    category: "farming"
+    display-name: "<green>Grama Seca Alta</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  pink_petals:
+    material: "PINK_PETALS"
+    category: "farming"
+    display-name: "<green>Pétalas Rosadas</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  dried_ghast:
+    material: "DRIED_GHAST"
+    category: "mob_drops"
+    display-name: "<red>Ghast Ressecado</red>"
+    buy-price: 999999.00
+    sell-price: 40.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 20.00
+    max-sell-price: 80.00
+
+  oak_log:
+    material: "OAK_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Carvalho</gold>"
+    buy-price: 8.00
+    sell-price: 4.00
+    min-buy-price: 4.00
+    max-buy-price: 20.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  stripped_oak_log:
+    material: "STRIPPED_OAK_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco Descascado de Carvalho</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  oak_wood:
+    material: "OAK_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Carvalho</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  oak_planks:
+    material: "OAK_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Carvalho</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  oak_leaves:
+    material: "OAK_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Carvalho</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  oak_sapling:
+    material: "OAK_SAPLING"
+    category: "wood"
+    display-name: "<gold>Muda de Carvalho</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  spruce_log:
+    material: "SPRUCE_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Pinheiro</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  stripped_spruce_log:
+    material: "STRIPPED_SPRUCE_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco Descascado de Pinheiro</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  spruce_wood:
+    material: "SPRUCE_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Pinheiro</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  spruce_planks:
+    material: "SPRUCE_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Pinheiro</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  spruce_leaves:
+    material: "SPRUCE_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Pinheiro</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  spruce_sapling:
+    material: "SPRUCE_SAPLING"
+    category: "wood"
+    display-name: "<gold>Muda de Pinheiro</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  birch_log:
+    material: "BIRCH_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Bétula</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  stripped_birch_log:
+    material: "STRIPPED_BIRCH_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco Descascado de Bétula</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  birch_wood:
+    material: "BIRCH_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Bétula</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  birch_planks:
+    material: "BIRCH_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Bétula</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  birch_leaves:
+    material: "BIRCH_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Bétula</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  birch_sapling:
+    material: "BIRCH_SAPLING"
+    category: "wood"
+    display-name: "<gold>Muda de Bétula</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  jungle_log:
+    material: "JUNGLE_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Selva</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  stripped_jungle_log:
+    material: "STRIPPED_JUNGLE_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco Descascado de Selva</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  jungle_wood:
+    material: "JUNGLE_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Selva</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  jungle_planks:
+    material: "JUNGLE_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Selva</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  jungle_leaves:
+    material: "JUNGLE_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Selva</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  jungle_sapling:
+    material: "JUNGLE_SAPLING"
+    category: "wood"
+    display-name: "<gold>Muda de Selva</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  acacia_log:
+    material: "ACACIA_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Acácia</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  stripped_acacia_log:
+    material: "STRIPPED_ACACIA_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco Descascado de Acácia</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  acacia_wood:
+    material: "ACACIA_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Acácia</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  acacia_planks:
+    material: "ACACIA_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Acácia</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  acacia_leaves:
+    material: "ACACIA_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Acácia</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  acacia_sapling:
+    material: "ACACIA_SAPLING"
+    category: "wood"
+    display-name: "<gold>Muda de Acácia</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  dark_oak_log:
+    material: "DARK_OAK_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Carvalho Escuro</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  stripped_dark_oak_log:
+    material: "STRIPPED_DARK_OAK_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco Descascado de Carvalho Escuro</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  dark_oak_wood:
+    material: "DARK_OAK_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Carvalho Escuro</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  dark_oak_planks:
+    material: "DARK_OAK_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Carvalho Escuro</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  dark_oak_leaves:
+    material: "DARK_OAK_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Carvalho Escuro</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  dark_oak_sapling:
+    material: "DARK_OAK_SAPLING"
+    category: "wood"
+    display-name: "<gold>Muda de Carvalho Escuro</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  mangrove_log:
+    material: "MANGROVE_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Mangue</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  stripped_mangrove_log:
+    material: "STRIPPED_MANGROVE_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco Descascado de Mangue</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  mangrove_wood:
+    material: "MANGROVE_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Mangue</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  mangrove_planks:
+    material: "MANGROVE_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Mangue</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  mangrove_leaves:
+    material: "MANGROVE_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Mangue</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  mangrove_sapling:
+    material: "MANGROVE_PROPAGULE"
+    category: "wood"
+    display-name: "<gold>Muda de Mangue</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  cherry_log:
+    material: "CHERRY_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Cerejeira</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  stripped_cherry_log:
+    material: "STRIPPED_CHERRY_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco Descascado de Cerejeira</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  cherry_wood:
+    material: "CHERRY_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Cerejeira</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  cherry_planks:
+    material: "CHERRY_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Cerejeira</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  cherry_leaves:
+    material: "CHERRY_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Cerejeira</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  cherry_sapling:
+    material: "CHERRY_SAPLING"
+    category: "wood"
+    display-name: "<gold>Muda de Cerejeira</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  pale_oak_log:
+    material: "PALE_OAK_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Carvalho Pálido</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  stripped_pale_oak_log:
+    material: "STRIPPED_PALE_OAK_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco Descascado de Carvalho Pálido</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  pale_oak_wood:
+    material: "PALE_OAK_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Carvalho Pálido</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  pale_oak_planks:
+    material: "PALE_OAK_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Carvalho Pálido</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  pale_oak_leaves:
+    material: "PALE_OAK_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Carvalho Pálido</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  pale_oak_sapling:
+    material: "PALE_OAK_SAPLING"
+    category: "wood"
+    display-name: "<gold>Muda de Carvalho Pálido</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  copper_ore:
+    material: "COPPER_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Cobre</aqua>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  deepslate_copper_ore:
+    material: "DEEPSLATE_COPPER_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Cobre de Ardósia</aqua>"
+    buy-price: 999999.00
+    sell-price: 3.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.75
+    max-sell-price: 7.00
+
+  iron_ore:
+    material: "IRON_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Ferro</aqua>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  deepslate_iron_ore:
+    material: "DEEPSLATE_IRON_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Ferro de Ardósia</aqua>"
+    buy-price: 999999.00
+    sell-price: 4.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.25
+    max-sell-price: 9.00
+
+  gold_ore:
+    material: "GOLD_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Ouro</aqua>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  deepslate_gold_ore:
+    material: "DEEPSLATE_GOLD_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Ouro de Ardósia</aqua>"
+    buy-price: 999999.00
+    sell-price: 5.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.75
+    max-sell-price: 11.00
+
+  coal_ore:
+    material: "COAL_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Carvão</aqua>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  deepslate_coal_ore:
+    material: "DEEPSLATE_COAL_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Carvão de Ardósia</aqua>"
+    buy-price: 999999.00
+    sell-price: 2.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.25
+    max-sell-price: 5.00
+
+  diamond_ore:
+    material: "DIAMOND_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Diamante</aqua>"
+    buy-price: 999999.00
+    sell-price: 45.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 22.50
+    max-sell-price: 90.00
+
+  deepslate_diamond_ore:
+    material: "DEEPSLATE_DIAMOND_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Diamante de Ardósia</aqua>"
+    buy-price: 999999.00
+    sell-price: 50.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 25.00
+    max-sell-price: 100.00
+
+  emerald_ore:
+    material: "EMERALD_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Esmeralda</aqua>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  deepslate_emerald_ore:
+    material: "DEEPSLATE_EMERALD_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Esmeralda de Ardósia</aqua>"
+    buy-price: 999999.00
+    sell-price: 40.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 20.00
+    max-sell-price: 80.00
+
+  lapis_ore:
+    material: "LAPIS_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Lápis-Lazúli</aqua>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  deepslate_lapis_ore:
+    material: "DEEPSLATE_LAPIS_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Lápis-Lazúli de Ardósia</aqua>"
+    buy-price: 999999.00
+    sell-price: 3.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.75
+    max-sell-price: 7.00
+
+  redstone_ore:
+    material: "REDSTONE_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Redstone</aqua>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  deepslate_redstone_ore:
+    material: "DEEPSLATE_REDSTONE_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Redstone de Ardósia</aqua>"
+    buy-price: 999999.00
+    sell-price: 2.50
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.25
+    max-sell-price: 5.00
+
+  nether_gold_ore:
+    material: "NETHER_GOLD_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Ouro do Nether</aqua>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  nether_quartz_ore:
+    material: "NETHER_QUARTZ_ORE"
+    category: "mining"
+    display-name: "<aqua>Minério de Quartzo do Nether</aqua>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  cut_copper:
+    material: "CUT_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Cortado</aqua>"
+    buy-price: 999999.00
+    sell-price: 14.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 7.00
+    max-sell-price: 28.00
+
+  exposed_copper:
+    material: "EXPOSED_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Exposto</aqua>"
+    buy-price: 999999.00
+    sell-price: 13.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.50
+    max-sell-price: 26.00
+
+  weathered_copper:
+    material: "WEATHERED_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Envelhecido</aqua>"
+    buy-price: 999999.00
+    sell-price: 14.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 7.00
+    max-sell-price: 28.00
+
+  oxidized_copper:
+    material: "OXIDIZED_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Oxidado</aqua>"
+    buy-price: 999999.00
+    sell-price: 15.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 7.50
+    max-sell-price: 30.00
+
+  waxed_copper_block:
+    material: "WAXED_COPPER_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Cobre Encerado</aqua>"
+    buy-price: 999999.00
+    sell-price: 130.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 65.00
+    max-sell-price: 260.00
+
+  waxed_cut_copper:
+    material: "WAXED_CUT_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Cortado Encerado</aqua>"
+    buy-price: 999999.00
+    sell-price: 145.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 72.50
+    max-sell-price: 290.00
+
+  copper_grate:
+    material: "COPPER_GRATE"
+    category: "blocks"
+    display-name: "<gray>Grade de Cobre</gray>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  copper_bulb:
+    material: "COPPER_BULB"
+    category: "blocks"
+    display-name: "<gray>Lâmpada de Cobre</gray>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  copper_door:
+    material: "COPPER_DOOR"
+    category: "blocks"
+    display-name: "<gray>Porta de Cobre</gray>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  copper_trapdoor:
+    material: "COPPER_TRAPDOOR"
+    category: "blocks"
+    display-name: "<gray>Alçapão de Cobre</gray>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  lightning_rod:
+    material: "LIGHTNING_ROD"
+    category: "blocks"
+    display-name: "<gray>Para-raios</gray>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  poplar_log:
+    material: "POPLAR_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  stripped_poplar_log:
+    material: "STRIPPED_POPLAR_LOG"
+    category: "wood"
+    display-name: "<gold>Tronco de Álamo Descascado</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  poplar_wood:
+    material: "POPLAR_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  stripped_poplar_wood:
+    material: "STRIPPED_POPLAR_WOOD"
+    category: "wood"
+    display-name: "<gold>Madeira de Álamo Descascada</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  poplar_planks:
+    material: "POPLAR_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  poplar_sapling:
+    material: "POPLAR_SAPLING"
+    category: "wood"
+    display-name: "<gold>Muda de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  red_poplar_leaves:
+    material: "RED_POPLAR_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Álamo Vermelhas</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  orange_poplar_leaves:
+    material: "ORANGE_POPLAR_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Álamo Laranjas</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  yellow_poplar_leaves:
+    material: "YELLOW_POPLAR_LEAVES"
+    category: "wood"
+    display-name: "<gold>Folhas de Álamo Amarelas</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  poplar_sign:
+    material: "POPLAR_SIGN"
+    category: "wood"
+    display-name: "<gold>Placa de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  poplar_hanging_sign:
+    material: "POPLAR_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placa Suspensa de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  poplar_door:
+    material: "POPLAR_DOOR"
+    category: "wood"
+    display-name: "<gold>Porta de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  poplar_boat:
+    material: "POPLAR_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  poplar_chest_boat:
+    material: "POPLAR_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  shelf_mushroom:
+    material: "SHELF_MUSHROOM"
+    category: "farming"
+    display-name: "<green>Cogumelo de Prateleira</green>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  red_shrub:
+    material: "RED_SHRUB"
+    category: "farming"
+    display-name: "<green>Arbusto Vermelho</green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  straw_bed:
+    material: "STRAW_BED"
+    category: "blocks"
+    display-name: "<gray>Cama de Palha</gray>"
+    buy-price: 999999.00
+    sell-price: 25.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 12.50
+    max-sell-price: 50.00
+
+  white_cushion:
+    material: "WHITE_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Branca</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  white_wool_stairs:
+    material: "WHITE_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã White</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  white_wool_slab:
+    material: "WHITE_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã White</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  white_concrete_stairs:
+    material: "WHITE_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto White</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  white_concrete_slab:
+    material: "WHITE_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto White</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  orange_wool_stairs:
+    material: "ORANGE_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Orange</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  orange_wool_slab:
+    material: "ORANGE_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Orange</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  orange_concrete_stairs:
+    material: "ORANGE_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Orange</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  orange_concrete_slab:
+    material: "ORANGE_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Orange</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  magenta_wool_stairs:
+    material: "MAGENTA_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Magenta</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  magenta_wool_slab:
+    material: "MAGENTA_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Magenta</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  magenta_concrete_stairs:
+    material: "MAGENTA_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Magenta</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  magenta_concrete_slab:
+    material: "MAGENTA_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Magenta</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  light_blue_wool_stairs:
+    material: "LIGHT_BLUE_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Light Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  light_blue_wool_slab:
+    material: "LIGHT_BLUE_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Light Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  light_blue_concrete_stairs:
+    material: "LIGHT_BLUE_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Light Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  light_blue_concrete_slab:
+    material: "LIGHT_BLUE_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Light Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  yellow_wool_stairs:
+    material: "YELLOW_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Yellow</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  yellow_wool_slab:
+    material: "YELLOW_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Yellow</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  yellow_concrete_stairs:
+    material: "YELLOW_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Yellow</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  yellow_concrete_slab:
+    material: "YELLOW_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Yellow</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  lime_wool_stairs:
+    material: "LIME_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Lime</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  lime_wool_slab:
+    material: "LIME_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Lime</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  lime_concrete_stairs:
+    material: "LIME_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Lime</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  lime_concrete_slab:
+    material: "LIME_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Lime</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  pink_wool_stairs:
+    material: "PINK_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Pink</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  pink_wool_slab:
+    material: "PINK_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Pink</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  pink_concrete_stairs:
+    material: "PINK_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Pink</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  pink_concrete_slab:
+    material: "PINK_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Pink</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  gray_wool_stairs:
+    material: "GRAY_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  gray_wool_slab:
+    material: "GRAY_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  gray_concrete_stairs:
+    material: "GRAY_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  gray_concrete_slab:
+    material: "GRAY_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  light_gray_wool_stairs:
+    material: "LIGHT_GRAY_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Light Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  light_gray_wool_slab:
+    material: "LIGHT_GRAY_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Light Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  light_gray_concrete_stairs:
+    material: "LIGHT_GRAY_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Light Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  light_gray_concrete_slab:
+    material: "LIGHT_GRAY_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Light Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  cyan_wool_stairs:
+    material: "CYAN_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Cyan</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  cyan_wool_slab:
+    material: "CYAN_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Cyan</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  cyan_concrete_stairs:
+    material: "CYAN_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Cyan</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  cyan_concrete_slab:
+    material: "CYAN_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Cyan</gray>"
+    buy-price: 999999.00    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  purple_wool_stairs:
+    material: "PURPLE_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Purple</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  purple_wool_slab:
+    material: "PURPLE_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Purple</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  purple_concrete_stairs:
+    material: "PURPLE_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Purple</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  purple_concrete_slab:
+    material: "PURPLE_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Purple</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  blue_wool_stairs:
+    material: "BLUE_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  blue_wool_slab:
+    material: "BLUE_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  blue_concrete_stairs:
+    material: "BLUE_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  blue_concrete_slab:
+    material: "BLUE_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  brown_wool_stairs:
+    material: "BROWN_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Brown</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  brown_wool_slab:
+    material: "BROWN_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Brown</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  brown_concrete_stairs:
+    material: "BROWN_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Brown</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  brown_concrete_slab:
+    material: "BROWN_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Brown</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  green_wool_stairs:
+    material: "GREEN_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Green</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  green_wool_slab:
+    material: "GREEN_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Green</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  green_concrete_stairs:
+    material: "GREEN_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Green</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  green_concrete_slab:
+    material: "GREEN_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Green</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  red_wool_stairs:
+    material: "RED_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Red</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  red_wool_slab:
+    material: "RED_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Red</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  red_concrete_stairs:
+    material: "RED_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Red</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  red_concrete_slab:
+    material: "RED_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Red</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  black_wool_stairs:
+    material: "BLACK_WOOL_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Lã Black</gray>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  black_wool_slab:
+    material: "BLACK_WOOL_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Lã Black</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  black_concrete_stairs:
+    material: "BLACK_CONCRETE_STAIRS"
+    category: "blocks"
+    display-name: "<gray>Escadas de Concreto Black</gray>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  black_concrete_slab:
+    material: "BLACK_CONCRETE_SLAB"
+    category: "blocks"
+    display-name: "<gray>Lajes de Concreto Black</gray>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  exposed_cut_copper:
+    material: "EXPOSED_CUT_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Cortado Exposto</aqua>"
+    buy-price: 999999.00
+    sell-price: 15.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 7.50
+    max-sell-price: 30.00
+
+  weathered_cut_copper:
+    material: "WEATHERED_CUT_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Cortado Envelhecido</aqua>"
+    buy-price: 999999.00
+    sell-price: 16.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 8.00
+    max-sell-price: 32.00
+
+  oxidized_cut_copper:
+    material: "OXIDIZED_CUT_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Cortado Oxidado</aqua>"
+    buy-price: 999999.00
+    sell-price: 17.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 8.50
+    max-sell-price: 34.00
+
+  waxed_exposed_copper:
+    material: "WAXED_EXPOSED_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Exposto Encerado</aqua>"
+    buy-price: 999999.00
+    sell-price: 14.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 7.00
+    max-sell-price: 28.00
+
+  waxed_weathered_copper:
+    material: "WAXED_WEATHERED_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Envelhecido Encerado</aqua>"
+    buy-price: 999999.00
+    sell-price: 15.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 7.50
+    max-sell-price: 30.00
+
+  waxed_oxidized_copper:
+    material: "WAXED_OXIDIZED_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Oxidado Encerado</aqua>"
+    buy-price: 999999.00
+    sell-price: 16.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 8.00
+    max-sell-price: 32.00
+
+  waxed_exposed_cut_copper:
+    material: "WAXED_EXPOSED_CUT_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Cortado Exposto Encerado</aqua>"
+    buy-price: 999999.00
+    sell-price: 16.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 8.00
+    max-sell-price: 32.00
+
+  waxed_weathered_cut_copper:
+    material: "WAXED_WEATHERED_CUT_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Cortado Envelhecido Encerado</aqua>"
+    buy-price: 999999.00
+    sell-price: 17.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 8.50
+    max-sell-price: 34.00
+
+  waxed_oxidized_cut_copper:
+    material: "WAXED_OXIDIZED_CUT_COPPER"
+    category: "mining"
+    display-name: "<aqua>Cobre Cortado Oxidado Encerado</aqua>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  exposed_copper_grate:
+    material: "EXPOSED_COPPER_GRATE"
+    category: "blocks"
+    display-name: "<gray>Grade de Cobre Exposta</gray>"
+    buy-price: 999999.00
+    sell-price: 19.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.50
+    max-sell-price: 38.00
+
+  weathered_copper_grate:
+    material: "WEATHERED_COPPER_GRATE"
+    category: "blocks"
+    display-name: "<gray>Grade de Cobre Envelhecida</gray>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  oxidized_copper_grate:
+    material: "OXIDIZED_COPPER_GRATE"
+    category: "blocks"
+    display-name: "<gray>Grade de Cobre Oxidada</gray>"
+    buy-price: 999999.00
+    sell-price: 21.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.50
+    max-sell-price: 42.00
+
+  exposed_copper_bulb:
+    material: "EXPOSED_COPPER_BULB"
+    category: "blocks"
+    display-name: "<gray>Lâmpada de Cobre Exposta</gray>"
+    buy-price: 999999.00
+    sell-price: 21.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.50
+    max-sell-price: 42.00
+
+  weathered_copper_bulb:
+    material: "WEATHERED_COPPER_BULB"
+    category: "blocks"
+    display-name: "<gray>Lâmpada de Cobre Envelhecida</gray>"
+    buy-price: 999999.00
+    sell-price: 22.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 11.00
+    max-sell-price: 44.00
+
+  oxidized_copper_bulb:
+    material: "OXIDIZED_COPPER_BULB"
+    category: "blocks"
+    display-name: "<gray>Lâmpada de Cobre Oxidada</gray>"
+    buy-price: 999999.00
+    sell-price: 23.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 11.50
+    max-sell-price: 46.00
+
+  exposed_copper_door:
+    material: "EXPOSED_COPPER_DOOR"
+    category: "blocks"
+    display-name: "<gray>Porta de Cobre Exposta</gray>"
+    buy-price: 999999.00
+    sell-price: 21.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.50
+    max-sell-price: 42.00
+
+  weathered_copper_door:
+    material: "WEATHERED_COPPER_DOOR"
+    category: "blocks"
+    display-name: "<gray>Porta de Cobre Envelhecida</gray>"
+    buy-price: 999999.00
+    sell-price: 22.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 11.00
+    max-sell-price: 44.00
+
+  oxidized_copper_door:
+    material: "OXIDIZED_COPPER_DOOR"
+    category: "blocks"
+    display-name: "<gray>Porta de Cobre Oxidada</gray>"
+    buy-price: 999999.00
+    sell-price: 23.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 11.50
+    max-sell-price: 46.00
+
+  exposed_copper_trapdoor:
+    material: "EXPOSED_COPPER_TRAPDOOR"
+    category: "blocks"
+    display-name: "<gray>Alçapão de Cobre Exposto</gray>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  weathered_copper_trapdoor:
+    material: "WEATHERED_COPPER_TRAPDOOR"
+    category: "blocks"
+    display-name: "<gray>Alçapão de Cobre Envelhecido</gray>"
+    buy-price: 999999.00
+    sell-price: 21.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.50
+    max-sell-price: 42.00
+
+  oxidized_copper_trapdoor:
+    material: "OXIDIZED_COPPER_TRAPDOOR"
+    category: "blocks"
+    display-name: "<gray>Alçapão de Cobre Oxidado</gray>"
+    buy-price: 999999.00
+    sell-price: 22.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 11.00
+    max-sell-price: 44.00
+
+  orange_cushion:
+    material: "ORANGE_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Orange</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  magenta_cushion:
+    material: "MAGENTA_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Magenta</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  light_blue_cushion:
+    material: "LIGHT_BLUE_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Light Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  yellow_cushion:
+    material: "YELLOW_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Yellow</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  lime_cushion:
+    material: "LIME_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Lime</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  pink_cushion:
+    material: "PINK_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Pink</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  gray_cushion:
+    material: "GRAY_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  light_gray_cushion:
+    material: "LIGHT_GRAY_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Light Gray</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  cyan_cushion:
+    material: "CYAN_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Cyan</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  purple_cushion:
+    material: "PURPLE_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Purple</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  blue_cushion:
+    material: "BLUE_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Blue</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  brown_cushion:
+    material: "BROWN_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Brown</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  green_cushion:
+    material: "GREEN_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Green</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  red_cushion:
+    material: "RED_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Red</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  black_cushion:
+    material: "BLACK_CUSHION"
+    category: "blocks"
+    display-name: "<gray>Almofada Black</gray>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  oak_stairs:
+    material: "OAK_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  oak_slab:
+    material: "OAK_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  oak_fence:
+    material: "OAK_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  oak_fence_gate:
+    material: "OAK_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  oak_door:
+    material: "OAK_DOOR"
+    category: "wood"
+    display-name: "<gold>Portas de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  oak_trapdoor:
+    material: "OAK_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  oak_button:
+    material: "OAK_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  oak_pressure_plate:
+    material: "OAK_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  oak_sign:
+    material: "OAK_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  oak_hanging_sign:
+    material: "OAK_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas Suspensas de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  oak_boat:
+    material: "OAK_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  oak_chest_boat:
+    material: "OAK_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  spruce_stairs:
+    material: "SPRUCE_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  spruce_slab:
+    material: "SPRUCE_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  spruce_fence:
+    material: "SPRUCE_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  spruce_fence_gate:
+    material: "SPRUCE_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  spruce_door:
+    material: "SPRUCE_DOOR"
+    category: "wood"
+    display-name: "<gold>Portas de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  spruce_trapdoor:
+    material: "SPRUCE_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  spruce_button:
+    material: "SPRUCE_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  spruce_pressure_plate:
+    material: "SPRUCE_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  spruce_sign:
+    material: "SPRUCE_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  spruce_hanging_sign:
+    material: "SPRUCE_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas Suspensas de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  spruce_boat:
+    material: "SPRUCE_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  spruce_chest_boat:
+    material: "SPRUCE_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Spruce</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  birch_stairs:
+    material: "BIRCH_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  birch_slab:
+    material: "BIRCH_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  birch_fence:
+    material: "BIRCH_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  birch_fence_gate:
+    material: "BIRCH_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  birch_door:
+    material: "BIRCH_DOOR"
+    category: "wood"
+    display-name: "<gold>Portas de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  birch_trapdoor:
+    material: "BIRCH_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  birch_button:
+    material: "BIRCH_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Birch</gold>"    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  birch_pressure_plate:
+    material: "BIRCH_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  birch_sign:
+    material: "BIRCH_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  birch_hanging_sign:
+    material: "BIRCH_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas Suspensas de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  birch_boat:
+    material: "BIRCH_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  birch_chest_boat:
+    material: "BIRCH_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Birch</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  jungle_stairs:
+    material: "JUNGLE_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  jungle_slab:
+    material: "JUNGLE_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  jungle_fence:
+    material: "JUNGLE_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  jungle_fence_gate:
+    material: "JUNGLE_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  jungle_door:
+    material: "JUNGLE_DOOR"
+    category: "wood"
+    display-name: "<gold>Portas de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  jungle_trapdoor:
+    material: "JUNGLE_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  jungle_button:
+    material: "JUNGLE_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  jungle_pressure_plate:
+    material: "JUNGLE_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  jungle_sign:
+    material: "JUNGLE_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  jungle_hanging_sign:
+    material: "JUNGLE_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas Suspensas de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  jungle_boat:
+    material: "JUNGLE_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  jungle_chest_boat:
+    material: "JUNGLE_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Jungle</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  acacia_stairs:
+    material: "ACACIA_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  acacia_slab:
+    material: "ACACIA_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  acacia_fence:
+    material: "ACACIA_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  acacia_fence_gate:
+    material: "ACACIA_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  acacia_door:
+    material: "ACACIA_DOOR"
+    category: "wood"
+    display-name: "<gold>Portas de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  acacia_trapdoor:
+    material: "ACACIA_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  acacia_button:
+    material: "ACACIA_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  acacia_pressure_plate:
+    material: "ACACIA_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  acacia_sign:
+    material: "ACACIA_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  acacia_hanging_sign:
+    material: "ACACIA_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas Suspensas de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  acacia_boat:
+    material: "ACACIA_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  acacia_chest_boat:
+    material: "ACACIA_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Acacia</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  dark_oak_stairs:
+    material: "DARK_OAK_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  dark_oak_slab:
+    material: "DARK_OAK_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  dark_oak_fence:
+    material: "DARK_OAK_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  dark_oak_fence_gate:
+    material: "DARK_OAK_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  dark_oak_door:
+    material: "DARK_OAK_DOOR"
+    category: "wood"
+    display-name: "<gold>Portas de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  dark_oak_trapdoor:
+    material: "DARK_OAK_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  dark_oak_button:
+    material: "DARK_OAK_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  dark_oak_pressure_plate:
+    material: "DARK_OAK_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  dark_oak_sign:
+    material: "DARK_OAK_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  dark_oak_hanging_sign:
+    material: "DARK_OAK_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas Suspensas de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  dark_oak_boat:
+    material: "DARK_OAK_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  dark_oak_chest_boat:
+    material: "DARK_OAK_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Dark Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  mangrove_stairs:
+    material: "MANGROVE_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  mangrove_slab:
+    material: "MANGROVE_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  mangrove_fence:
+    material: "MANGROVE_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  mangrove_fence_gate:
+    material: "MANGROVE_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  mangrove_door:
+    material: "MANGROVE_DOOR"
+    category: "wood"
+    display-name: "<gold>Portas de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  mangrove_trapdoor:
+    material: "MANGROVE_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  mangrove_button:
+    material: "MANGROVE_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  mangrove_pressure_plate:
+    material: "MANGROVE_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  mangrove_sign:
+    material: "MANGROVE_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  mangrove_hanging_sign:
+    material: "MANGROVE_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas Suspensas de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  mangrove_boat:
+    material: "MANGROVE_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  mangrove_chest_boat:
+    material: "MANGROVE_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Mangrove</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  cherry_stairs:
+    material: "CHERRY_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  cherry_slab:
+    material: "CHERRY_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  cherry_fence:
+    material: "CHERRY_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  cherry_fence_gate:
+    material: "CHERRY_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  cherry_door:
+    material: "CHERRY_DOOR"
+    category: "wood"
+    display-name: "<gold>Portas de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  cherry_trapdoor:
+    material: "CHERRY_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  cherry_button:
+    material: "CHERRY_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  cherry_pressure_plate:
+    material: "CHERRY_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  cherry_sign:
+    material: "CHERRY_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  cherry_hanging_sign:
+    material: "CHERRY_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas Suspensas de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  cherry_boat:
+    material: "CHERRY_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  cherry_chest_boat:
+    material: "CHERRY_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Cherry</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  pale_oak_stairs:
+    material: "PALE_OAK_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  pale_oak_slab:
+    material: "PALE_OAK_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  pale_oak_fence:
+    material: "PALE_OAK_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  pale_oak_fence_gate:
+    material: "PALE_OAK_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  pale_oak_door:
+    material: "PALE_OAK_DOOR"
+    category: "wood"
+    display-name: "<gold>Portas de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  pale_oak_trapdoor:
+    material: "PALE_OAK_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  pale_oak_button:
+    material: "PALE_OAK_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  pale_oak_pressure_plate:
+    material: "PALE_OAK_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  pale_oak_sign:
+    material: "PALE_OAK_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  pale_oak_hanging_sign:
+    material: "PALE_OAK_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placas Suspensas de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  pale_oak_boat:
+    material: "PALE_OAK_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  pale_oak_chest_boat:
+    material: "PALE_OAK_CHEST_BOAT"
+    category: "wood"
+    display-name: "<gold>Barco com Baú de Pale Oak</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  poplar_stairs:
+    material: "POPLAR_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  poplar_slab:
+    material: "POPLAR_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  poplar_fence:
+    material: "POPLAR_FENCE"
+    category: "wood"
+    display-name: "<gold>Cercas de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  poplar_fence_gate:
+    material: "POPLAR_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portões de Cerca de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  poplar_trapdoor:
+    material: "POPLAR_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapões de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  poplar_button:
+    material: "POPLAR_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botões de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  poplar_pressure_plate:
+    material: "POPLAR_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placas de Pressão de Álamo</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  bamboo_block:
+    material: "BAMBOO_BLOCK"
+    category: "wood"
+    display-name: "<gold>Bloco de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  stripped_bamboo_block:
+    material: "STRIPPED_BAMBOO_BLOCK"
+    category: "wood"
+    display-name: "<gold>Bloco de Bambu Descascado</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  bamboo_planks:
+    material: "BAMBOO_PLANKS"
+    category: "wood"
+    display-name: "<gold>Tábuas de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  bamboo_mosaic:
+    material: "BAMBOO_MOSAIC"
+    category: "wood"
+    display-name: "<gold>Mosaico de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  bamboo_mosaic_stairs:
+    material: "BAMBOO_MOSAIC_STAIRS"
+    category: "wood"
+    display-name: "<gold>Escadas de Mosaico de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 9.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.50
+    max-sell-price: 18.00
+
+  bamboo_mosaic_slab:
+    material: "BAMBOO_MOSAIC_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Mosaico de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  bamboo_stairs:
+    material: "BAMBOO_STAIRS"
+    category: "wood"    display-name: "<gold>Escadas de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  bamboo_slab:
+    material: "BAMBOO_SLAB"
+    category: "wood"
+    display-name: "<gold>Lajes de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  bamboo_fence:
+    material: "BAMBOO_FENCE"
+    category: "wood"
+    display-name: "<gold>Cerca de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  bamboo_fence_gate:
+    material: "BAMBOO_FENCE_GATE"
+    category: "wood"
+    display-name: "<gold>Portão de Cerca de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  bamboo_door:
+    material: "BAMBOO_DOOR"
+    category: "wood"
+    display-name: "<gold>Porta de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  bamboo_trapdoor:
+    material: "BAMBOO_TRAPDOOR"
+    category: "wood"
+    display-name: "<gold>Alçapão de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  bamboo_button:
+    material: "BAMBOO_BUTTON"
+    category: "wood"
+    display-name: "<gold>Botão de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  bamboo_pressure_plate:
+    material: "BAMBOO_PRESSURE_PLATE"
+    category: "wood"
+    display-name: "<gold>Placa de Pressão de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  bamboo_sign:
+    material: "BAMBOO_SIGN"
+    category: "wood"
+    display-name: "<gold>Placa de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  bamboo_hanging_sign:
+    material: "BAMBOO_HANGING_SIGN"
+    category: "wood"
+    display-name: "<gold>Placa Suspensa de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  bamboo_raft:
+    material: "BAMBOO_RAFT"
+    category: "wood"
+    display-name: "<gold>Jangada de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  bamboo_chest_raft:
+    material: "BAMBOO_CHEST_RAFT"
+    category: "wood"
+    display-name: "<gold>Jangada com Baú de Bambu</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  nether_wart:
+    material: "NETHER_WART"
+    category: "farming"
+    display-name: "<green>Fungo do Nether</green>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  nether_wart_block:
+    material: "NETHER_WART_BLOCK"
+    category: "farming"
+    display-name: "<green>Bloco de Fungo do Nether</green>"
+    buy-price: 999999.00
+    sell-price: 40.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 20.00
+    max-sell-price: 80.00
+
+  brown_mushroom:
+    material: "BROWN_MUSHROOM"
+    category: "farming"
+    display-name: "<green>Cogumelo Marrom</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  red_mushroom:
+    material: "RED_MUSHROOM"
+    category: "farming"
+    display-name: "<green>Cogumelo Vermelho</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  brown_mushroom_block:
+    material: "BROWN_MUSHROOM_BLOCK"
+    category: "farming"
+    display-name: "<green>Bloco de Cogumelo Marrom</green>"
+    buy-price: 999999.00
+    sell-price: 10.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 5.00
+    max-sell-price: 20.00
+
+  red_mushroom_block:
+    material: "RED_MUSHROOM_BLOCK"
+    category: "farming"
+    display-name: "<green>Bloco de Cogumelo Vermelho</green>"
+    buy-price: 999999.00
+    sell-price: 10.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 5.00
+    max-sell-price: 20.00
+
+  mushroom_stem:
+    material: "MUSHROOM_STEM"
+    category: "farming"
+    display-name: "<green>Caule de Cogumelo</green>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  chorus_fruit:
+    material: "CHORUS_FRUIT"
+    category: "farming"
+    display-name: "<green>Fruta do Coro</green>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  popped_chorus_fruit:
+    material: "POPPED_CHORUS_FRUIT"
+    category: "farming"
+    display-name: "<green>Fruta do Coro Estourada</green>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  chorus_flower:
+    material: "CHORUS_FLOWER"
+    category: "farming"
+    display-name: "<green>Flor do Coro</green>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  torchflower:
+    material: "TORCHFLOWER"
+    category: "farming"
+    display-name: "<green>Flor-tocha</green>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  torchflower_seeds:
+    material: "TORCHFLOWER_SEEDS"
+    category: "farming"
+    display-name: "<green>Sementes de Flor-tocha</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  pitcher_plant:
+    material: "PITCHER_PLANT"
+    category: "farming"
+    display-name: "<green>Planta de Jarra</green>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  pitcher_pod:
+    material: "PITCHER_POD"
+    category: "farming"
+    display-name: "<green>Vagem de Jarra</green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  glowstone_dust:
+    material: "GLOWSTONE_DUST"
+    category: "mining"
+    display-name: "<aqua>Pó de Pedra Luminosa</aqua>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  glowstone:
+    material: "GLOWSTONE"
+    category: "blocks"
+    display-name: "<gray>Pedra Luminosa</gray>"
+    buy-price: 999999.00
+    sell-price: 25.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 12.50
+    max-sell-price: 50.00
+
+  beef:
+    material: "BEEF"
+    category: "mob_drops"
+    display-name: "<red>Carne Crua</red>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  cooked_beef:
+    material: "COOKED_BEEF"
+    category: "mob_drops"
+    display-name: "<red>Carne Assada</red>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  porkchop:
+    material: "PORKCHOP"
+    category: "mob_drops"
+    display-name: "<red>Costeleta Crua</red>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  cooked_porkchop:
+    material: "COOKED_PORKCHOP"
+    category: "mob_drops"
+    display-name: "<red>Costeleta Assada</red>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  chicken:
+    material: "CHICKEN"
+    category: "mob_drops"
+    display-name: "<red>Frango Cru</red>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  cooked_chicken:
+    material: "COOKED_CHICKEN"
+    category: "mob_drops"
+    display-name: "<red>Frango Assado</red>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  mutton:
+    material: "MUTTON"
+    category: "mob_drops"
+    display-name: "<red>Carneiro Cru</red>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  cooked_mutton:
+    material: "COOKED_MUTTON"
+    category: "mob_drops"
+    display-name: "<red>Carneiro Assado</red>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  rabbit:
+    material: "RABBIT"
+    category: "mob_drops"
+    display-name: "<red>Coelho Cru</red>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  cooked_rabbit:
+    material: "COOKED_RABBIT"
+    category: "mob_drops"
+    display-name: "<red>Coelho Assado</red>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  cod:
+    material: "COD"
+    category: "mob_drops"
+    display-name: "<red>Bacalhau Cru</red>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  cooked_cod:
+    material: "COOKED_COD"
+    category: "mob_drops"
+    display-name: "<red>Bacalhau Assado</red>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  salmon:
+    material: "SALMON"
+    category: "mob_drops"
+    display-name: "<red>Salmão Cru</red>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  cooked_salmon:
+    material: "COOKED_SALMON"
+    category: "mob_drops"
+    display-name: "<red>Salmão Assado</red>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  tropical_fish:
+    material: "TROPICAL_FISH"
+    category: "mob_drops"
+    display-name: "<red>Peixe Tropical</red>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  pufferfish:
+    material: "PUFFERFISH"
+    category: "mob_drops"
+    display-name: "<red>Baiacu</red>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  wither_skeleton_skull:
+    material: "WITHER_SKELETON_SKULL"
+    category: "mob_drops"
+    display-name: "<red>Cabeça de Esqueleto Wither</red>"
+    buy-price: 999999.00
+    sell-price: 100.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 50.00
+    max-sell-price: 200.00
+
+  skeleton_skull:
+    material: "SKELETON_SKULL"
+    category: "mob_drops"
+    display-name: "<red>Crânio de Esqueleto</red>"
+    buy-price: 999999.00
+    sell-price: 30.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 15.00
+    max-sell-price: 60.00
+
+  creeper_head:
+    material: "CREEPER_HEAD"
+    category: "mob_drops"
+    display-name: "<red>Cabeça de Creeper</red>"
+    buy-price: 999999.00
+    sell-price: 50.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 25.00
+    max-sell-price: 100.00
+
+  zombie_head:
+    material: "ZOMBIE_HEAD"
+    category: "mob_drops"
+    display-name: "<red>Cabeça de Zumbi</red>"
+    buy-price: 999999.00
+    sell-price: 30.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 15.00
+    max-sell-price: 60.00
+
+  dragon_head:
+    material: "DRAGON_HEAD"
+    category: "mob_drops"
+    display-name: "<red>Cabeça de Dragão</red>"
+    buy-price: 999999.00
+    sell-price: 250.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 125.00
+    max-sell-price: 500.00
+
+  piglin_head:
+    material: "PIGLIN_HEAD"
+    category: "mob_drops"
+    display-name: "<red>Cabeça de Piglin</red>"
+    buy-price: 999999.00
+    sell-price: 80.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 40.00
+    max-sell-price: 160.00
+
+  golden_apple:
+    material: "GOLDEN_APPLE"
+    category: "farming"
+    display-name: "<green>Maçã Dourada</green>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  enchanted_golden_apple:
+    material: "ENCHANTED_GOLDEN_APPLE"
+    category: "farming"
+    display-name: "<green>Maçã Dourada Encantada</green>"
+    buy-price: 999999.00
+    sell-price: 250.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 125.00
+    max-sell-price: 500.00
+
+  baked_potato:
+    material: "BAKED_POTATO"
+    category: "farming"
+    display-name: "<green>Batata Assada</green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  mushroom_stew:
+    material: "MUSHROOM_STEW"
+    category: "farming"
+    display-name: "<green>Ensopado de Cogumelos</green>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  suspicious_stew:
+    material: "SUSPICIOUS_STEW"
+    category: "farming"
+    display-name: "<green>Ensopado Suspeito</green>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  golden_carrot:
+    material: "GOLDEN_CARROT"
+    category: "farming"
+    display-name: "<green>Cenoura Dourada</green>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  glistering_melon_slice:
+    material: "GLISTERING_MELON_SLICE"
+    category: "farming"
+    display-name: "<green>Fatia de Melancia Reluzente</green>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  coal_block:
+    material: "COAL_BLOCK"
+    category: "mining"
+    display-name: "<aqua>Bloco de Carvão</aqua>"
+    buy-price: 999999.00
+    sell-price: 30.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 15.00
+    max-sell-price: 60.00
+
+  arrow:
+    material: "ARROW"
+    category: "mob_drops"
+    display-name: "<red>Flecha</red>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  spectral_arrow:
+    material: "SPECTRAL_ARROW"
+    category: "mob_drops"
+    display-name: "<red>Flecha Espectral</red>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  goat_horn:
+    material: "GOAT_HORN"
+    category: "mob_drops"
+    display-name: "<red>Chifre de Cabra</red>"
+    buy-price: 999999.00
+    sell-price: 25.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 12.50
+    max-sell-price: 50.00
+
+  experience_bottle:
+    material: "EXPERIENCE_BOTTLE"
+    category: "mob_drops"
+    display-name: "<red>Frasco de Experiência</red>"
+    buy-price: 999999.00
+    sell-price: 12.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 6.00
+    max-sell-price: 24.00
+
+  heart_of_the_sea:
+    material: "HEART_OF_THE_SEA"
+    category: "mob_drops"
+    display-name: "<red>Coração do Mar</red>"
+    buy-price: 999999.00
+    sell-price: 100.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 50.00
+    max-sell-price: 200.00
+
+  nether_star:
+    material: "NETHER_STAR"
+    category: "mob_drops"
+    display-name: "<red>Estrela do Nether</red>"
+    buy-price: 999999.00
+    sell-price: 250.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 125.00
+    max-sell-price: 500.00
+
+  trident:
+    material: "TRIDENT"
+    category: "mob_drops"
+    display-name: "<red>Tridente</red>"
+    buy-price: 999999.00
+    sell-price: 180.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 90.00
+    max-sell-price: 360.00
+
+  saddle:
+    material: "SADDLE"
+    category: "mob_drops"
+    display-name: "<red>Sela</red>"
+    buy-price: 999999.00
+    sell-price: 30.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 15.00
+    max-sell-price: 60.00
+
+  leather_horse_armor:
+    material: "LEATHER_HORSE_ARMOR"
+    category: "mob_drops"
+    display-name: "<red>Armadura de Cavalo de Couro</red>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  iron_horse_armor:
+    material: "IRON_HORSE_ARMOR"
+    category: "mob_drops"
+    display-name: "<red>Armadura de Cavalo de Ferro</red>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  golden_horse_armor:
+    material: "GOLDEN_HORSE_ARMOR"
+    category: "mob_drops"
+    display-name: "<red>Armadura de Cavalo de Ouro</red>"
+    buy-price: 999999.00
+    sell-price: 45.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 22.50
+    max-sell-price: 90.00
+
+  diamond_horse_armor:
+    material: "DIAMOND_HORSE_ARMOR"
+    category: "mob_drops"
+    display-name: "<red>Armadura de Cavalo de Diamante</red>"
+    buy-price: 999999.00
+    sell-price: 100.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 50.00
+    max-sell-price: 200.00
+
+  turtle_egg:
+    material: "TURTLE_EGG"
+    category: "mob_drops"
+    display-name: "<red>Ovo de Tartaruga</red>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  music_disc_13:
+    material: "MUSIC_DISC_13"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical 13</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_cat:
+    material: "MUSIC_DISC_CAT"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Cat</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_blocks:
+    material: "MUSIC_DISC_BLOCKS"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Blocks</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_chirp:
+    material: "MUSIC_DISC_CHIRP"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Chirp</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_far:
+    material: "MUSIC_DISC_FAR"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Far</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_mall:
+    material: "MUSIC_DISC_MALL"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Mall</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_mellohi:
+    material: "MUSIC_DISC_MELLOHI"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Mellohi</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_stal:
+    material: "MUSIC_DISC_STAL"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Stal</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_strad:
+    material: "MUSIC_DISC_STRAD"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Strad</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_ward:
+    material: "MUSIC_DISC_WARD"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Ward</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_11:
+    material: "MUSIC_DISC_11"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical 11</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_wait:
+    material: "MUSIC_DISC_WAIT"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Wait</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_otherside:
+    material: "MUSIC_DISC_OTHERSIDE"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Otherside</red>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  music_disc_5:
+    material: "MUSIC_DISC_5"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical 5</red>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  music_disc_pigstep:
+    material: "MUSIC_DISC_PIGSTEP"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Pigstep</red>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  music_disc_relic:
+    material: "MUSIC_DISC_RELIC"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Relic</red>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  music_disc_creator:
+    material: "MUSIC_DISC_CREATOR"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Creator</red>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  music_disc_creator_music_box:
+    material: "MUSIC_DISC_CREATOR_MUSIC_BOX"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Creator (Caixa de Música)</red>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  music_disc_precipice:
+    material: "MUSIC_DISC_PRECIPICE"
+    category: "mob_drops"
+    display-name: "<red>Disco Musical Precipice</red>"
+    buy-price: 999999.00
+    sell-price: 35.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 17.50
+    max-sell-price: 70.00
+
+  cracked_stone_bricks:
+    material: "CRACKED_STONE_BRICKS"
+    category: "blocks"
+    display-name: "<gold>Tijolos de Pedra Rachados</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  mossy_stone_bricks:
+    material: "MOSSY_STONE_BRICKS"    category: "blocks"
+    display-name: "<gold>Tijolos de Pedra Musgosos</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  deepslate_bricks:
+    material: "DEEPSLATE_BRICKS"
+    category: "blocks"
+    display-name: "<gold>Tijolos de Ardósia</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  nether_bricks:
+    material: "NETHER_BRICKS"
+    category: "blocks"
+    display-name: "<gold>Tijolos do Nether</gold>"
+    buy-price: 999999.00
+    sell-price: 5.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.50
+    max-sell-price: 10.00
+
+  red_nether_bricks:
+    material: "RED_NETHER_BRICKS"
+    category: "blocks"
+    display-name: "<gold>Tijolos Vermelhos do Nether</gold>"
+    buy-price: 999999.00
+    sell-price: 7.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.50
+    max-sell-price: 14.00
+
+  sand:
+    material: "SAND"
+    category: "blocks"
+    display-name: "<gold>Areia</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  red_sand:
+    material: "RED_SAND"
+    category: "blocks"
+    display-name: "<gold>Areia Vermelha</gold>"
+    buy-price: 999999.00
+    sell-price: 1.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 0.50
+    max-sell-price: 2.00
+
+  gravel:
+    material: "GRAVEL"
+    category: "blocks"
+    display-name: "<gold>Cascalho</gold>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  snow_block:
+    material: "SNOW_BLOCK"
+    category: "blocks"
+    display-name: "<gold>Bloco de Neve</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  ice:
+    material: "ICE"
+    category: "blocks"
+    display-name: "<gold>Gelo</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  packed_ice:
+    material: "PACKED_ICE"
+    category: "blocks"
+    display-name: "<gold>Gelo Compactado</gold>"
+    buy-price: 999999.00
+    sell-price: 8.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 4.00
+    max-sell-price: 16.00
+
+  blue_ice:
+    material: "BLUE_ICE"
+    category: "blocks"
+    display-name: "<gold>Gelo Azul</gold>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  moss_block:
+    material: "MOSS_BLOCK"
+    category: "blocks"
+    display-name: "<gold>Bloco de Musgo</gold>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  rooted_dirt:
+    material: "ROOTED_DIRT"
+    category: "blocks"
+    display-name: "<gold>Terra Enraizada</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  soul_sand:
+    material: "SOUL_SAND"
+    category: "blocks"
+    display-name: "<gold>Areia das Almas</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  soul_soil:
+    material: "SOUL_SOIL"
+    category: "blocks"
+    display-name: "<gold>Terra das Almas</gold>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  magma_block:
+    material: "MAGMA_BLOCK"
+    category: "blocks"
+    display-name: "<gold>Bloco de Magma</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  honey_block:
+    material: "HONEY_BLOCK"
+    category: "blocks"
+    display-name: "<gold>Bloco de Mel</gold>"
+    buy-price: 999999.00
+    sell-price: 18.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 9.00
+    max-sell-price: 36.00
+
+  slime_block:
+    material: "SLIME_BLOCK"
+    category: "blocks"
+    display-name: "<gold>Bloco de Slime</gold>"
+    buy-price: 999999.00
+    sell-price: 20.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 10.00
+    max-sell-price: 40.00
+
+  white_concrete:
+    material: "WHITE_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Branco</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  orange_concrete:
+    material: "ORANGE_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Laranja</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  magenta_concrete:
+    material: "MAGENTA_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Magenta</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  light_blue_concrete:
+    material: "LIGHT_BLUE_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Azul-Claro</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  yellow_concrete:
+    material: "YELLOW_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Amarelo</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  lime_concrete:
+    material: "LIME_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Verde-Limão</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  pink_concrete:
+    material: "PINK_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Rosa</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  gray_concrete:
+    material: "GRAY_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Cinza</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  light_gray_concrete:
+    material: "LIGHT_GRAY_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Cinza-Claro</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  cyan_concrete:
+    material: "CYAN_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Ciano</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  purple_concrete:
+    material: "PURPLE_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Roxo</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  blue_concrete:
+    material: "BLUE_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Azul</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  brown_concrete:
+    material: "BROWN_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Marrom</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  green_concrete:
+    material: "GREEN_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Verde</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  red_concrete:
+    material: "RED_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Vermelho</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  black_concrete:
+    material: "BLACK_CONCRETE"
+    category: "blocks"
+    display-name: "<gold>Concreto Preto</gold>"
+    buy-price: 999999.00
+    sell-price: 6.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 3.00
+    max-sell-price: 12.00
+
+  azalea:
+    material: "AZALEA"
+    category: "wood"
+    display-name: "<dark_green>Azaleia</dark_green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  flowering_azalea:
+    material: "FLOWERING_AZALEA"
+    category: "wood"
+    display-name: "<dark_green>Azaleia Florida</dark_green>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  mangrove_roots:
+    material: "MANGROVE_ROOTS"
+    category: "wood"
+    display-name: "<dark_green>Raízes de Mangue</dark_green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  muddy_mangrove_roots:
+    material: "MUDDY_MANGROVE_ROOTS"
+    category: "wood"
+    display-name: "<dark_green>Raízes de Mangue Lamacentas</dark_green>"
+    buy-price: 999999.00
+    sell-price: 4.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 2.00
+    max-sell-price: 8.00
+
+  vine:
+    material: "VINE"
+    category: "wood"
+    display-name: "<dark_green>Trepadeira</dark_green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  weeping_vines:
+    material: "WEEPING_VINES"
+    category: "wood"
+    display-name: "<dark_green>Trepadeiras Choronas</dark_green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  twisting_vines:
+    material: "TWISTING_VINES"
+    category: "wood"
+    display-name: "<dark_green>Trepadeiras Retorcidas</dark_green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
+
+  azalea_leaves:
+    material: "AZALEA_LEAVES"
+    category: "wood"
+    display-name: "<dark_green>Folhas de Azaleia</dark_green>"
+    buy-price: 999999.00
+    sell-price: 2.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.00
+    max-sell-price: 4.00
+
+  flowering_azalea_leaves:
+    material: "FLOWERING_AZALEA_LEAVES"
+    category: "wood"
+    display-name: "<dark_green>Folhas de Azaleia Florida</dark_green>"
+    buy-price: 999999.00
+    sell-price: 3.00
+    min-buy-price: 999999.00
+    max-buy-price: 999999.00
+    min-sell-price: 1.50
+    max-sell-price: 6.00
