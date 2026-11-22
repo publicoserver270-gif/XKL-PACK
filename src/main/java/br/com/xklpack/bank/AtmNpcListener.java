@@ -38,6 +38,7 @@ public final class AtmNpcListener implements Listener {
         }
 
         Player player = event.getPlayer();
+        event.setCancelled(true);
         menu.open(player);
     }
 
