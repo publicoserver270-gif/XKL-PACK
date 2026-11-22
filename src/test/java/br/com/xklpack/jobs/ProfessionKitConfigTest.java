@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProfessionKitConfigTest {
-    private static final List<String> EXPECTED_TIERS = List.of("1", "5", "10", "15", "20", "30");
+    private static final List<String> EXPECTED_TIERS = List.of("1", "5", "10", "20", "40", "80", "160");
 
     @Test
     void allFiveProfessionsHaveTheSameConfiguredEvolutionMilestones() throws Exception {
@@ -40,9 +40,10 @@ class ProfessionKitConfigTest {
         assertEquals("WOODEN_PICKAXE", config.getString(path + "1.material"));
         assertEquals("STONE_PICKAXE", config.getString(path + "5.material"));
         assertEquals("IRON_PICKAXE", config.getString(path + "10.material"));
-        assertEquals("GOLDEN_PICKAXE", config.getString(path + "15.material"));
-        assertEquals("DIAMOND_PICKAXE", config.getString(path + "20.material"));
-        assertEquals("NETHERITE_PICKAXE", config.getString(path + "30.material"));
+        assertEquals("GOLDEN_PICKAXE", config.getString(path + "20.material"));
+        assertEquals("DIAMOND_PICKAXE", config.getString(path + "40.material"));
+        assertEquals("NETHERITE_PICKAXE", config.getString(path + "80.material"));
+        assertEquals("NETHERITE_PICKAXE", config.getString(path + "160.material"));
     }
 
     @Test
@@ -52,8 +53,8 @@ class ProfessionKitConfigTest {
         for (String tier : EXPECTED_TIERS) {
             assertEquals("FISHING_ROD", config.getString(path + tier + ".material"));
         }
-        assertEquals(5, config.getInt(path + "30.enchantments.lure"));
-        assertEquals(5, config.getInt(path + "30.enchantments.luck_of_the_sea"));
+        assertEquals(6, config.getInt(path + "160.enchantments.lure"));
+        assertEquals(6, config.getInt(path + "160.enchantments.luck_of_the_sea"));
     }
 
     private YamlConfiguration loadConfig() throws Exception {
