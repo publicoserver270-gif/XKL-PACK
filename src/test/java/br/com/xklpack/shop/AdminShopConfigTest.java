@@ -18,7 +18,7 @@ class AdminShopConfigTest {
         YamlConfiguration config = loadConfig();
         ConfigurationSection items = config.getConfigurationSection("items");
         assertNotNull(items);
-        assertTrue(items.getKeys(false).size() >= 40);
+        assertTrue(items.getKeys(false).size() >= 130, "O catálogo completo importado precisa ter pelo menos 130 produtos.");
 
         for (String id : items.getKeys(false)) {
             String path = "items." + id + ".";
@@ -28,6 +28,15 @@ class AdminShopConfigTest {
                     "Preço inválido: " + id);
             assertTrue(config.getInt(path + "amount", 0) > 0, "Quantidade inválida: " + id);
         }
+    }
+
+    @Test
+    void constructionCategoryHasAllSixSubcategories() throws Exception {
+        YamlConfiguration config = loadConfig();
+        assertEquals(java.util.List.of("pedras", "tijolos", "tabuas", "troncos", "vidros", "extras"),
+                config.getStringList("categories.construcao.children"));
+        assertNotNull(config.getConfigurationSection("categories.armas"));
+        assertNotNull(config.getConfigurationSection("categories.armaduras"));
     }
 
     @Test
