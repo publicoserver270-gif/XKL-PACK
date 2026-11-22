@@ -6,7 +6,12 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 
 ## O que já está no código
 
-- Persistência SQLite para perfis, saldos, histórico de transações, progresso profissional e conteúdo dos sacos físicos.\n- ATM com depósito/saque, extrato, taxas e acesso de jogadores por NPC Citizens vinculado; comando direto reservado à administração.\n- Moedas físicas com assinatura HMAC e saco de couro que guarda apenas moedas autenticadas.\n- Profissões com progresso de XP, metas salariais independentes por profissão, recompensas de gemas e kits automáticos por nível.\n- Kits profissionais vinculados ao jogador, com evolução automática, durabilidade proporcional e bloqueio de transferência.\n- Painel administrativo dentro do jogo para editar parâmetros econômicos, taxas, preços e materiais dos kits.
+- Persistência SQLite para perfis, saldos, histórico de transações, progresso profissional e conteúdo dos sacos físicos.
+- ATM com depósito/saque, extrato, taxas e acesso de jogadores por NPC Citizens vinculado; comando direto reservado à administração.
+- Moedas físicas com assinatura HMAC e saco de couro que guarda apenas moedas autenticadas.
+- Profissões com progresso de XP, metas salariais independentes por profissão, recompensas de gemas e kits automáticos por nível.
+- Kits profissionais vinculados ao jogador, com evolução automática, durabilidade proporcional e bloqueio de transferência.
+- Painel administrativo dentro do jogo para editar parâmetros econômicos, taxas, preços e materiais dos kits.
 - Moedas independentes configuráveis (coins e gems por padrão).
 - Transferência bancária virtual pelo comando `/pay` (destinatário precisa estar online nesta primeira versão).
 - Ranking geral e de jogadores online por moeda: `/top` e `/top online`.
@@ -30,7 +35,8 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - `/job` — seleção e status das profissões.
 - `/pay <jogador> <valor> [coins|gems]`.
 - `/top [coins|gems]` e `/top online [coins|gems]`.
-- `/atm` — acesso direto reservado à administração; jogadores usam NPC Citizens vinculado.\n- `/xkladmin` — painel administrativo para editar salários, taxas, preços das lojas e materiais dos kits.
+- `/atm` — acesso direto reservado à administração; jogadores usam NPC Citizens vinculado.
+- `/xkladmin` — painel administrativo para editar salários, taxas, preços das lojas e materiais dos kits.
 - `/xklatm npc link|unlink|list <id>` e `/xklpouch give <jogador>` — administração.
 
 ## Documentação
