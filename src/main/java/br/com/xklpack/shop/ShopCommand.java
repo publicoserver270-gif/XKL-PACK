@@ -157,7 +157,7 @@ public final class ShopCommand implements CommandExecutor, Listener {
             lore.add("§eClique para comprar!");
         }
         meta.setLore(lore);
-        if ("ferramentas".equalsIgnoreCase(plugin.getAdminShopConfig().getString(path + "category", ""))) {
+        if (!forDisplay && "ferramentas".equalsIgnoreCase(plugin.getAdminShopConfig().getString(path + "category", ""))) {
             meta.getPersistentDataContainer().set(specialToolKey, PersistentDataType.BYTE, (byte) 1);
         }
         if ("excavator_3x3".equalsIgnoreCase(plugin.getAdminShopConfig().getString(path + "special", ""))) {
