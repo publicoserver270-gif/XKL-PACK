@@ -11,7 +11,7 @@ Este documento acompanha a implementação. Uma compilação bem-sucedida compro
 | Identificador de moeda com caixa diferente | Consulta ou gravação no saldo errado | IDs normalizados para minúsculas antes das operações; identificadores inválidos são rejeitados. |
 | Emissão indevida de coins/gemas | Inflação da economia | Regras documentadas: coins apenas por salário; gemas apenas por atividade profissional. Ainda falta restringir a emissão por um serviço de profissões autorizado e testado. |
 | Banco de dados bloqueando a thread principal | Travamentos durante picos | A implementação inicial usa SQLite síncrono e uma conexão compartilhada protegida por lock. Antes de produção, migrar operações de I/O para execução assíncrona com fila/serialização de transações e retorno seguro à thread principal. |
-| Perda/duplicação de itens em depósito, saque ou venda | Exploit econômico | ATM, dinheiro físico e venda ainda não foram implementados. Exigir operação idempotente, journal de transação e protocolo de recuperação antes de liberar esses módulos. |
+| Perda/duplicação de itens em depósito, saque ou venda | Exploit econômico | ATM, dinheiro físico, `/loja` e `/sell` possuem fluxos básicos. Ainda faltam testes de falha/crash e um journal de recuperação entre inventário Bukkit e SQLite. |
 | Kits transferidos por inventários alternativos | Perda de item exclusivo e exploits | Sistema de kits ainda não implementado. Cobrir clique, shift-click, número de hotbar, Q, drop, morte, baús, barris, shulkers, funis, carrinhos com baú, crafting, offhand e plugins de inventário. |
 | Compatibilidade com servidor Paper 26.3 | Falha de inicialização ou eventos incompatíveis | O projeto agora compila com Java 25 e Paper API 26.3; ainda precisa concluir CI e teste real no servidor-alvo. Não instalar no servidor principal. |
 | Migração de economia antiga | Saldos incorretos ou duplicados | Não migrar automaticamente nem desligar Vault/Mineconomy. Criar importação com backup, relatório, validação e modo somente leitura antes da troca. |
@@ -23,8 +23,8 @@ Este documento acompanha a implementação. Uma compilação bem-sucedida compro
 - Usar BigDecimal, nunca ponto flutuante binário, para quantias.
 - Rejeitar valores não positivos e valores com precisão acima da moeda.
 - Não somar moedas diferentes no mesmo ranking.
-- Não emitir coins/gemas por venda, eventos ou comandos comuns.
-- ATM e profissões possuem implementação inicial; não tratar como produção até testes de integração. A loja de compras `/loja` segue pendente; `/sell` já está implementado, mas precisa de testes de integração antes de produção.
+- Não emitir coins/gemas por comandos comuns; coins são emitidas por salários e vendas confirmadas, gemas somente por atividades profissionais.
+- ATM e profissões possuem implementação inicial; não tratar como produção até testes de integração. `/loja` e `/sell` já possuem implementação inicial e precisam de testes integrados antes de produção; a Picareta Escavadora 3x3 precisa ser validada com EasyClaim.
 - Manter o plugin em paralelo com os plugins atuais até a migração ser aprovada.
 
 ## Critérios mínimos antes de produção
