@@ -60,6 +60,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
         inventory.setItem(12, button(Material.IRON_INGOT, "§b§lBANCO E TAXAS", "§7Editar taxas de depósito e saque."));
         inventory.setItem(14, button(Material.CHEST, "§a§lLOJA DE COMPRAS", "§7Editar preços pagos em Coins/Gemas."));
         inventory.setItem(16, button(Material.HOPPER, "§e§lLOJA DE VENDAS", "§7Editar preços recebidos em Coins."));
+        inventory.setItem(20, button(Material.EMERALD, "§a§lMOEDAS FÍSICAS", "§7Editar o valor das denominações."));
         inventory.setItem(22, button(Material.DIAMOND_PICKAXE, "§d§lKITS PROFISSIONAIS", "§7Editar materiais de evolução dos kits."));
         player.openInventory(inventory);
     }
@@ -135,6 +136,17 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
                             FileType.SELL_SHOP, path + "sell-price", 10, false));
                 }
             }
+        } else if ("coins".equals(category)) {
+            ConfigurationSection denominations = plugin.getPhysicalCoinsConfig().getConfigurationSection("denominations");
+            if (denominations != null) {
+                for (String id : denominations.getKeys(false)) {
+                    String path = "denominations." + id + ".";
+                    String name = plugin.getPhysicalCoinsConfig().getString(path + "display-name", id);
+                    Material icon = Material.matchMaterial(plugin.getPhysicalCoinsConfig().getString(path + "material", "EMERALD"));
+                    result.add(new Entry(name + " • valor em Coins", icon == null ? Material.EMERALD : icon,
+                            FileType.PHYSICAL_COINS, path + "value", 0, false));
+                }
+            }
         } else if ("kits".equals(category)) {
             ConfigurationSection professions = plugin.getConfig().getConfigurationSection("jobs.kits.professions");
             if (professions != null) {
@@ -181,6 +193,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
             case BANK -> plugin.getBankConfig().getString(entry.path(), "não definido");
             case ADMIN_SHOP -> plugin.getAdminShopConfig().getString(entry.path(), "não definido");
             case SELL_SHOP -> plugin.getSellShopConfig().getString(entry.path(), "não definido");
+            case PHYSICAL_COINS -> plugin.getPhysicalCoinsConfig().getString(entry.path(), "não definido");
         };
     }
 
@@ -262,6 +275,10 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
                 plugin.getSellShopConfig().set(entry.path(), value);
                 plugin.saveSellShopConfig();
             }
+            case PHYSICAL_COINS -> {
+                plugin.getPhysicalCoinsConfig().set(entry.path(), value);
+                plugin.savePhysicalCoinsConfig();
+            }
         }
     }
 
@@ -279,6 +296,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
                 case 12 -> "bank";
                 case 14 -> "buy";
                 case 16 -> "sell";
+                case 20 -> "coins";
                 case 22 -> "kits";
                 default -> null;
             };
@@ -315,6 +333,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
             case "buy" -> "LOJA DE COMPRAS";
             case "sell" -> "LOJA DE VENDAS";
             case "kits" -> "KITS";
+            case "coins" -> "MOEDAS FÍSICAS";
             default -> category.toUpperCase();
         };
     }
@@ -332,7 +351,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
         return ChatColor.translateAlternateColorCodes('&', value == null ? "" : value);
     }
 
-    private enum FileType { MAIN, BANK, ADMIN_SHOP, SELL_SHOP }
+    private enum FileType { MAIN, BANK, ADMIN_SHOP, SELL_SHOP, PHYSICAL_COINS }
     private record Entry(String label, Material icon, FileType file, String path, int scale, boolean text) {}
     private record PendingEdit(String category, int page, Entry entry) {}
 
