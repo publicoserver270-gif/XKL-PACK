@@ -90,9 +90,8 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 
 ### 5.3 Lojas de jogadores e mercado
 
-- Lojas de jogadores aceitam exclusivamente dinheiro físico.
-- Mercado/leilão de jogadores está previsto, com regras e taxas configuráveis.
-- O comando/forma de acesso ao mercado ainda precisa ser definido; não criar um comando adicional sem aprovação.
+- Lojas de jogadores aceitam exclusivamente dinheiro físico e podem ser mantidas pelo Shopkeepers sem ShopkeepersAddon.
+- Mercado/leilão de jogadores só será implementado após definição explícita do acesso e das regras; não criar comando adicional sem aprovação.
 
 ## 6. Banco, transferências e rankings
 
