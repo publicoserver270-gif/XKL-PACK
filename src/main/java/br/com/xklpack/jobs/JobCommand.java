@@ -41,6 +41,7 @@ public final class JobCommand implements CommandExecutor, Listener {
                 String oldJob = jobs.getActiveJob(player.getUniqueId());
                 jobs.leaveJob(player.getUniqueId());
                 kits.leaveProfession(player, oldJob);
+                if (plugin.getEquipmentService() != null) plugin.getEquipmentService().enforceLimits(player);
                 player.sendMessage("§aVocê saiu da profissão. Seu progresso e kit foram guardados.");
                 return true;
             }
@@ -127,6 +128,7 @@ public final class JobCommand implements CommandExecutor, Listener {
                 String oldJob = jobs.getActiveJob(player.getUniqueId());
                 jobs.leaveJob(player.getUniqueId());
                 kits.leaveProfession(player, oldJob);
+                if (plugin.getEquipmentService() != null) plugin.getEquipmentService().enforceLimits(player);
                 player.closeInventory();
                 player.sendMessage("§aVocê saiu da profissão. Seu progresso e kit foram guardados.");
             } else if (id != null && jobs.isValidJob(id)) {
@@ -134,6 +136,7 @@ public final class JobCommand implements CommandExecutor, Listener {
                 jobs.selectJob(player.getUniqueId(), id);
                 JobService.JobProgress progress = jobs.getProgress(player.getUniqueId(), id);
                 kits.switchProfession(player, oldJob, id, progress.level());
+                if (plugin.getEquipmentService() != null) plugin.getEquipmentService().enforceLimits(player);
                 player.closeInventory();
                 player.sendMessage("§aAgora você trabalha como §e" + jobs.getJobName(id) + "§a!");
                 player.sendMessage("§7Seu kit profissional acompanha seu nível automaticamente.");
