@@ -61,8 +61,10 @@ public final class BankService {
         try {
             Mac mac = Mac.getInstance("HmacSHA256");
             mac.init(new SecretKeySpec(signingSecret, "HmacSHA256"));
+            // O valor fica na configuração; a assinatura autentica a identidade e o material.
+            // Assim, o administrador pode reajustar a denominação sem invalidar moedas legítimas.
             String payload = "xklpack-coin-v1|" + denomination.id() + "|"
-                    + denomination.material().name() + "|" + denomination.value();
+                    + denomination.material().name();
             return Base64.getEncoder().encodeToString(mac.doFinal(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
         } catch (Exception exception) {
             throw new IllegalStateException("Não foi possível assinar moeda física.", exception);
