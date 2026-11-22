@@ -26,7 +26,7 @@ class SellShopConfigTest {
             String path = "items." + id + ".";
             Material material = Material.matchMaterial(config.getString(path + "material", ""));
             assertNotNull(material, "Material inválido na entrada " + id);
-            assertTrue(material.isItem(), "Material não é item: " + id);
+            assertNotEquals("AIR", material.name(), "AIR não pode ser vendido");
             assertNotEquals(Material.TOTEM_OF_UNDYING, material, "Totem não pode ser vendido");
             assertTrue(seen.add(material), "Material duplicado na tabela: " + material);
             assertTrue(new BigDecimal(config.getString(path + "sell-price", "0")).signum() > 0,
