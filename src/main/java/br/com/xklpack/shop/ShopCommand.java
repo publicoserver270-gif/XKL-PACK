@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -164,12 +167,12 @@ public final class ShopCommand implements CommandExecutor, Listener {
 
     private ItemStack createProduct(String id, boolean forDisplay) {
         String path = "items." + id + ".";
-        Material material = Material.matchMaterial(plugin.getAdminShopConfig().getString(path + "material", ""));
-        if (material == null || !material.isItem()) return null;
+        String materialName = plugin.getAdminShopConfig().getString(path + "material", "");
         int amount = Math.max(1, plugin.getAdminShopConfig().getInt(path + "amount", 1));
-        ItemStack item = new ItemStack(material, Math.min(amount, material.getMaxStackSize()));
+        ItemStack item = createConfiguredStack(materialName, amount);
+        if (item == null) return null;
         ItemMeta meta = item.getItemMeta();
-        String name = plugin.getAdminShopConfig().getString(path + "display-name", material.name());
+        String name = plugin.getAdminShopConfig().getString(path + "display-name", materialName);
         meta.setDisplayName(color(name));
 
         List<String> lore = new ArrayList<>();
@@ -194,6 +197,17 @@ public final class ShopCommand implements CommandExecutor, Listener {
         }
         item.setItemMeta(meta);
         return item;
+    }
+
+    private ItemStack createConfiguredStack(String materialName, int amount) {
+        Material material = Material.matchMaterial(materialName);
+        if (material != null && material.isItem()) {
+            return new ItemStack(material, Math.min(amount, material.getMaxStackSize()));
+        }
+        if (materialName == null || materialName.isBlank()) return null;
+        ItemType itemType = Registry.ITEM.get(NamespacedKey.minecraft(materialName.toLowerCase(java.util.Locale.ROOT)));
+        if (itemType == null) return null;
+        return itemType.createItemStack(Math.min(amount, itemType.getMaxStackSize()));
     }
 
     private ItemStack button(Material material, String name, List<String> lore) {
