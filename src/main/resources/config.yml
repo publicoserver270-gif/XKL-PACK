@@ -11,7 +11,7 @@ modules:
   bank: true
   jobs: true
   shops: false
-  selling: false
+  selling: true
   rankings: true
 
 economy:
