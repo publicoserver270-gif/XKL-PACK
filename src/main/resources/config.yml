@@ -1,4 +1,4 @@
-config-version: 2
+config-version: 3
 
 # XKL PACK - configuração principal
 settings:
@@ -12,7 +12,7 @@ modules:
   economy: true
   bank: true
   jobs: true
-  shops: false
+  shops: true
   selling: true
   rankings: true
 
