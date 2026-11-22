@@ -19,6 +19,13 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - Débito de gemas reservado ao fluxo de compra de ferramentas.
 - Compilação automatizada com GitHub Actions (Java 25 + Paper API 26.3).
 
+## Catálogos das lojas
+
+- `/sell`: 585 materiais configurados, sem Totem da Imortalidade.
+- `/loja`: 135 produtos, incluindo 86 itens de construção importados do arquivo enviado, além de minérios, ingredientes, drops, redstone, variados e ferramentas.
+- Ferramentas são compradas com Gemas; as demais categorias usam Coins.
+- As categorias de armas e armaduras estão criadas, mas ainda aguardam os preços aprovados. O autocrafter também aguarda preço.
+
 ## Regras econômicas fundamentais
 
 - **Coins:** fontes autorizadas de emissão são salários por metas de produção profissional e vendas confirmadas na loja `/sell`.
