@@ -6,6 +6,7 @@ import br.com.xklpack.bank.BankCommand;
 import br.com.xklpack.bank.BankListener;
 import br.com.xklpack.bank.BankMenu;
 import br.com.xklpack.bank.BankService;
+import br.com.xklpack.admin.AdminPanelCommand;
 import br.com.xklpack.economy.EconomyService;
 import br.com.xklpack.economy.EconomyStorage;
 import br.com.xklpack.economy.command.PayCommand;
@@ -26,6 +27,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public final class XKLPack extends JavaPlugin {
@@ -39,6 +41,7 @@ public final class XKLPack extends JavaPlugin {
     private FileConfiguration adminShopConfig;
     private BankService bankService;
     private MoneyPouchService moneyPouchService;
+    private SellCommand sellCommand;
 
     @Override
     public void onEnable() {
@@ -110,7 +113,7 @@ public final class XKLPack extends JavaPlugin {
             }
 
             if (getConfig().getBoolean("modules.selling", true)) {
-                SellCommand sellCommand = new SellCommand(this, economyService);
+                sellCommand = new SellCommand(this, economyService);
                 registerCommand("sell", sellCommand);
                 getServer().getPluginManager().registerEvents(sellCommand, this);
                 var sellItems = sellShopConfig.getConfigurationSection("items");
@@ -124,6 +127,13 @@ public final class XKLPack extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(shopCommand, this);
                 getServer().getPluginManager().registerEvents(new ExcavatorListener(this), this);
                 getLogger().info("Loja administrativa /loja ativada.");
+            }
+
+            if (getConfig().getBoolean("modules.admin-panel", true)) {
+                AdminPanelCommand adminPanel = new AdminPanelCommand(this);
+                registerCommand("xkladmin", adminPanel);
+                getServer().getPluginManager().registerEvents(adminPanel, this);
+                getLogger().info("Painel administrativo /xkladmin ativado.");
             }
         } catch (Exception exception) {
             getLogger().severe("Não foi possível iniciar o XKL PACK: " + exception.getMessage());
@@ -149,6 +159,10 @@ public final class XKLPack extends JavaPlugin {
     public FileConfiguration getPhysicalCoinsConfig() { return physicalCoinsConfig; }
     public FileConfiguration getSellShopConfig() { return sellShopConfig; }
     public FileConfiguration getAdminShopConfig() { return adminShopConfig; }
+    public SellCommand getSellCommand() { return sellCommand; }
+    public void saveBankConfig() throws IOException { bankConfig.save(new File(getDataFolder(), "bank/settings.yml")); }
+    public void saveSellShopConfig() throws IOException { sellShopConfig.save(new File(getDataFolder(), "sell-shop.yml")); }
+    public void saveAdminShopConfig() throws IOException { adminShopConfig.save(new File(getDataFolder(), "admin-shop.yml")); }
     public EconomyService getEconomyService() { return economyService; }
     public EconomyStorage getEconomyStorage() { return economyStorage; }
     public BankService getBankService() { return bankService; }
