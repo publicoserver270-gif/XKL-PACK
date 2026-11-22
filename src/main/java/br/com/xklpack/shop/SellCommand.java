@@ -57,11 +57,16 @@ public final class SellCommand implements CommandExecutor, Listener {
         for (String id : items.getKeys(false)) {
             String path = "items." + id + ".";
             Material material = Material.matchMaterial(plugin.getSellShopConfig().getString(path + "material", ""));
-            double rawPrice = plugin.getSellShopConfig().getDouble(path + "sell-price", 0.0);
-            if (material == null || !material.isItem() || material == Material.TOTEM_OF_UNDYING || rawPrice <= 0) {
+            BigDecimal price;
+            try {
+                price = new BigDecimal(plugin.getSellShopConfig().getString(path + "sell-price", "0"));
+            } catch (NumberFormatException exception) {
+                plugin.getLogger().warning("Preço inválido na tabela /sell: " + id);
                 continue;
             }
-            BigDecimal price = BigDecimal.valueOf(rawPrice).setScale(2, RoundingMode.HALF_UP);
+            if (material == null || !material.isItem() || material == Material.TOTEM_OF_UNDYING || price.signum() <= 0) {
+                continue;
+            }
             if (prices.putIfAbsent(material, price) != null) {
                 plugin.getLogger().warning("Material duplicado na tabela /sell: " + material.name() + ". Foi mantido o primeiro preço.");
             }
