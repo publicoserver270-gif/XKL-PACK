@@ -12,7 +12,7 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - Ranking geral e de jogadores online por moeda: `/top` e `/top online`.
 - Regras de emissão separadas no serviço: coins pelo fluxo de salário e pelo fluxo de vendas; gemas pelo fluxo de atividade profissional.
 - Débito de gemas reservado ao fluxo de compra de ferramentas.
-- Compilação automatizada com GitHub Actions (Java 21 + Maven).
+- Compilação automatizada com GitHub Actions (Java 25 + Paper API 26.3).
 
 ## Regras econômicas fundamentais
 
@@ -23,13 +23,15 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - Moedas diferentes são independentes; não existe conversão automática.
 - Lojas administrativas usam saldo virtual; lojas de jogadores usam dinheiro físico.
 
-## Comandos implementados nesta etapa
+## Comandos implementados no código atual
 
-- `/pay <jogador> <valor> [coins|gems]`
-- `/top [coins|gems]`
-- `/top online [coins|gems]`
-
-Os demais comandos planejados ainda não estão implementados. Não serão adicionados comandos principais de jogador fora da lista aprovada sem decisão explícita.
+- `/loja` — loja administrativa com categorias configuráveis.
+- `/sell` — loja de vendas com prévia, confirmação e catálogo de 585 materiais.
+- `/job` — seleção e status das profissões.
+- `/pay <jogador> <valor> [coins|gems]`.
+- `/top [coins|gems]` e `/top online [coins|gems]`.
+- `/atm` — acesso direto reservado à administração; jogadores usam NPC Citizens vinculado.
+- `/xklatm npc link|unlink|list <id>` e `/xklpouch give <jogador>` — administração.
 
 ## Documentação
 
@@ -38,7 +40,7 @@ Os demais comandos planejados ainda não estão implementados. Não serão adici
 
 ## Compilação
 
-Requisitos: JDK 21 e Maven 3.9+.
+Requisitos: JDK 25 e Maven 3.9+.
 
 ```bash
 mvn clean package
