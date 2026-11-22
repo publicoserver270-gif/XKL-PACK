@@ -57,6 +57,18 @@ public final class BankService {
         }
     }
 
+    private String legacySignature(Denomination denomination) {
+        String payload = "xklpack-coin-v1|" + denomination.id() + "|"
+                + denomination.material().name() + "|" + denomination.value();
+        try {
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(secret, "HmacSHA256"));
+            return Base64.getEncoder().encodeToString(mac.doFinal(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+        } catch (GeneralSecurityException exception) {
+            throw new IllegalStateException("Falha ao autenticar moeda física.", exception);
+        }
+    }
+
     private String signature(Denomination denomination) {
         try {
             Mac mac = Mac.getInstance("HmacSHA256");
@@ -124,9 +136,17 @@ public final class BankService {
                 .filter(d -> d.id().equals(id) && d.material() == item.getType())
                 .findFirst().orElse(null);
         if (denomination == null) return null;
-        byte[] expected = signature(denomination).getBytes(java.nio.charset.StandardCharsets.UTF_8);
         byte[] supplied = suppliedSignature.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-        if (!MessageDigest.isEqual(expected, supplied)) return null;
+        byte[] expected = signature(denomination).getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        boolean valid = MessageDigest.isEqual(expected, supplied);
+        if (!valid) {
+            byte[] legacy = legacySignature(denomination).getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            valid = MessageDigest.isEqual(legacy, supplied);
+            if (valid) {
+                meta.getPersistentDataContainer().set(signatureKey, PersistentDataType.STRING, signature(denomination));
+            }
+        }
+        if (!valid) return null;
 
         // Atualiza o valor exibido quando a administração reajusta uma denominação.
         String expectedName = color(denomination.name());
