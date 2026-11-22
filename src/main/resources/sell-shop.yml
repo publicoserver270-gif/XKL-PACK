@@ -479,11 +479,11 @@ items:
     category: "mining"
     display-name: "<aqua>Pepita de Cobre</aqua>"
     buy-price: 999999.00
-    sell-price: 1.33
+    sell-price: 1.3333333333
     min-buy-price: 999999.00
     max-buy-price: 999999.00
-    min-sell-price: 0.67
-    max-sell-price: 2.66
+    min-sell-price: 0.6666666667
+    max-sell-price: 2.6666666667
 
   copper_block:
     material: "COPPER_BLOCK"
