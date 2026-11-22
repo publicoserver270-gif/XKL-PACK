@@ -32,6 +32,10 @@ categories:
     name: "&6&lITENS VARIADOS"
     icon: CHEST
     slot: 16
+  extras:
+    name: "&b&lDECORAÇÃO E EXTRAS"
+    icon: SEA_LANTERN
+    slot: 17
 
 items:
   coal:
@@ -458,3 +462,11 @@ items:
     price: 1
     currency: coins
     display-name: "&aFrasco de XP"
+
+  sea_lantern:
+    material: SEA_LANTERN
+    category: extras
+    amount: 32
+    price: 400
+    currency: coins
+    display-name: "&bLanterna do Mar"
