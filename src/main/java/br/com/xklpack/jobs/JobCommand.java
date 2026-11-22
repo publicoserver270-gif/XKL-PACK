@@ -22,10 +22,12 @@ import java.util.List;
 public final class JobCommand implements CommandExecutor, Listener {
     private final XKLPack plugin;
     private final JobService jobs;
+    private final KitService kits;
 
-    public JobCommand(XKLPack plugin, JobService jobs) {
+    public JobCommand(XKLPack plugin, JobService jobs, KitService kits) {
         this.plugin = plugin;
         this.jobs = jobs;
+        this.kits = kits;
     }
 
     @Override
@@ -36,8 +38,10 @@ public final class JobCommand implements CommandExecutor, Listener {
         }
         try {
             if (args.length > 0 && args[0].equalsIgnoreCase("sair")) {
+                String oldJob = jobs.getActiveJob(player.getUniqueId());
                 jobs.leaveJob(player.getUniqueId());
-                player.sendMessage("§aVocê saiu da profissão. Seu progresso foi preservado.");
+                kits.leaveProfession(player, oldJob);
+                player.sendMessage("§aVocê saiu da profissão. Seu progresso e kit foram guardados.");
                 return true;
             }
             if (args.length > 0 && args[0].equalsIgnoreCase("status")) {
@@ -120,13 +124,19 @@ public final class JobCommand implements CommandExecutor, Listener {
         };
         try {
             if (slot == 26) {
+                String oldJob = jobs.getActiveJob(player.getUniqueId());
                 jobs.leaveJob(player.getUniqueId());
+                kits.leaveProfession(player, oldJob);
                 player.closeInventory();
-                player.sendMessage("§aVocê saiu da profissão. Seu progresso foi preservado.");
+                player.sendMessage("§aVocê saiu da profissão. Seu progresso e kit foram guardados.");
             } else if (id != null && jobs.isValidJob(id)) {
+                String oldJob = jobs.getActiveJob(player.getUniqueId());
                 jobs.selectJob(player.getUniqueId(), id);
+                JobService.JobProgress progress = jobs.getProgress(player.getUniqueId(), id);
+                kits.switchProfession(player, oldJob, id, progress.level());
                 player.closeInventory();
                 player.sendMessage("§aAgora você trabalha como §e" + jobs.getJobName(id) + "§a!");
+                player.sendMessage("§7Seu kit profissional acompanha seu nível automaticamente.");
                 player.sendMessage("§7Use §f/job status §7para consultar seu progresso.");
             }
         } catch (SQLException | IllegalArgumentException exception) {
