@@ -22,6 +22,7 @@ import br.com.xklpack.pouch.MoneyPouchService;
 import br.com.xklpack.shop.SellCommand;
 import br.com.xklpack.shop.ShopCommand;
 import br.com.xklpack.shop.ExcavatorListener;
+import br.com.xklpack.shop.EquipmentService;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -43,6 +44,7 @@ public final class XKLPack extends JavaPlugin {
     private BankService bankService;
     private MoneyPouchService moneyPouchService;
     private SellCommand sellCommand;
+    private EquipmentService equipmentService;
 
     @Override
     public void onEnable() {
@@ -138,9 +140,11 @@ public final class XKLPack extends JavaPlugin {
             }
 
             if (getConfig().getBoolean("modules.shops", true)) {
-                ShopCommand shopCommand = new ShopCommand(this, economyService);
+                equipmentService = new EquipmentService(this);
+                ShopCommand shopCommand = new ShopCommand(this, economyService, equipmentService);
                 registerCommand("loja", shopCommand);
                 getServer().getPluginManager().registerEvents(shopCommand, this);
+                getServer().getPluginManager().registerEvents(equipmentService, this);
                 getServer().getPluginManager().registerEvents(new ExcavatorListener(this), this);
                 getLogger().info("Loja administrativa /loja ativada.");
             }
@@ -176,6 +180,7 @@ public final class XKLPack extends JavaPlugin {
     public FileConfiguration getSellShopConfig() { return sellShopConfig; }
     public FileConfiguration getAdminShopConfig() { return adminShopConfig; }
     public SellCommand getSellCommand() { return sellCommand; }
+    public EquipmentService getEquipmentService() { return equipmentService; }
     public void saveBankConfig() throws IOException { bankConfig.save(new File(getDataFolder(), "bank/settings.yml")); }
     public void savePhysicalCoinsConfig() throws IOException { physicalCoinsConfig.save(new File(getDataFolder(), "economy/physical-coins.yml")); }
     public void saveSellShopConfig() throws IOException { sellShopConfig.save(new File(getDataFolder(), "sell-shop.yml")); }
