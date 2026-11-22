@@ -92,7 +92,9 @@ public final class XKLPack extends JavaPlugin {
                 SellCommand sellCommand = new SellCommand(this, economyService);
                 registerCommand("sell", sellCommand);
                 getServer().getPluginManager().registerEvents(sellCommand, this);
-                getLogger().info("Loja de vendas /sell ativada com " + sellShopConfig.getConfigurationSection("items").getKeys(false).size() + " itens configurados.");
+                var sellItems = sellShopConfig.getConfigurationSection("items");
+                int sellItemCount = sellItems == null ? 0 : sellItems.getKeys(false).size();
+                getLogger().info("Loja de vendas /sell ativada com " + sellItemCount + " itens configurados.");
             }
         } catch (Exception exception) {
             getLogger().severe("Não foi possível iniciar o XKL PACK: " + exception.getMessage());
