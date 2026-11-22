@@ -186,6 +186,8 @@ public final class XKLPack extends JavaPlugin {
     public void saveSellShopConfig() throws IOException { sellShopConfig.save(new File(getDataFolder(), "sell-shop.yml")); }
     public void saveAdminShopConfig() throws IOException { adminShopConfig.save(new File(getDataFolder(), "admin-shop.yml")); }
     public EconomyService getEconomyService() { return economyService; }
+    public JobService getJobService() { return jobService; }
+    public KitService getKitService() { return kitService; }
     public EconomyStorage getEconomyStorage() { return economyStorage; }
     public BankService getBankService() { return bankService; }
     public MoneyPouchService getMoneyPouchService() { return moneyPouchService; }
