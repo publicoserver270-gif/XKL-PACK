@@ -63,6 +63,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
         inventory.setItem(16, button(Material.HOPPER, "§e§lLOJA DE VENDAS", "§7Editar preços recebidos em Coins."));
         inventory.setItem(20, button(Material.EMERALD, "§a§lMOEDAS FÍSICAS", "§7Editar o valor das denominações."));
         inventory.setItem(22, button(Material.DIAMOND_PICKAXE, "§d§lKITS PROFISSIONAIS", "§7Editar materiais de evolução dos kits."));
+        inventory.setItem(24, button(Material.ENDER_CHEST, "§b§lLIMITES DE FERRAMENTAS", "§7Editar espaços por nível da profissão ativa."));
         player.openInventory(inventory);
     }
 
@@ -135,6 +136,17 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
                     Material icon = Material.matchMaterial(plugin.getSellShopConfig().getString(path + "material", "CHEST"));
                     result.add(new Entry(name + " (Coins)", icon == null ? Material.CHEST : icon,
                             FileType.SELL_SHOP, path + "sell-price", 10, false));
+                }
+            }
+        } else if ("limits".equals(category)) {
+            for (String type : List.of("owned-slots", "equipped-slots")) {
+                ConfigurationSection levels = plugin.getConfig().getConfigurationSection("equipment-limits." + type);
+                if (levels == null) continue;
+                for (String level : levels.getKeys(false)) {
+                    String label = ("owned-slots".equals(type) ? "Ferramentas que pode possuir" : "Ferramentas equipadas")
+                            + " • nível " + level;
+                    result.add(new Entry(label, Material.ENDER_CHEST, FileType.MAIN,
+                            "equipment-limits." + type + "." + level, 0, false));
                 }
             }
         } else if ("coins".equals(category)) {
@@ -299,6 +311,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
                 case 16 -> "sell";
                 case 20 -> "coins";
                 case 22 -> "kits";
+                case 24 -> "limits";
                 default -> null;
             };
             if (category != null) openSettings(player, category, 0);
@@ -340,6 +353,7 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
             case "sell" -> "LOJA DE VENDAS";
             case "kits" -> "KITS";
             case "coins" -> "MOEDAS FÍSICAS";
+            case "limits" -> "LIMITES DE FERRAMENTAS";
             default -> category.toUpperCase();
         };
     }
