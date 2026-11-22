@@ -35,7 +35,7 @@ economy:
 # PROFISSÕES
 # Uma profissão ativa por jogador. O progresso de cada profissão fica salvo separadamente.
 jobs:
-  max-level: 140
+  max-level: 500
 
   # Kits vinculados à profissão. A ferramenta evolui automaticamente nos níveis configurados.
   # A durabilidade é preservada proporcionalmente quando o material muda.
@@ -48,45 +48,50 @@ jobs:
           1: {material: WOODEN_PICKAXE}
           5: {material: STONE_PICKAXE, enchantments: {efficiency: 1}}
           10: {material: IRON_PICKAXE, enchantments: {efficiency: 2, unbreaking: 1}}
-          15: {material: GOLDEN_PICKAXE, enchantments: {efficiency: 3, unbreaking: 1}}
-          20: {material: DIAMOND_PICKAXE, enchantments: {efficiency: 4, unbreaking: 2}}
-          30: {material: NETHERITE_PICKAXE, enchantments: {efficiency: 5, unbreaking: 3}}
+          20: {material: GOLDEN_PICKAXE, enchantments: {efficiency: 3, unbreaking: 1}}
+          40: {material: DIAMOND_PICKAXE, enchantments: {efficiency: 4, unbreaking: 2}}
+          80: {material: NETHERITE_PICKAXE, enchantments: {efficiency: 5, unbreaking: 3}}
+          160: {material: NETHERITE_PICKAXE, enchantments: {efficiency: 6, unbreaking: 3}}
       lenhador:
         display-name: "&6Machado do Lenhador"
         tiers:
           1: {material: WOODEN_AXE}
           5: {material: STONE_AXE, enchantments: {efficiency: 1}}
           10: {material: IRON_AXE, enchantments: {efficiency: 2, unbreaking: 1}}
-          15: {material: GOLDEN_AXE, enchantments: {efficiency: 3, unbreaking: 1}}
-          20: {material: DIAMOND_AXE, enchantments: {efficiency: 4, unbreaking: 2}}
-          30: {material: NETHERITE_AXE, enchantments: {efficiency: 5, unbreaking: 3}}
+          20: {material: GOLDEN_AXE, enchantments: {efficiency: 3, unbreaking: 1}}
+          40: {material: DIAMOND_AXE, enchantments: {efficiency: 4, unbreaking: 2}}
+          80: {material: NETHERITE_AXE, enchantments: {efficiency: 5, unbreaking: 3}}
+          160: {material: NETHERITE_AXE, enchantments: {efficiency: 6, unbreaking: 3}}
       fazendeiro:
         display-name: "&aEnxada do Fazendeiro"
         tiers:
           1: {material: WOODEN_HOE}
           5: {material: STONE_HOE, enchantments: {efficiency: 1}}
           10: {material: IRON_HOE, enchantments: {efficiency: 2, unbreaking: 1}}
-          15: {material: GOLDEN_HOE, enchantments: {efficiency: 3, unbreaking: 1}}
-          20: {material: DIAMOND_HOE, enchantments: {efficiency: 4, unbreaking: 2}}
-          30: {material: NETHERITE_HOE, enchantments: {efficiency: 5, unbreaking: 3}}
+          20: {material: GOLDEN_HOE, enchantments: {efficiency: 3, unbreaking: 1}}
+          40: {material: DIAMOND_HOE, enchantments: {efficiency: 4, unbreaking: 2}}
+          80: {material: NETHERITE_HOE, enchantments: {efficiency: 5, unbreaking: 3}}
+          160: {material: NETHERITE_HOE, enchantments: {efficiency: 6, unbreaking: 3}}
       cacador:
         display-name: "&cEspada do Caçador"
         tiers:
           1: {material: WOODEN_SWORD}
           5: {material: STONE_SWORD, enchantments: {sharpness: 1}}
           10: {material: IRON_SWORD, enchantments: {sharpness: 2, unbreaking: 1}}
-          15: {material: GOLDEN_SWORD, enchantments: {sharpness: 3, unbreaking: 1}}
-          20: {material: DIAMOND_SWORD, enchantments: {sharpness: 4, unbreaking: 2}}
-          30: {material: NETHERITE_SWORD, enchantments: {sharpness: 5, unbreaking: 3}}
+          20: {material: GOLDEN_SWORD, enchantments: {sharpness: 3, unbreaking: 1}}
+          40: {material: DIAMOND_SWORD, enchantments: {sharpness: 4, unbreaking: 2}}
+          80: {material: NETHERITE_SWORD, enchantments: {sharpness: 5, unbreaking: 3}}
+          160: {material: NETHERITE_SWORD, enchantments: {sharpness: 6, unbreaking: 3}}
       pescador:
         display-name: "&bVara do Pescador"
         tiers:
           1: {material: FISHING_ROD}
           5: {material: FISHING_ROD, enchantments: {luck_of_the_sea: 1, lure: 1}}
           10: {material: FISHING_ROD, enchantments: {luck_of_the_sea: 2, lure: 2, unbreaking: 1}}
-          15: {material: FISHING_ROD, enchantments: {luck_of_the_sea: 3, lure: 3, unbreaking: 1}}
-          20: {material: FISHING_ROD, enchantments: {luck_of_the_sea: 4, lure: 4, unbreaking: 2}}
-          30: {material: FISHING_ROD, enchantments: {luck_of_the_sea: 5, lure: 5, unbreaking: 3}}
+          20: {material: FISHING_ROD, enchantments: {luck_of_the_sea: 3, lure: 3, unbreaking: 1}}
+          40: {material: FISHING_ROD, enchantments: {luck_of_the_sea: 4, lure: 4, unbreaking: 2}}
+          80: {material: FISHING_ROD, enchantments: {luck_of_the_sea: 5, lure: 5, unbreaking: 3}}
+          160: {material: FISHING_ROD, enchantments: {luck_of_the_sea: 6, lure: 6, unbreaking: 3}}
 
   leveling:
     # XP próprio do XKL PACK; não usa a barra de XP vanilla.
@@ -94,12 +99,12 @@ jobs:
     xp-per-level: 25
     # Marcos de progressão para kits/equipamentos profissionais.
     tiers:
-      madeira: {min-level: 1, max-level: 10}
-      pedra: {min-level: 11, max-level: 25}
-      ferro: {min-level: 26, max-level: 45}
-      ouro: {min-level: 46, max-level: 70}
-      diamante: {min-level: 71, max-level: 100}
-      netherita: {min-level: 101, max-level: 140}
+      madeira: {min-level: 1, max-level: 4}
+      pedra: {min-level: 5, max-level: 19}
+      ferro: {min-level: 20, max-level: 39}
+      ouro: {min-level: 40, max-level: 79}
+      diamante: {min-level: 80, max-level: 159}
+      netherita: {min-level: 160, max-level: 500}
 
   # A cada 100 XP profissional acumulado, recebe 1 gema.
   # Ajuste os valores sem alterar o código.
@@ -133,18 +138,23 @@ jobs:
 
   professions:
     minerador:
+      max-level: 200
       name: Minerador
       description: Extraia minérios e recursos subterrâneos.
     lenhador:
+      max-level: 200
       name: Lenhador
       description: Colete madeira de árvores.
     fazendeiro:
+      max-level: 500
       name: Fazendeiro
       description: Colha plantações maduras.
     cacador:
+      max-level: 200
       name: Caçador
       description: Cace criaturas e obtenha experiência de caça.
     pescador:
+      max-level: 200
       name: Pescador
       description: Pesque peixes e tesouros.
 
