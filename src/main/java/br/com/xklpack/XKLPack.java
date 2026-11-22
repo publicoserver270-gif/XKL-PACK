@@ -39,8 +39,15 @@ public final class XKLPack extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         boolean hadJobConfiguration = getConfig().isConfigurationSection("jobs.professions");
+        int configVersion = getConfig().getInt("config-version", 0);
         getConfig().options().copyDefaults(true);
         if (!hadJobConfiguration) getConfig().set("modules.jobs", true);
+        if (configVersion < 2) {
+            // Migra instalações que receberam modules.selling=false como valor padrão
+            // antes da implementação do comando /sell.
+            getConfig().set("modules.selling", true);
+            getConfig().set("config-version", 2);
+        }
         saveConfig();
 
         saveResourceIfMissing("bank/settings.yml");
