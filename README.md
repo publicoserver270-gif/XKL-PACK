@@ -11,7 +11,7 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - Moedas físicas com assinatura HMAC e saco de couro que guarda apenas moedas autenticadas.
 - Profissões com progresso de XP, metas salariais independentes por profissão, recompensas de gemas e kits automáticos por nível.
 - Kits profissionais vinculados ao jogador, com evolução automática, durabilidade proporcional e bloqueio de transferência.
-- Painel administrativo `/xkladmin` para editar salários, metas, taxas bancárias, valores das moedas físicas, preços de compra/venda e materiais dos kits.
+- Carteira virtual `/carteira` separada do saco físico e do ATM; painel administrativo `/xkladmin` para editar salários, metas, taxas bancárias, valores das moedas físicas, preços de compra/venda e materiais dos kits.
 - Moedas independentes configuráveis (coins e gems por padrão).
 - Transferência bancária virtual pelo comando `/pay` (destinatário precisa estar online nesta primeira versão).
 - Ranking geral e de jogadores online por moeda: `/top` e `/top online`.
@@ -32,7 +32,7 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 
 - `/loja` — loja administrativa com categorias configuráveis.
 - `/sell` — loja de vendas com prévia, confirmação e catálogo de 585 materiais.
-- `/job` — seleção e status das profissões.
+- `/carteira` — saldo virtual de Coins/Gemas e histórico de transações; não é o saco físico nem o ATM.\n- `/job` — seleção e status das profissões.
 - `/pay <jogador> <valor> [coins|gems]`.
 - `/top [coins|gems]` e `/top online [coins|gems]`.
 - `/atm` — acesso direto reservado à administração; jogadores usam NPC Citizens vinculado.
