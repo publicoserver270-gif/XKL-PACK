@@ -53,7 +53,7 @@ public final class EquipmentService implements Listener {
 
     public DeliveryPlan prepareDelivery(Player player, ItemStack product) {
         ItemStack[] contents = cloneContents(player.getInventory().getStorageContents());
-        if (!isSpecialTool(product)) {
+        if (!isSpecialTool(product) || !limitsEnabled()) {
             Inventory simulated = Bukkit.createInventory(null, 36);
             simulated.setContents(contents);
             if (!simulated.addItem(product.clone()).isEmpty()) return DeliveryPlan.failure("Libere espaço no inventário antes de comprar.");
@@ -98,6 +98,10 @@ public final class EquipmentService implements Listener {
         if (equipped > equippedLimit) {
             player.sendMessage("§eSeu limite atual é de " + equippedLimit + " ferramentas equipadas. Libere espaço para guardar as excedentes.");
         }
+    }
+
+    private boolean limitsEnabled() {
+        return plugin.getConfig().getBoolean("equipment-limits.enabled", true);
     }
 
     private int countOwned(Player player) {
@@ -199,7 +203,8 @@ public final class EquipmentService implements Listener {
 
         if (event.getClickedInventory() == player.getInventory()) {
             int slot = event.getSlot();
-            if (slot >= 0 && slot < 9 && isSpecialTool(cursor) && !isSpecialTool(current)
+            if (limitsEnabled() && slot >= 0 && slot < 9 && isSpecialTool(cursor) && !isSpecialTool(current)
+                    && limitsEnabled()
                     && countEquipped(player) >= getLimit("equipped-slots", getLevel(player))) {
                 event.setCancelled(true);
                 player.sendMessage("§cVocê atingiu o limite de ferramentas equipadas para seu nível.");
@@ -233,10 +238,10 @@ public final class EquipmentService implements Listener {
         if (event.getWhoClicked() instanceof Player player) {
             int topSize = event.getView().getTopInventory().getSize();
             long newHotbarTools = event.getNewItems().entrySet().stream()
-                    .filter(entry -> entry.getKey() >= topSize && entry.getKey() - topSize < 9)
+                    .filter(entry -> event.getView().getSlotType(entry.getKey()) == org.bukkit.event.inventory.InventoryType.SlotType.QUICKBAR)
                     .filter(entry -> isSpecialTool(entry.getValue()))
                     .count();
-            if (newHotbarTools > 0 && countEquipped(player) + newHotbarTools > getLimit("equipped-slots", getLevel(player))) {
+            if (limitsEnabled() && newHotbarTools > 0 && countEquipped(player) + newHotbarTools > getLimit("equipped-slots", getLevel(player))) {
                 event.setCancelled(true);
                 player.sendMessage("§cVocê atingiu o limite de ferramentas equipadas para seu nível.");
             }
