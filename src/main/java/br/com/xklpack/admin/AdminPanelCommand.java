@@ -263,6 +263,9 @@ public final class AdminPanelCommand implements CommandExecutor, Listener {
             if (entry.file() == FileType.SELL_SHOP && plugin.getSellCommand() != null) {
                 plugin.getSellCommand().reloadPrices();
             }
+            if (entry.path().startsWith("equipment-limits.") && plugin.getEquipmentService() != null) {
+                plugin.getEquipmentService().enforceAllOnline();
+            }
             openSettings(player, pendingEdit.category(), pendingEdit.page());
         } catch (Exception exception) {
             player.sendMessage("§cValor inválido: " + exception.getMessage());
