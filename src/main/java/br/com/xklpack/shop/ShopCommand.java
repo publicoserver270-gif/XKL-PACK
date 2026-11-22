@@ -35,11 +35,13 @@ public final class ShopCommand implements CommandExecutor, Listener {
     private final XKLPack plugin;
     private final EconomyService economy;
     private final NamespacedKey excavatorKey;
+    private final NamespacedKey specialToolKey;
 
     public ShopCommand(XKLPack plugin, EconomyService economy) {
         this.plugin = plugin;
         this.economy = economy;
         this.excavatorKey = new NamespacedKey(plugin, "excavator_3x3");
+        this.specialToolKey = new NamespacedKey(plugin, "special_tool");
     }
 
     @Override
@@ -153,6 +155,9 @@ public final class ShopCommand implements CommandExecutor, Listener {
             lore.add("§eClique para comprar!");
         }
         meta.setLore(lore);
+        if ("ferramentas".equalsIgnoreCase(plugin.getAdminShopConfig().getString(path + "category", ""))) {
+            meta.getPersistentDataContainer().set(specialToolKey, PersistentDataType.BYTE, (byte) 1);
+        }
         if ("excavator_3x3".equalsIgnoreCase(plugin.getAdminShopConfig().getString(path + "special", ""))) {
             meta.getPersistentDataContainer().set(excavatorKey, PersistentDataType.BYTE, (byte) 1);
             meta.addEnchant(org.bukkit.enchantments.Enchantment.UNBREAKING, 1, true);
