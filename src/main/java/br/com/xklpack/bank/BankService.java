@@ -12,16 +12,61 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.*;
 import java.util.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.util.Base64;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 public final class BankService {
     private final XKLPack plugin;
     private final NamespacedKey coinKey;
     private final NamespacedKey denominationKey;
+    private final NamespacedKey signatureKey;
+    private final byte[] signingSecret;
 
     public BankService(XKLPack plugin) {
         this.plugin = plugin;
         this.coinKey = new NamespacedKey(plugin, "physical_coin");
         this.denominationKey = new NamespacedKey(plugin, "coin_denomination");
+        this.signatureKey = new NamespacedKey(plugin, "coin_signature");
+        this.signingSecret = loadOrCreateSigningSecret(plugin);
+    }
+
+    private byte[] loadOrCreateSigningSecret(XKLPack plugin) {
+        Path path = plugin.getDataFolder().toPath().resolve("coin-signing.key");
+        try {
+            Files.createDirectories(path.getParent());
+            if (Files.exists(path)) {
+                byte[] existing = Files.readAllBytes(path);
+                if (existing.length != 32) {
+                    throw new IllegalStateException("O arquivo coin-signing.key está inválido. Restaure o segredo original; não gere outro com moedas em circulação.");
+                }
+                return existing;
+            }
+            byte[] generated = new byte[32];
+            new SecureRandom().nextBytes(generated);
+            Files.write(path, generated);
+            plugin.getLogger().warning("Segredo HMAC das moedas físicas criado. Faça backup do arquivo coin-signing.key; sem ele, as moedas existentes não serão autenticadas.");
+            return generated;
+        } catch (IOException exception) {
+            throw new IllegalStateException("Não foi possível carregar/criar o segredo de autenticação das moedas físicas.", exception);
+        }
+    }
+
+    private String signature(Denomination denomination) {
+        try {
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(signingSecret, "HmacSHA256"));
+            String payload = "xklpack-coin-v1|" + denomination.id() + "|"
+                    + denomination.material().name() + "|" + denomination.value();
+            return Base64.getEncoder().encodeToString(mac.doFinal(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+        } catch (Exception exception) {
+            throw new IllegalStateException("Não foi possível assinar moeda física.", exception);
+        }
     }
 
     public record Denomination(String id, Material material, int value, int order, String name) {}
@@ -57,6 +102,7 @@ public final class BankService {
                 color("&8Moeda oficial do Banco XKL")));
         meta.getPersistentDataContainer().set(coinKey, PersistentDataType.STRING, "xklpack_coin_v1");
         meta.getPersistentDataContainer().set(denominationKey, PersistentDataType.STRING, denomination.id());
+        meta.getPersistentDataContainer().set(signatureKey, PersistentDataType.STRING, signature(denomination));
         if (plugin.getPhysicalCoinsConfig().getBoolean("physical-coins.enchantment-glint", true)) {
             meta.addEnchant(org.bukkit.enchantments.Enchantment.UNBREAKING, 1, true);
             meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
@@ -70,8 +116,15 @@ public final class BankService {
         ItemMeta meta = item.getItemMeta();
         if (!"xklpack_coin_v1".equals(meta.getPersistentDataContainer().get(coinKey, PersistentDataType.STRING))) return null;
         String id = meta.getPersistentDataContainer().get(denominationKey, PersistentDataType.STRING);
-        if (id == null) return null;
-        return denominations().stream().filter(d -> d.id().equals(id) && d.material() == item.getType()).findFirst().orElse(null);
+        String suppliedSignature = meta.getPersistentDataContainer().get(signatureKey, PersistentDataType.STRING);
+        if (id == null || suppliedSignature == null) return null;
+        Denomination denomination = denominations().stream()
+                .filter(d -> d.id().equals(id) && d.material() == item.getType())
+                .findFirst().orElse(null);
+        if (denomination == null) return null;
+        byte[] expected = signature(denomination).getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] supplied = suppliedSignature.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        return MessageDigest.isEqual(expected, supplied) ? denomination : null;
     }
 
     public BigDecimal balance(UUID uuid) throws SQLException {
