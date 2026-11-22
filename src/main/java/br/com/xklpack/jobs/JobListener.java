@@ -19,10 +19,12 @@ import java.sql.SQLException;
 public final class JobListener implements Listener {
     private final XKLPack plugin;
     private final JobService jobs;
+    private final KitService kits;
 
-    public JobListener(XKLPack plugin, JobService jobs) {
+    public JobListener(XKLPack plugin, JobService jobs, KitService kits) {
         this.plugin = plugin;
         this.jobs = jobs;
+        this.kits = kits;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -96,6 +98,7 @@ public final class JobListener implements Listener {
             JobService.ProgressResult result = jobs.addProgress(player.getUniqueId(), player.getName(), job, xp);
             if (result.newLevel() > result.oldLevel()) {
                 player.sendMessage("§6§lPROFISSÃO! §eVocê alcançou o nível " + result.newLevel() + " em " + jobs.getJobName(job) + "!");
+                kits.upgradeIfNeeded(player, job, result.newLevel());
             }
             if (result.gemsAwarded() > 0) {
                 player.sendMessage("§d+" + result.gemsAwarded() + " Gemas §7por sua atividade profissional!");
