@@ -152,6 +152,13 @@ public final class BankService {
                 total = total.add(BigDecimal.valueOf((long) d.value() * item.getAmount()));
             }
             if (totalItems == 0) return BigDecimal.ZERO;
+            BigDecimal feePercent = feePercent("atm.fees.deposit-percent", 0.0);
+            BigDecimal fee = total.multiply(feePercent).divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING);
+            BigDecimal credited = total.subtract(fee).setScale(2, RoundingMode.DOWN);
+            if (credited.signum() <= 0) {
+                throw new IllegalArgumentException("O valor é muito baixo para o depósito com taxa.");
+            }
+
             // Remove apenas itens autenticados. Em falha SQL, restaura os itens removidos.
             for (int slot = 0; slot < player.getInventory().getStorageContents().length; slot++) {
                 ItemStack item = player.getInventory().getItem(slot);
@@ -164,8 +171,9 @@ public final class BankService {
                 try {
                     touch(c, player);
                     BigDecimal old = read(c, player.getUniqueId());
-                    write(c, player.getUniqueId(), old.add(total));
-                    log(c, null, player.getUniqueId(), total, "ATM_DEPOSIT");
+                    write(c, player.getUniqueId(), old.add(credited));
+                    log(c, null, player.getUniqueId(), credited, "ATM_DEPOSIT");
+                    if (fee.signum() > 0) log(c, null, player.getUniqueId(), fee, "ATM_FEE");
                     c.commit();
                 } catch (Exception e) {
                     c.rollback();
@@ -176,14 +184,15 @@ public final class BankService {
                     int left = entry.getValue();
                     while (left > 0) {
                         int amount = Math.min(left, entry.getKey().material().getMaxStackSize());
-                        player.getInventory().addItem(createCoin(entry.getKey(), amount));
+                        Map<Integer, ItemStack> overflow = player.getInventory().addItem(createCoin(entry.getKey(), amount));
+                        overflow.values().forEach(item -> player.getWorld().dropItemNaturally(player.getLocation(), item));
                         left -= amount;
                     }
                 }
                 if (ex instanceof SQLException sql) throw sql;
                 throw new SQLException("Falha ao depositar moedas.", ex);
             }
-            return total;
+            return credited;
         }
     }
 
@@ -191,7 +200,7 @@ public final class BankService {
         if (requested == null || requested.signum() <= 0 || requested.stripTrailingZeros().scale() > 0)
             throw new IllegalArgumentException("Digite um valor inteiro maior que zero.");
         synchronized (plugin.getEconomyStorage()) {
-            BigDecimal feePercent = BigDecimal.valueOf(plugin.getBankConfig().getDouble("atm.fees.withdraw-percent", 2.0));
+            BigDecimal feePercent = feePercent("atm.fees.withdraw-percent", 2.0);
             BigDecimal fee = requested.multiply(feePercent).divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING);
             BigDecimal payout = requested.subtract(fee).setScale(0, RoundingMode.DOWN);
             BigDecimal chargedFee = requested.subtract(payout);
@@ -267,6 +276,14 @@ public final class BankService {
             }
         }
         return rows;
+    }
+
+    private BigDecimal feePercent(String path, double defaultValue) {
+        BigDecimal percent = BigDecimal.valueOf(plugin.getBankConfig().getDouble(path, defaultValue));
+        if (percent.compareTo(BigDecimal.ZERO) < 0 || percent.compareTo(BigDecimal.valueOf(100)) >= 0) {
+            throw new IllegalStateException("A taxa " + path + " precisa ser maior ou igual a 0% e menor que 100%.");
+        }
+        return percent;
     }
 
     private BigDecimal read(Connection c, UUID uuid) throws SQLException {
