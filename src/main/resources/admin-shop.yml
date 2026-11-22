@@ -1,472 +1,861 @@
 settings:
-  title: "&8&lLOJA XKL"
-  category-title: "&8&l{category}"
+  title: '&8&lLOJA XKL'
+  category-title: '&8&l{category}'
   page-size: 45
-
 categories:
   minerios:
-    name: "&b&lMINÉRIOS"
+    name: '&b&lMINÉRIOS E MATERIAIS'
     icon: DIAMOND
     slot: 10
-  agricultura:
-    name: "&a&lAGRICULTURA"
-    icon: WHEAT
+  armas:
+    name: '&c&lARMAS'
+    icon: DIAMOND_SWORD
     slot: 11
-  mob_drops:
-    name: "&c&lDROPS DE MONSTROS"
-    icon: ROTTEN_FLESH
+  armaduras:
+    name: '&3&lARMADURAS'
+    icon: DIAMOND_CHESTPLATE
     slot: 12
-  construcao:
-    name: "&2&lCONSTRUÇÃO"
-    icon: GRASS_BLOCK
+  comida:
+    name: '&e&lCOMIDA'
+    icon: GOLDEN_CARROT
     slot: 13
-  redstone:
-    name: "&c&lREDSTONE E AUTOMAÇÃO"
-    icon: REDSTONE
+  construcao:
+    name: '&a&lCONSTRUÇÃO'
+    icon: GRASS_BLOCK
     slot: 14
+    children:
+    - pedras
+    - tijolos
+    - tabuas
+    - troncos
+    - vidros
+    - extras
   ferramentas:
-    name: "&d&lFERRAMENTAS"
+    name: '&6&lFERRAMENTAS'
     icon: DIAMOND_PICKAXE
     slot: 15
   variados:
-    name: "&6&lITENS VARIADOS"
+    name: '&d&lITENS VARIADOS'
     icon: CHEST
     slot: 16
-  extras:
-    name: "&b&lDECORAÇÃO E EXTRAS"
-    icon: SEA_LANTERN
+  redstone:
+    name: '&c&lREDSTONE E AUTOMAÇÃO'
+    icon: REDSTONE
     slot: 17
-
+  itens_especiais:
+    name: '&5&lITENS ESPECIAIS'
+    icon: ENDER_PEARL
+    slot: 18
+  pedras:
+    name: '&7&lPEDRAS'
+    icon: STONE
+    slot: 10
+    parent: construcao
+  tijolos:
+    name: '&c&lTIJOLOS'
+    icon: BRICKS
+    slot: 11
+    parent: construcao
+  tabuas:
+    name: '&6&lTÁBUAS'
+    icon: OAK_PLANKS
+    slot: 12
+    parent: construcao
+  troncos:
+    name: '&6&lTRONCOS'
+    icon: OAK_LOG
+    slot: 13
+    parent: construcao
+  vidros:
+    name: '&b&lVIDROS'
+    icon: GLASS
+    slot: 14
+    parent: construcao
+  extras:
+    name: '&e&lEXTRAS'
+    icon: LANTERN
+    slot: 15
+    parent: construcao
 items:
+  tijolos_tijolos:
+    material: BRICKS
+    category: tijolos
+    price: 250
+    display-name: '&fTijolos'
+    amount: 32
+  tijolos_tijolos_pedra:
+    material: STONE_BRICKS
+    category: tijolos
+    price: 180
+    display-name: '&fTijolos de pedra'
+    amount: 32
+  tijolos_tijolos_pedra_rachados:
+    material: CRACKED_STONE_BRICKS
+    category: tijolos
+    price: 200
+    display-name: '&fTijolos de pedra rachados'
+    amount: 32
+  tijolos_tijolos_pedra_musgosos:
+    material: MOSSY_STONE_BRICKS
+    category: tijolos
+    price: 220
+    display-name: '&fTijolos de pedra musgosos'
+    amount: 32
+  tijolos_tijolos_ardosia:
+    material: DEEPSLATE_BRICKS
+    category: tijolos
+    price: 200
+    display-name: '&fTijolos de ardósia'
+    amount: 32
+  tijolos_ardosia_polida:
+    material: POLISHED_DEEPSLATE
+    category: tijolos
+    price: 250
+    display-name: '&fArdósia polida'
+    amount: 32
+  tijolos_tijolos_tufo:
+    material: TUFF_BRICKS
+    category: tijolos
+    price: 250
+    display-name: '&fTijolos de tufo'
+    amount: 32
+  tijolos_tijolos_lama:
+    material: MUD_BRICKS
+    category: tijolos
+    price: 200
+    display-name: '&fTijolos de lama'
+    amount: 32
+  tijolos_quartzo:
+    material: QUARTZ_BLOCK
+    category: tijolos
+    price: 350
+    display-name: '&fBloco de quartzo'
+    amount: 32
+  tijolos_tijolos_nether:
+    material: NETHER_BRICKS
+    category: tijolos
+    price: 300
+    display-name: '&fTijolos do Nether'
+    amount: 32
+  tijolos_tijolos_vermelhos_nether:
+    material: RED_NETHER_BRICKS
+    category: tijolos
+    price: 350
+    display-name: '&fTijolos vermelhos do Nether'
+    amount: 32
+  tijolos_tijolos_end:
+    material: END_STONE_BRICKS
+    category: tijolos
+    price: 400
+    display-name: '&fTijolos do End'
+    amount: 32
+  tabuas_carvalho:
+    material: OAK_PLANKS
+    category: tabuas
+    price: 100
+    display-name: '&fTábuas de carvalho'
+    amount: 32
+  tabuas_pinheiro:
+    material: SPRUCE_PLANKS
+    category: tabuas
+    price: 100
+    display-name: '&fTábuas de pinheiro'
+    amount: 32
+  tabuas_betula:
+    material: BIRCH_PLANKS
+    category: tabuas
+    price: 100
+    display-name: '&fTábuas de bétula'
+    amount: 32
+  tabuas_selva:
+    material: JUNGLE_PLANKS
+    category: tabuas
+    price: 120
+    display-name: '&fTábuas da selva'
+    amount: 32
+  tabuas_acacia:
+    material: ACACIA_PLANKS
+    category: tabuas
+    price: 120
+    display-name: '&fTábuas de acácia'
+    amount: 32
+  tabuas_carvalho_escuro:
+    material: DARK_OAK_PLANKS
+    category: tabuas
+    price: 120
+    display-name: '&fTábuas de carvalho escuro'
+    amount: 32
+  tabuas_mangue:
+    material: MANGROVE_PLANKS
+    category: tabuas
+    price: 150
+    display-name: '&fTábuas de mangue'
+    amount: 32
+  tabuas_cerejeira:
+    material: CHERRY_PLANKS
+    category: tabuas
+    price: 150
+    display-name: '&fTábuas de cerejeira'
+    amount: 32
+  tabuas_bambu:
+    material: BAMBOO_PLANKS
+    category: tabuas
+    price: 150
+    display-name: '&fTábuas de bambu'
+    amount: 32
+  tabuas_carmesim:
+    material: CRIMSON_PLANKS
+    category: tabuas
+    price: 180
+    display-name: '&fTábuas carmesim'
+    amount: 32
+  tabuas_distorcida:
+    material: WARPED_PLANKS
+    category: tabuas
+    price: 180
+    display-name: '&fTábuas distorcidas'
+    amount: 32
+  vidros_vidro:
+    material: GLASS
+    category: vidros
+    price: 160
+    display-name: '&fVidro'
+    amount: 32
+  vidros_painel_vidro:
+    material: GLASS_PANE
+    category: vidros
+    price: 120
+    display-name: '&fPainel de vidro'
+    amount: 32
+  vidros_vidro_branco:
+    material: WHITE_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro branco'
+    amount: 32
+  vidros_vidro_preto:
+    material: BLACK_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro preto'
+    amount: 32
+  vidros_vidro_vermelho:
+    material: RED_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro vermelho'
+    amount: 32
+  vidros_vidro_azul:
+    material: BLUE_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro azul'
+    amount: 32
+  vidros_vidro_verde:
+    material: GREEN_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro verde'
+    amount: 32
+  vidros_vidro_amarelo:
+    material: YELLOW_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro amarelo'
+    amount: 32
+  vidros_vidro_rosa:
+    material: PINK_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro rosa'
+    amount: 32
+  vidros_vidro_roxo:
+    material: PURPLE_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro roxo'
+    amount: 32
+  vidros_vidro_laranja:
+    material: ORANGE_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro laranja'
+    amount: 32
+  vidros_vidro_cinza:
+    material: GRAY_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro cinza'
+    amount: 32
+  vidros_vidro_ciano:
+    material: CYAN_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro ciano'
+    amount: 32
+  vidros_vidro_azul_claro:
+    material: LIGHT_BLUE_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro azul-claro'
+    amount: 32
+  vidros_vidro_lima:
+    material: LIME_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro verde-limão'
+    amount: 32
+  vidros_vidro_marrom:
+    material: BROWN_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro marrom'
+    amount: 32
+  vidros_vidro_magenta:
+    material: MAGENTA_STAINED_GLASS
+    category: vidros
+    price: 180
+    display-name: '&fVidro magenta'
+    amount: 32
+  troncos_carvalho:
+    material: OAK_LOG
+    category: troncos
+    price: 100
+    display-name: '&fTronco de carvalho'
+    amount: 32
+  troncos_pinheiro:
+    material: SPRUCE_LOG
+    category: troncos
+    price: 100
+    display-name: '&fTronco de pinheiro'
+    amount: 32
+  troncos_betula:
+    material: BIRCH_LOG
+    category: troncos
+    price: 100
+    display-name: '&fTronco de bétula'
+    amount: 32
+  troncos_selva:
+    material: JUNGLE_LOG
+    category: troncos
+    price: 120
+    display-name: '&fTronco da selva'
+    amount: 32
+  troncos_acacia:
+    material: ACACIA_LOG
+    category: troncos
+    price: 120
+    display-name: '&fTronco de acácia'
+    amount: 32
+  troncos_carvalho_escuro:
+    material: DARK_OAK_LOG
+    category: troncos
+    price: 120
+    display-name: '&fTronco de carvalho escuro'
+    amount: 32
+  troncos_mangue:
+    material: MANGROVE_LOG
+    category: troncos
+    price: 150
+    display-name: '&fTronco de mangue'
+    amount: 32
+  troncos_cerejeira:
+    material: CHERRY_LOG
+    category: troncos
+    price: 150
+    display-name: '&fTronco de cerejeira'
+    amount: 32
+  troncos_carmesim:
+    material: CRIMSON_STEM
+    category: troncos
+    price: 180
+    display-name: '&fCaule carmesim'
+    amount: 32
+  troncos_distorcido:
+    material: WARPED_STEM
+    category: troncos
+    price: 180
+    display-name: '&fCaule distorcido'
+    amount: 32
+  troncos_bambu:
+    material: BAMBOO_BLOCK
+    category: troncos
+    price: 150
+    display-name: '&fBloco de bambu'
+    amount: 32
+  pedras_pedra:
+    material: STONE
+    category: pedras
+    price: 120
+    display-name: '&fPedra'
+    amount: 32
+  pedras_pedregulho:
+    material: COBBLESTONE
+    category: pedras
+    price: 80
+    display-name: '&fPedregulho'
+    amount: 32
+  pedras_pedra_lisa:
+    material: SMOOTH_STONE
+    category: pedras
+    price: 150
+    display-name: '&fPedra lisa'
+    amount: 32
+  pedras_andesito:
+    material: ANDESITE
+    category: pedras
+    price: 100
+    display-name: '&fAndesito'
+    amount: 32
+  pedras_diorito:
+    material: DIORITE
+    category: pedras
+    price: 100
+    display-name: '&fDiorito'
+    amount: 32
+  pedras_granito:
+    material: GRANITE
+    category: pedras
+    price: 100
+    display-name: '&fGranito'
+    amount: 32
+  pedras_ardosia:
+    material: DEEPSLATE
+    category: pedras
+    price: 150
+    display-name: '&fArdósia profunda'
+    amount: 32
+  pedras_pedregulho_ardosia:
+    material: COBBLED_DEEPSLATE
+    category: pedras
+    price: 120
+    display-name: '&fPedregulho de ardósia'
+    amount: 32
+  pedras_tijolos_ardosia:
+    material: DEEPSLATE_BRICKS
+    category: pedras
+    price: 200
+    display-name: '&fTijolos de ardósia'
+    amount: 32
+  pedras_pedra_negra:
+    material: BLACKSTONE
+    category: pedras
+    price: 180
+    display-name: '&fPedra-negra'
+    amount: 32
+  pedras_pedra_negra_polida:
+    material: POLISHED_BLACKSTONE
+    category: pedras
+    price: 220
+    display-name: '&fPedra-negra polida'
+    amount: 32
+  pedras_basalto:
+    material: BASALT
+    category: pedras
+    price: 150
+    display-name: '&fBasalto'
+    amount: 32
+  pedras_tufo:
+    material: TUFF
+    category: pedras
+    price: 150
+    display-name: '&fTufo'
+    amount: 32
+  pedras_calcita:
+    material: CALCITE
+    category: pedras
+    price: 180
+    display-name: '&fCalcita'
+    amount: 32
+  pedras_obsidiana:
+    material: OBSIDIAN
+    category: pedras
+    price: 500
+    display-name: '&fObsidiana'
+    amount: 8
+  extras_escadas_carvalho:
+    material: OAK_STAIRS
+    category: extras
+    price: 120
+    display-name: '&fEscadas de carvalho'
+    amount: 32
+  extras_lajes_carvalho:
+    material: OAK_SLAB
+    category: extras
+    price: 80
+    display-name: '&fLajes de carvalho'
+    amount: 32
+  extras_cercas_carvalho:
+    material: OAK_FENCE
+    category: extras
+    price: 120
+    display-name: '&fCercas de carvalho'
+    amount: 32
+  extras_portoes_carvalho:
+    material: OAK_FENCE_GATE
+    category: extras
+    price: 100
+    display-name: '&fPortões de cerca'
+    amount: 32
+  extras_escadas_pedra:
+    material: STONE_BRICK_STAIRS
+    category: extras
+    price: 150
+    display-name: '&fEscadas de Tijolos de Pedra'
+    amount: 32
+  extras_lajes_pedra:
+    material: STONE_SLAB
+    category: extras
+    price: 100
+    display-name: '&fLajes de pedra'
+    amount: 32
+  extras_muros_pedregulho:
+    material: COBBLESTONE_WALL
+    category: extras
+    price: 120
+    display-name: '&fMuros de pedregulho'
+    amount: 32
+  extras_alcapoes_carvalho:
+    material: OAK_TRAPDOOR
+    category: extras
+    price: 150
+    display-name: '&fAlçapões de carvalho'
+    amount: 32
+  extras_portas_carvalho:
+    material: OAK_DOOR
+    category: extras
+    price: 100
+    display-name: '&fPortas de carvalho'
+    amount: 32
+  extras_placas_carvalho:
+    material: OAK_SIGN
+    category: extras
+    price: 80
+    display-name: '&fPlacas de carvalho'
+    amount: 32
+  extras_tochas:
+    material: TORCH
+    category: extras
+    price: 80
+    display-name: '&fTochas'
+    amount: 32
+  extras_lanternas:
+    material: LANTERN
+    category: extras
+    price: 250
+    display-name: '&fLanternas'
+    amount: 32
+  extras_correntes:
+    material: CHAIN
+    category: extras
+    price: 200
+    display-name: '&fCorrentes'
+    amount: 32
+  extras_andaimes:
+    material: SCAFFOLDING
+    category: extras
+    price: 150
+    display-name: '&fAndaimes'
+    amount: 32
+  extras_escada_mao:
+    material: LADDER
+    category: extras
+    price: 100
+    display-name: '&fEscada de mão'
+    amount: 32
+  extras_bau:
+    material: CHEST
+    category: extras
+    price: 100
+    display-name: '&fBaú'
+    amount: 32
+  extras_barril:
+    material: BARREL
+    category: extras
+    price: 180
+    display-name: '&fBarril'
+    amount: 32
+  extras_fornalha:
+    material: FURNACE
+    category: extras
+    price: 150
+    display-name: '&fFornalha'
+    amount: 32
+  extras_fogueira:
+    material: CAMPFIRE
+    category: extras
+    price: 250
+    display-name: '&fFogueira'
+    amount: 32
+  extras_luminaria_mar:
+    material: SEA_LANTERN
+    category: extras
+    price: 400
+    display-name: '&fLuminária do mar'
+    amount: 32
   coal:
     material: COAL
     category: minerios
-    amount: 1
     price: 10
-    currency: coins
-    display-name: "&8Carvão"
+    display-name: '&8Carvão'
   iron_ingot:
     material: IRON_INGOT
     category: minerios
-    amount: 1
     price: 25
-    currency: coins
-    display-name: "&fBarra de Ferro"
+    display-name: '&fBarra de Ferro'
   gold_ingot:
     material: GOLD_INGOT
     category: minerios
-    amount: 1
     price: 50
-    currency: coins
-    display-name: "&6Barra de Ouro"
+    display-name: '&6Barra de Ouro'
   diamond:
     material: DIAMOND
     category: minerios
-    amount: 1
     price: 200
-    currency: coins
-    display-name: "&bDiamante"
+    display-name: '&bDiamante'
   netherite_ingot:
     material: NETHERITE_INGOT
     category: minerios
-    amount: 1
     price: 1500
-    currency: coins
-    display-name: "&8Barra de Netherita"
-
+    display-name: '&8Barra de Netherita'
   wheat:
     material: WHEAT
-    category: agricultura
-    amount: 1
+    category: comida
     price: 4
-    currency: coins
-    display-name: "&eTrigo"
+    display-name: '&eTrigo'
   carrot:
     material: CARROT
-    category: agricultura
-    amount: 1
+    category: comida
     price: 5
-    currency: coins
-    display-name: "&6Cenoura"
+    display-name: '&6Cenoura'
   potato:
     material: POTATO
-    category: agricultura
-    amount: 1
+    category: comida
     price: 5
-    currency: coins
-    display-name: "&eBatata"
+    display-name: '&eBatata'
   sugar_cane:
     material: SUGAR_CANE
-    category: agricultura
-    amount: 1
+    category: comida
     price: 6
-    currency: coins
-    display-name: "&aCana-de-açúcar"
-
+    display-name: '&aCana-de-açúcar'
   rotten_flesh:
     material: ROTTEN_FLESH
-    category: mob_drops
-    amount: 1
+    category: itens_especiais
     price: 2
-    currency: coins
-    display-name: "&cCarne Podre"
+    display-name: '&cCarne Podre'
   bone:
     material: BONE
-    category: mob_drops
-    amount: 1
+    category: itens_especiais
     price: 6
-    currency: coins
-    display-name: "&fOsso"
+    display-name: '&fOsso'
   gunpowder:
     material: GUNPOWDER
-    category: mob_drops
-    amount: 1
+    category: itens_especiais
     price: 15
-    currency: coins
-    display-name: "&7Pólvora"
+    display-name: '&7Pólvora'
   ender_pearl:
     material: ENDER_PEARL
-    category: mob_drops
-    amount: 1
+    category: itens_especiais
     price: 40
-    currency: coins
-    display-name: "&5Pérola do End"
-
-  stone:
-    material: STONE
-    category: construcao
-    amount: 32
-    price: 120
-    currency: coins
-    display-name: "&7Pedra"
-  cobblestone:
-    material: COBBLESTONE
-    category: construcao
-    amount: 32
-    price: 80
-    currency: coins
-    display-name: "&7Pedregulho"
-  bricks:
-    material: BRICKS
-    category: construcao
-    amount: 32
-    price: 250
-    currency: coins
-    display-name: "&cTijolos"
-  stone_bricks:
-    material: STONE_BRICKS
-    category: construcao
-    amount: 32
-    price: 180
-    currency: coins
-    display-name: "&fTijolos de Pedra"
-  oak_planks:
-    material: OAK_PLANKS
-    category: construcao
-    amount: 32
-    price: 100
-    currency: coins
-    display-name: "&6Tábuas de Carvalho"
-  oak_log:
-    material: OAK_LOG
-    category: construcao
-    amount: 32
-    price: 100
-    currency: coins
-    display-name: "&6Tronco de Carvalho"
-  glass:
-    material: GLASS
-    category: construcao
-    amount: 32
-    price: 160
-    currency: coins
-    display-name: "&fVidro"
-  glass_pane:
-    material: GLASS_PANE
-    category: construcao
-    amount: 32
-    price: 120
-    currency: coins
-    display-name: "&fPainel de Vidro"
-
+    display-name: '&5Pérola do End'
   redstone:
     material: REDSTONE
     category: redstone
-    amount: 1
     price: 25
-    currency: coins
-    display-name: "&cPó de Redstone"
+    display-name: '&cPó de Redstone'
   redstone_torch:
     material: REDSTONE_TORCH
     category: redstone
-    amount: 1
     price: 60
-    currency: coins
-    display-name: "&cTocha de Redstone"
+    display-name: '&cTocha de Redstone'
   repeater:
     material: REPEATER
     category: redstone
-    amount: 1
     price: 250
-    currency: coins
-    display-name: "&fRepetidor"
+    display-name: '&fRepetidor'
   comparator:
     material: COMPARATOR
     category: redstone
-    amount: 1
     price: 350
-    currency: coins
-    display-name: "&fComparador"
+    display-name: '&fComparador'
   observer:
     material: OBSERVER
     category: redstone
-    amount: 1
     price: 500
-    currency: coins
-    display-name: "&7Observador"
+    display-name: '&7Observador'
   piston:
     material: PISTON
     category: redstone
-    amount: 1
     price: 450
-    currency: coins
-    display-name: "&fPistão"
+    display-name: '&fPistão'
   sticky_piston:
     material: STICKY_PISTON
     category: redstone
-    amount: 1
     price: 750
-    currency: coins
-    display-name: "&aPistão Grudento"
+    display-name: '&aPistão Grudento'
   hopper:
     material: HOPPER
     category: redstone
-    amount: 1
     price: 1200
-    currency: coins
-    display-name: "&7Funil"
-
-  iron_hoe:
-    material: IRON_HOE
-    category: ferramentas
-    amount: 1
-    price: 50
-    currency: gems
-    display-name: "&fEnxada de Ferro"
-  iron_shovel:
-    material: IRON_SHOVEL
-    category: ferramentas
-    amount: 1
-    price: 75
-    currency: gems
-    display-name: "&fPá de Ferro"
-  iron_pickaxe:
-    material: IRON_PICKAXE
-    category: ferramentas
-    amount: 1
-    price: 100
-    currency: gems
-    display-name: "&fPicareta de Ferro"
-  iron_axe:
-    material: IRON_AXE
-    category: ferramentas
-    amount: 1
-    price: 150
-    currency: gems
-    display-name: "&fMachado de Ferro"
-  golden_hoe:
-    material: GOLDEN_HOE
-    category: ferramentas
-    amount: 1
-    price: 250
-    currency: gems
-    display-name: "&6Enxada de Ouro"
-  golden_shovel:
-    material: GOLDEN_SHOVEL
-    category: ferramentas
-    amount: 1
-    price: 275
-    currency: gems
-    display-name: "&6Pá de Ouro"
-  golden_pickaxe:
-    material: GOLDEN_PICKAXE
-    category: ferramentas
-    amount: 1
-    price: 300
-    currency: gems
-    display-name: "&6Picareta de Ouro"
-  golden_axe:
-    material: GOLDEN_AXE
-    category: ferramentas
-    amount: 1
-    price: 350
-    currency: gems
-    display-name: "&6Machado de Ouro"
-  diamond_hoe:
-    material: DIAMOND_HOE
-    category: ferramentas
-    amount: 1
-    price: 400
-    currency: gems
-    display-name: "&bEnxada de Diamante"
-  diamond_shovel:
-    material: DIAMOND_SHOVEL
-    category: ferramentas
-    amount: 1
-    price: 600
-    currency: gems
-    display-name: "&bPá de Diamante"
-  diamond_pickaxe:
-    material: DIAMOND_PICKAXE
-    category: ferramentas
-    amount: 1
-    price: 800
-    currency: gems
-    display-name: "&bPicareta de Diamante"
-  diamond_axe:
-    material: DIAMOND_AXE
-    category: ferramentas
-    amount: 1
-    price: 980
-    currency: gems
-    display-name: "&bMachado de Diamante"
-  excavator_3x3:
-    material: NETHERITE_PICKAXE
-    category: ferramentas
-    amount: 1
-    price: 20000
-    currency: gems
-    display-name: "&d&lPicareta Escavadora 3x3"
-    special: excavator_3x3
-    lore:
-      - "&7Minera uma área de 3x3 blocos."
-      - "&7Consome durabilidade."
-      - "&7Respeita as proteções do servidor."
-
-  torch:
-    material: TORCH
-    category: variados
-    amount: 32
-    price: 80
-    currency: coins
-    display-name: "&eTocha"
+    display-name: '&7Funil'
   arrow:
     material: ARROW
     category: variados
-    amount: 16
     price: 50
-    currency: coins
-    display-name: "&fFlecha"
+    display-name: '&fFlecha'
+    amount: 16
   shield:
     material: SHIELD
     category: variados
-    amount: 1
     price: 100
-    currency: coins
-    display-name: "&fEscudo"
+    display-name: '&fEscudo'
   bucket:
     material: BUCKET
     category: variados
-    amount: 1
     price: 80
-    currency: coins
-    display-name: "&fBalde"
+    display-name: '&fBalde'
   water_bucket:
     material: WATER_BUCKET
     category: variados
-    amount: 1
     price: 100
-    currency: coins
-    display-name: "&bBalde de Água"
+    display-name: '&bBalde de Água'
   lava_bucket:
     material: LAVA_BUCKET
     category: variados
-    amount: 1
     price: 120
-    currency: coins
-    display-name: "&6Balde de Lava"
+    display-name: '&6Balde de Lava'
   red_bed:
     material: RED_BED
     category: variados
-    amount: 1
     price: 120
-    currency: coins
-    display-name: "&cCama"
+    display-name: '&cCama'
   flint_and_steel:
     material: FLINT_AND_STEEL
     category: variados
-    amount: 1
     price: 80
-    currency: coins
-    display-name: "&fPederneira"
+    display-name: '&fPederneira'
   name_tag:
     material: NAME_TAG
     category: variados
-    amount: 1
     price: 200
-    currency: coins
-    display-name: "&fEtiqueta"
+    display-name: '&fEtiqueta'
   book:
     material: BOOK
     category: variados
-    amount: 8
     price: 80
-    currency: coins
-    display-name: "&fLivro"
+    display-name: '&fLivro'
+    amount: 8
   ender_chest:
     material: ENDER_CHEST
     category: variados
-    amount: 1
     price: 1500
-    currency: coins
-    display-name: "&5Baú do Ender"
+    display-name: '&5Baú do Ender'
   bookshelf:
     material: BOOKSHELF
     category: variados
-    amount: 4
     price: 250
-    currency: coins
-    display-name: "&6Estante de Livros"
+    display-name: '&6Estante de Livros'
+    amount: 4
   enchanting_table:
     material: ENCHANTING_TABLE
     category: variados
-    amount: 1
     price: 600
-    currency: coins
-    display-name: "&dMesa de Encantamentos"
+    display-name: '&dMesa de Encantamentos'
   anvil:
     material: ANVIL
     category: variados
-    amount: 1
     price: 400
-    currency: coins
-    display-name: "&7Bigorna"
+    display-name: '&7Bigorna'
   grindstone:
     material: GRINDSTONE
     category: variados
-    amount: 1
     price: 150
-    currency: coins
-    display-name: "&fRebolo"
+    display-name: '&fRebolo'
   stonecutter:
     material: STONECUTTER
     category: variados
-    amount: 1
     price: 200
-    currency: coins
-    display-name: "&7Cortador de Pedras"
-  experience_bottle:
-    material: EXPERIENCE_BOTTLE
-    category: variados
-    amount: 1
-    price: 1
-    currency: coins
-    display-name: "&aFrasco de XP"
-
-  sea_lantern:
-    material: SEA_LANTERN
-    category: extras
-    amount: 32
+    display-name: '&7Cortador de Pedras'
+  iron_hoe:
+    material: IRON_HOE
+    category: ferramentas
+    price: 50
+    display-name: '&fEnxada de Ferro'
+    currency: gems
+  iron_shovel:
+    material: IRON_SHOVEL
+    category: ferramentas
+    price: 75
+    display-name: '&fPá de Ferro'
+    currency: gems
+  iron_pickaxe:
+    material: IRON_PICKAXE
+    category: ferramentas
+    price: 100
+    display-name: '&fPicareta de Ferro'
+    currency: gems
+  iron_axe:
+    material: IRON_AXE
+    category: ferramentas
+    price: 150
+    display-name: '&fMachado de Ferro'
+    currency: gems
+  golden_hoe:
+    material: GOLDEN_HOE
+    category: ferramentas
+    price: 250
+    display-name: '&6Enxada de Ouro'
+    currency: gems
+  golden_shovel:
+    material: GOLDEN_SHOVEL
+    category: ferramentas
+    price: 275
+    display-name: '&6Pá de Ouro'
+    currency: gems
+  golden_pickaxe:
+    material: GOLDEN_PICKAXE
+    category: ferramentas
+    price: 300
+    display-name: '&6Picareta de Ouro'
+    currency: gems
+  golden_axe:
+    material: GOLDEN_AXE
+    category: ferramentas
+    price: 350
+    display-name: '&6Machado de Ouro'
+    currency: gems
+  diamond_hoe:
+    material: DIAMOND_HOE
+    category: ferramentas
     price: 400
-    currency: coins
-    display-name: "&bLanterna do Mar"
+    display-name: '&bEnxada de Diamante'
+    currency: gems
+  diamond_shovel:
+    material: DIAMOND_SHOVEL
+    category: ferramentas
+    price: 600
+    display-name: '&bPá de Diamante'
+    currency: gems
+  diamond_pickaxe:
+    material: DIAMOND_PICKAXE
+    category: ferramentas
+    price: 800
+    display-name: '&bPicareta de Diamante'
+    currency: gems
+  diamond_axe:
+    material: DIAMOND_AXE
+    category: ferramentas
+    price: 980
+    display-name: '&bMachado de Diamante'
+    currency: gems
+  excavator_3x3:
+    material: NETHERITE_PICKAXE
+    category: ferramentas
+    price: 20000
+    display-name: '&d&lPicareta Escavadora 3x3'
+    currency: gems
+    special: excavator_3x3
+    lore:
+    - '&7Minera uma área de 3x3 blocos.'
+    - '&7Consome durabilidade.'
+    - '&7Respeita as proteções do servidor.'
