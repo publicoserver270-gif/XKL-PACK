@@ -24,7 +24,7 @@ Este documento acompanha a implementação. Uma compilação bem-sucedida compro
 - Rejeitar valores não positivos e valores com precisão acima da moeda.
 - Não somar moedas diferentes no mesmo ranking.
 - Não emitir coins/gemas por venda, eventos ou comandos comuns.
-- ATM e profissões possuem implementação inicial; não tratar como produção até testes de integração. Lojas `/loja` e `/sell` seguem desativadas até serem implementadas.
+- ATM e profissões possuem implementação inicial; não tratar como produção até testes de integração. A loja de compras `/loja` segue pendente; `/sell` já está implementado, mas precisa de testes de integração antes de produção.
 - Manter o plugin em paralelo com os plugins atuais até a migração ser aprovada.
 
 ## Critérios mínimos antes de produção
