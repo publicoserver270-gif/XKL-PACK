@@ -34,12 +34,14 @@ public final class ShopCommand implements CommandExecutor, Listener {
     private static final int PAGE_SIZE = 45;
     private final XKLPack plugin;
     private final EconomyService economy;
+    private final EquipmentService equipment;
     private final NamespacedKey excavatorKey;
     private final NamespacedKey specialToolKey;
 
-    public ShopCommand(XKLPack plugin, EconomyService economy) {
+    public ShopCommand(XKLPack plugin, EconomyService economy, EquipmentService equipment) {
         this.plugin = plugin;
         this.economy = economy;
+        this.equipment = equipment;
         this.excavatorKey = new NamespacedKey(plugin, "excavator_3x3");
         this.specialToolKey = new NamespacedKey(plugin, "special_tool");
     }
@@ -240,14 +242,10 @@ public final class ShopCommand implements CommandExecutor, Listener {
             player.sendMessage("§cEste produto possui um material inválido na configuração.");
             return;
         }
-        // Simula a entrega antes de debitar para nunca cobrar quando o inventário está cheio.
-        Inventory simulated = Bukkit.createInventory(null, 36);
-        ItemStack[] original = player.getInventory().getStorageContents();
-        ItemStack[] copy = new ItemStack[original.length];
-        for (int i = 0; i < original.length; i++) copy[i] = original[i] == null ? null : original[i].clone();
-        simulated.setContents(copy);
-        if (!simulated.addItem(product).isEmpty()) {
-            player.sendMessage("§cLibere espaço no inventário antes de comprar.");
+        equipment.bindOwner(player, product);
+        EquipmentService.DeliveryPlan delivery = equipment.prepareDelivery(player, product);
+        if (!delivery.accepted()) {
+            player.sendMessage("§c" + delivery.reason());
             return;
         }
 
@@ -259,7 +257,7 @@ public final class ShopCommand implements CommandExecutor, Listener {
                 player.sendMessage("§cSaldo insuficiente de " + ("gems".equals(currency) ? "Gemas" : "Coins") + ".");
                 return;
             }
-            player.getInventory().setStorageContents(simulated.getStorageContents());
+            player.getInventory().setStorageContents(delivery.contents());
             player.sendMessage("§aCompra concluída: §f" + ChatColor.stripColor(color(
                     plugin.getAdminShopConfig().getString(path + "display-name", id)))
                     + " §7por §e" + price.toPlainString() + ("gems".equals(currency) ? " Gemas." : " Coins."));
