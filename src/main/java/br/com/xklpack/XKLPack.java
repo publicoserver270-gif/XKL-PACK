@@ -16,6 +16,7 @@ import br.com.xklpack.jobs.JobService;
 import br.com.xklpack.pouch.MoneyPouchCommand;
 import br.com.xklpack.pouch.MoneyPouchListener;
 import br.com.xklpack.pouch.MoneyPouchService;
+import br.com.xklpack.shop.SellCommand;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -30,6 +31,7 @@ public final class XKLPack extends JavaPlugin {
     private JobService jobService;
     private FileConfiguration bankConfig;
     private FileConfiguration physicalCoinsConfig;
+    private FileConfiguration sellShopConfig;
     private BankService bankService;
     private MoneyPouchService moneyPouchService;
 
@@ -43,8 +45,10 @@ public final class XKLPack extends JavaPlugin {
 
         saveResourceIfMissing("bank/settings.yml");
         saveResourceIfMissing("economy/physical-coins.yml");
+        saveResourceIfMissing("sell-shop.yml");
         bankConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "bank/settings.yml"));
         physicalCoinsConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "economy/physical-coins.yml"));
+        sellShopConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "sell-shop.yml"));
 
         try {
             economyStorage = new EconomyStorage(this);
@@ -83,6 +87,13 @@ public final class XKLPack extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(jobCommand, this);
                 getServer().getPluginManager().registerEvents(new JobListener(this, jobService), this);
             }
+
+            if (getConfig().getBoolean("modules.selling", true)) {
+                SellCommand sellCommand = new SellCommand(this, economyService);
+                registerCommand("sell", sellCommand);
+                getServer().getPluginManager().registerEvents(sellCommand, this);
+                getLogger().info("Loja de vendas /sell ativada com " + sellShopConfig.getConfigurationSection("items").getKeys(false).size() + " itens configurados.");
+            }
         } catch (Exception exception) {
             getLogger().severe("Não foi possível iniciar o XKL PACK: " + exception.getMessage());
             exception.printStackTrace();
@@ -105,6 +116,7 @@ public final class XKLPack extends JavaPlugin {
 
     public FileConfiguration getBankConfig() { return bankConfig; }
     public FileConfiguration getPhysicalCoinsConfig() { return physicalCoinsConfig; }
+    public FileConfiguration getSellShopConfig() { return sellShopConfig; }
     public EconomyService getEconomyService() { return economyService; }
     public EconomyStorage getEconomyStorage() { return economyStorage; }
     public BankService getBankService() { return bankService; }
