@@ -263,6 +263,27 @@ public final class ShopCommand implements CommandExecutor, Listener {
     private void purchase(Player player, String id) {
         String path = "items." + id + ".";
         if (!plugin.getAdminShopConfig().getBoolean(path + "enabled", true)) return;
+
+        String requiredProfession = plugin.getAdminShopConfig().getString(path + "required-profession", "").trim();
+        int requiredLevel = Math.max(1, plugin.getAdminShopConfig().getInt(path + "required-level", 1));
+        if (!requiredProfession.isEmpty()) {
+            try {
+                if (plugin.getJobService() == null || !plugin.getJobService().isValidJob(requiredProfession)) {
+                    player.sendMessage("§cEste item exige uma profissão que não está disponível.");
+                    return;
+                }
+                int professionLevel = plugin.getJobService().getProgress(player.getUniqueId(), requiredProfession).level();
+                if (professionLevel < requiredLevel) {
+                    player.sendMessage("§cEste item exige nível " + requiredLevel + " de "
+                            + plugin.getJobService().getJobName(requiredProfession) + ". Seu nível atual: " + professionLevel + ".");
+                    return;
+                }
+            } catch (SQLException exception) {
+                player.sendMessage("§cNão foi possível verificar o requisito profissional. Tente novamente.");
+                plugin.getLogger().warning("Falha ao verificar desbloqueio da loja para " + player.getName() + ": " + exception.getMessage());
+                return;
+            }
+        }
         String currency = plugin.getAdminShopConfig().getString(path + "currency", "coins").toLowerCase();
         String category = plugin.getAdminShopConfig().getString(path + "category", "");
         if ("gems".equals(currency) && !"ferramentas".equalsIgnoreCase(category)) {
