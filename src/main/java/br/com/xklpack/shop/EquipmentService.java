@@ -78,6 +78,10 @@ public final class EquipmentService implements Listener {
         return DeliveryPlan.success(contents);
     }
 
+    public void enforceAllOnline() {
+        for (Player player : Bukkit.getOnlinePlayers()) enforceLimits(player);
+    }
+
     public void enforceLimits(Player player) {
         if (!plugin.getConfig().getBoolean("equipment-limits.enabled", true)) return;
         int equippedLimit = getLimit("equipped-slots", getLevel(player));
