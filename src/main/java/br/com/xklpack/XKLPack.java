@@ -60,6 +60,10 @@ public final class XKLPack extends JavaPlugin {
             getConfig().set("modules.shops", true);
             getConfig().set("config-version", 3);
         }
+        if (configVersion < 4) {
+            getConfig().set("modules.admin-panel", true);
+            getConfig().set("config-version", 4);
+        }
         saveConfig();
 
         saveResourceIfMissing("bank/settings.yml");
