@@ -109,7 +109,7 @@ public final class KitService implements Listener {
         }
     }
 
-    private void ensureKit(Player player, String jobId, int level) throws Exception {
+    private void ensureKit(Player player, String jobId, int level) throws SQLException {
         if (!hasKitConfiguration(jobId)) return;
         KitLocation current = findOwnedKit(player, jobId);
         if (current != null) {
@@ -272,14 +272,19 @@ public final class KitService implements Listener {
         }
     }
 
-    private ItemStack loadState(UUID owner, String jobId) throws Exception {
+    private ItemStack loadState(UUID owner, String jobId) throws SQLException {
         synchronized (plugin.getEconomyStorage()) {
             try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement(
                     "SELECT item_data FROM profession_kit_state WHERE player_uuid=? AND job_id=?")) {
                 statement.setString(1, owner.toString());
                 statement.setString(2, jobId);
                 try (ResultSet result = statement.executeQuery()) {
-                    return result.next() ? deserialize(result.getBytes("item_data")) : null;
+                    if (!result.next()) return null;
+                    try {
+                        return deserialize(result.getBytes("item_data"));
+                    } catch (Exception exception) {
+                        throw new SQLException("Não foi possível restaurar o kit salvo.", exception);
+                    }
                 }
             }
         }
