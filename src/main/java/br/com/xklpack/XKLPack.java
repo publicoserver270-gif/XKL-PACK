@@ -8,6 +8,7 @@ import br.com.xklpack.bank.BankMenu;
 import br.com.xklpack.bank.BankService;
 import br.com.xklpack.admin.AdminPanelCommand;
 import br.com.xklpack.economy.EconomyService;
+import br.com.xklpack.economy.WalletCommand;
 import br.com.xklpack.economy.EconomyStorage;
 import br.com.xklpack.economy.command.PayCommand;
 import br.com.xklpack.economy.command.TopCommand;
@@ -64,6 +65,10 @@ public final class XKLPack extends JavaPlugin {
             getConfig().set("modules.admin-panel", true);
             getConfig().set("config-version", 4);
         }
+        if (configVersion < 5) {
+            getConfig().set("modules.wallet", true);
+            getConfig().set("config-version", 5);
+        }
         saveConfig();
 
         saveResourceIfMissing("bank/settings.yml");
@@ -81,6 +86,13 @@ public final class XKLPack extends JavaPlugin {
             economyService = new EconomyService(this, economyStorage);
             registerCommand("pay", new PayCommand(economyService));
             registerCommand("top", new TopCommand(economyService));
+
+            if (getConfig().getBoolean("modules.wallet", true)) {
+                WalletCommand walletCommand = new WalletCommand(this, economyService);
+                registerCommand("carteira", walletCommand);
+                getServer().getPluginManager().registerEvents(walletCommand, this);
+                getLogger().info("Carteira virtual /carteira ativada.");
+            }
 
             if (getConfig().getBoolean("modules.bank", false) && bankConfig.getBoolean("atm.enabled", true)) {
                 bankService = new BankService(this);
