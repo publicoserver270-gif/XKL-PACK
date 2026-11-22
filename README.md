@@ -22,7 +22,7 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 ## Catálogos das lojas
 
 - `/sell`: 585 materiais configurados, sem Totem da Imortalidade.
-- `/loja`: 135 produtos, incluindo 86 itens de construção importados do arquivo enviado, além de minérios, ingredientes, drops, redstone, variados e ferramentas.
+- `/loja`: 135 produtos, incluindo 86 itens de construção importados do arquivo enviado, minérios, ingredientes, drops, variados, ferramentas e redstone dividido em componentes, máquinas, carrinhos e mecanismos.
 - Ferramentas são compradas com Gemas; as demais categorias usam Coins.
 - As categorias de armas e armaduras estão criadas, mas ainda aguardam os preços aprovados. O autocrafter também aguarda preço.
 
