@@ -444,7 +444,7 @@ public final class PlayerShopService {
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
             ps.setLong(1, shopId);
             try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next() || !"ACTIVE".equals(rs.getString("status")))
+                if (!rs.next() || !List.of("ACTIVE", "CLOSED").contains(rs.getString("status")))
                     throw new IllegalArgumentException("A loja precisa estar ativa para gerenciar o estoque.");
                 String worldId = rs.getString("stock_world_uuid");
                 if (worldId == null) throw new IllegalArgumentException("O baú ESTOQUE ainda não foi criado.");
@@ -508,7 +508,7 @@ public final class PlayerShopService {
     public long vaultBalance(long shopId, UUID actor) throws SQLException {
         if (!canWithdraw(shopId, actor)) throw new IllegalArgumentException("Você não tem permissão para consultar o cofre.");
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
-                "SELECT vault_coins FROM player_shops WHERE id=? AND status='ACTIVE'")) {
+                "SELECT vault_coins FROM player_shops WHERE id=? AND status IN ('ACTIVE','CLOSED')")) {
             ps.setLong(1, shopId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) throw new IllegalArgumentException("Loja não encontrada ou ainda não ativada.");
