@@ -81,6 +81,29 @@ class AdminShopConfigTest {
                 new BigDecimal(config.getString("items.excavator_3x3.coin-price")));
     }
 
+
+    @Test
+    void allMainShopCategoriesArePopulatedAndMobDropsHaveTheirOwnCategory() throws Exception {
+        YamlConfiguration config = loadConfig();
+        assertEquals(9, config.getInt("settings.page-size"));
+        assertNull(config.getConfigurationSection("categories.itens_especiais"));
+        assertNotNull(config.getConfigurationSection("categories.drops_mob"));
+        assertTrue(config.getConfigurationSection("items").getKeys(false).stream()
+                .anyMatch(id -> "armas".equals(config.getString("items." + id + ".category"))));
+        assertTrue(config.getConfigurationSection("items").getKeys(false).stream()
+                .anyMatch(id -> "armaduras".equals(config.getString("items." + id + ".category"))));
+        assertTrue(config.getConfigurationSection("items").getKeys(false).stream()
+                .filter(id -> "redstone_carrinhos".equals(config.getString("items." + id + ".category")))
+                .count() >= 4);
+        assertTrue(config.getConfigurationSection("items").getKeys(false).stream()
+                .filter(id -> "redstone_mecanismos".equals(config.getString("items." + id + ".category")))
+                .count() >= 4);
+        for (String id : config.getConfigurationSection("items").getKeys(false)) {
+            assertNotEquals("itens_especiais", config.getString("items." + id + ".category"),
+                    "Produto ainda preso na categoria antiga: " + id);
+        }
+    }
+
     private YamlConfiguration loadConfig() throws Exception {
         InputStream stream = getClass().getClassLoader().getResourceAsStream("admin-shop.yml");
         assertNotNull(stream, "admin-shop.yml precisa estar no classpath");
