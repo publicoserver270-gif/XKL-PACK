@@ -42,7 +42,7 @@ commands:
     permission: xklpack.command.permits
   lojaplayer:
     description: Gerencia lojas comerciais de jogadores.
-    usage: /lojaplayer [lojas|aliado]
+    usage: /lojaplayer [lojas|painel|produto|cofre|loja|aliado]
     permission: xklpack.command.player-shops
   xkladmin:
     description: Abre o painel administrativo XKL.
