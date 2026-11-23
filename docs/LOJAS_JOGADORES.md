@@ -1,6 +1,6 @@
 # Lojas de jogadores — XKL PACK
 
-**Status: implementação iniciada.** A primeira etapa adiciona a estrutura SQLite e a reserva de área/nome; NPC, alvará, baú, painel e transações ainda estão em desenvolvimento.
+**Status: implementação parcial.** A loja própria `/alvaras` e o catálogo configurável de quatro alvarás já estão implementados. O uso do alvará para abrir a loja, NPC, baú, painel de gestão e transações entre jogadores ainda estão em desenvolvimento.
 
 ## Objetivo
 
@@ -8,7 +8,7 @@ Criar lojas de jogadores no próprio XKL PACK, inspiradas na experiência do Sho
 
 ## Fluxo de abertura
 
-1. O jogador compra um **Alvará Comercial** na loja administrativa do servidor.
+1. O jogador abre a loja própria com `/alvaras` e compra um dos quatro alvarás comerciais disponíveis. A loja usa Coins do saldo virtual; nomes, preços, ícones, áreas e disponibilidade são configuráveis em `permits.yml`.
 2. Usa o alvará no bloco/local exato onde deseja abrir a loja.
 3. Antes de consumir o alvará, o plugin valida que o jogador pode usar o local, que há espaço, que a loja não se sobrepõe a outra e que o local é aceito pela proteção de terrenos.
 4. Após a validação, o alvará é consumido e a loja entra no estado PREPARING.
@@ -16,7 +16,7 @@ Criar lojas de jogadores no próprio XKL PACK, inspiradas na experiência do Sho
 6. Ao terminar a espera, o NPC comerciante é criado/vinculado uma única vez e a loja passa ao estado ACTIVE.
 7. Se o servidor reiniciar durante a espera, o sistema retoma usando o horário salvo; não reinicia os 2 minutos nem cria NPC duplicado.
 
-O preço e a moeda de compra do alvará ainda não foram definidos. Não colocar preço presumido no catálogo; deixar a entrada administrativa pendente até decisão.
+O catálogo inicial contém Alvará Básico (raio 3; 1.000 Coins), Comercial (raio 5; 2.500 Coins), Premium (raio 8; 5.000 Coins) e Empresarial (raio 12; 10.000 Coins). Esses são valores iniciais editáveis em `permits.yml`, não valores fixos no código.
 
 ## Comerciante NPC
 
