@@ -14,8 +14,6 @@ import org.bukkit.projectiles.ProjectileSource;
 import java.util.List;
 
 public final class PvPListener implements Listener {
-    private static final long NIGHT_START = 12_542L;
-    private static final long NIGHT_END = 23_460L;
     private final XKLPack plugin;
 
     public PvPListener(XKLPack plugin) {
@@ -39,9 +37,12 @@ public final class PvPListener implements Listener {
         }
     }
 
-    public static boolean isNight(World world) {
+    public boolean isNight(World world) {
         long time = Math.floorMod(world.getTime(), 24_000L);
-        return time >= NIGHT_START && time < NIGHT_END;
+        long start = Math.floorMod(plugin.getConfig().getLong("pvp.night-start-tick", 12_542L), 24_000L);
+        long end = Math.floorMod(plugin.getConfig().getLong("pvp.night-end-tick", 23_460L), 24_000L);
+        if (start == end) return false;
+        return start < end ? time >= start && time < end : time >= start || time < end;
     }
 
     private Player attacker(Entity entity) {
