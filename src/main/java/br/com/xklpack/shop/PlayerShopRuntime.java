@@ -33,6 +33,11 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.sql.SQLException;
 import java.util.UUID;\nimport java.util.HashMap;\nimport java.util.Map;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 
 /**
  * Cria o comerciante e o baú de estoque quando termina o prazo do alvará.
