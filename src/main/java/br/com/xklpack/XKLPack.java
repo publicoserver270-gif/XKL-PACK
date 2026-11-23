@@ -28,6 +28,7 @@ import br.com.xklpack.shop.ShopCommand;
 import br.com.xklpack.shop.ExcavatorListener;
 import br.com.xklpack.shop.EquipmentService;
 import br.com.xklpack.shop.PlayerShopService;
+import br.com.xklpack.shop.PermitShopCommand;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -46,6 +47,7 @@ public final class XKLPack extends JavaPlugin {
     private FileConfiguration physicalCoinsConfig;
     private FileConfiguration sellShopConfig;
     private FileConfiguration adminShopConfig;
+    private FileConfiguration permitsConfig;
     private BankService bankService;
     private MoneyPouchService moneyPouchService;
     private SellCommand sellCommand;
@@ -84,10 +86,12 @@ public final class XKLPack extends JavaPlugin {
         saveResourceIfMissing("economy/physical-coins.yml");
         saveResourceIfMissing("sell-shop.yml");
         saveResourceIfMissing("admin-shop.yml");
+        saveResourceIfMissing("permits.yml");
         bankConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "bank/settings.yml"));
         physicalCoinsConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "economy/physical-coins.yml"));
         sellShopConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "sell-shop.yml"));
         adminShopConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "admin-shop.yml"));
+        permitsConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "permits.yml"));
 
         try {
             bugReportService = new BugReportService(this);
@@ -157,6 +161,10 @@ public final class XKLPack extends JavaPlugin {
 
             if (getConfig().getBoolean("modules.shops", true)) {
                 playerShopService = new PlayerShopService(this);
+                PermitShopCommand permitShop = new PermitShopCommand(this, economyService);
+                registerCommand("alvaras", permitShop);
+                getServer().getPluginManager().registerEvents(permitShop, this);
+                getLogger().info("Loja própria de alvarás /alvaras ativada.");
                 getLogger().info("Persistência das lojas de jogadores preparada (área configurada: raio " + playerShopService.areaRadius() + ").");
                 equipmentService = new EquipmentService(this);
                 ShopCommand shopCommand = new ShopCommand(this, economyService, equipmentService);
@@ -197,6 +205,8 @@ public final class XKLPack extends JavaPlugin {
     public FileConfiguration getPhysicalCoinsConfig() { return physicalCoinsConfig; }
     public FileConfiguration getSellShopConfig() { return sellShopConfig; }
     public FileConfiguration getAdminShopConfig() { return adminShopConfig; }
+    public FileConfiguration getPermitsConfig() { return permitsConfig; }
+    public void savePermitsConfig() throws IOException { permitsConfig.save(new File(getDataFolder(), "permits.yml")); }
     public SellCommand getSellCommand() { return sellCommand; }
     public EquipmentService getEquipmentService() { return equipmentService; }
     public void saveBankConfig() throws IOException { bankConfig.save(new File(getDataFolder(), "bank/settings.yml")); }
