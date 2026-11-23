@@ -88,10 +88,22 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 
 **Regra confirmada:** vendas aprovadas em `/sell` podem emitir Coins. Essa é a única exceção à emissão salarial de Coins. `/sell` não pode emitir Gemas. A venda precisa registrar a transação e só concluir depois de validar os itens e o pagamento.
 
-### 5.3 Lojas de jogadores e mercado
+### 5.3 Lojas de jogadores (sistema próprio XKL PACK)
 
-- Lojas de jogadores aceitam exclusivamente dinheiro físico e podem ser mantidas pelo Shopkeepers sem ShopkeepersAddon.
-- Mercado/leilão de jogadores só será implementado após definição explícita do acesso e das regras; não criar comando adicional sem aprovação.
+- O sistema será um módulo próprio do XKL PACK, inspirado no fluxo do Shopkeepers; não dependerá do ShopkeepersAddon.
+- Para abrir uma loja, o jogador compra um Alvará Comercial na loja administrativa do servidor. O preço/moeda do alvará ainda precisa ser definido; não presumir valor.
+- O jogador usa o alvará no ponto exato em que deseja estabelecer a loja. O XKL PACK valida terreno, espaço, sobreposição e permissões antes de consumir o documento.
+- Após a validação, inicia uma preparação de 2 minutos; ao final, o comerciante NPC chega/aparece no ponto da loja. O processo precisa persistir após reinicializações e não duplicar NPCs.
+- Cada NPC recebe automaticamente um nome próprio de pessoa, único no servidor, exibido acima da cabeça. O nome é permanente e o dono não pode alterá-lo.
+- O NPC circula livremente dentro da área delimitada da loja, sem sair dela, atravessar limites ou perder a interação de comércio.
+- A loja possui um baú especial chamado ESTOQUE, vinculado à loja. O dono e os aliados autorizados podem abrir/gerenciar o baú; os produtos desse estoque abastecem as ofertas do NPC.
+- A cada venda, os itens são removidos do estoque e o comprador paga exclusivamente com moedas físicas oficiais autenticadas pelo XKL PACK (PDC + assinatura HMAC). Nome/lore/material isolados nunca autenticam dinheiro.
+- O pagamento recebido fica guardado como dinheiro físico da loja e pode ser retirado pelo dono/aliados com permissão. Não aceitar Coins virtuais nem Gemas nas transações entre jogadores.
+- O painel de cada loja seguirá o padrão visual e de navegação do painel administrativo do XKL PACK, com seções de estoque, produtos/preços, aliados, dinheiro, aparência e configurações. A aparência permite configurar a loja, mas não alterar o nome próprio permanente do NPC.
+- O proprietário poderá convidar/remover aliados e definir permissões específicas (abrir estoque, gerenciar produtos/preços e retirar dinheiro). O dono mantém controle total.
+- A integração com proteção de terrenos deve autorizar somente as ações necessárias do NPC e do estoque, sem desproteger o terreno inteiro. O NPC não pode ser usado como brecha para quebrar, abrir ou modificar blocos protegidos.
+- A integração inicial deve considerar Citizens e EasyClaim, presentes no servidor do usuário, mas as APIs/versões precisam ser verificadas antes de implementar o bypass de proteção e a navegação delimitada. Se uma API não estiver disponível, o módulo deve falhar de forma segura e informar no log, sem desativar a proteção.
+- Mercado/leilão global de jogadores não está incluído nesta funcionalidade.
 
 ## 6. Banco, transferências e rankings
 
