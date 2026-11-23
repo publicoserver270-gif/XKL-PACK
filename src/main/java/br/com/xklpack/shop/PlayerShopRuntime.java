@@ -150,8 +150,9 @@ public final class PlayerShopRuntime implements Listener {
                 Integer centerZ = data.get(centerZKey, PersistentDataType.INTEGER);
                 Integer centerY = data.get(centerYKey, PersistentDataType.INTEGER);
                 Integer radius = data.get(radiusKey, PersistentDataType.INTEGER);
-                Integer size = data.get(areaSizeKey, PersistentDataType.INTEGER);
-                if (centerX == null || centerZ == null || centerY == null || radius == null || size == null) continue;
+                Integer configuredSize = data.get(areaSizeKey, PersistentDataType.INTEGER);
+                if (centerX == null || centerZ == null || centerY == null || radius == null) continue;
+                int size = configuredSize == null ? radius * 2 + 1 : configuredSize;
                 int minX = centerX - (size - 1) / 2;
                 int minZ = centerZ - (size - 1) / 2;
                 int maxX = minX + size - 1;
