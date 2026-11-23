@@ -281,6 +281,27 @@ public final class PlayerShopService {
         }
     }
 
+
+    public void setAllyPermission(long shopId, UUID owner, UUID ally,
+                                   String permission, boolean enabled) throws SQLException {
+        if (!isOwner(shopId, owner)) throw new IllegalArgumentException("Essa loja não pertence a você.");
+        if (owner.equals(ally)) throw new IllegalArgumentException("O dono não precisa de permissões de aliado.");
+        String column = switch (permission.toLowerCase(java.util.Locale.ROOT)) {
+            case "estoque", "stock" -> "can_stock";
+            case "produtos", "products" -> "can_manage_products";
+            case "retirar", "withdraw" -> "can_withdraw";
+            case "configurar", "configure" -> "can_configure";
+            default -> throw new IllegalArgumentException("Permissão inválida. Use estoque, produtos, retirar ou configurar.");
+        };
+        String sql = "UPDATE player_shop_allies SET " + column + "=? WHERE shop_id=? AND player_uuid=?";
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
+            ps.setInt(1, enabled ? 1 : 0);
+            ps.setLong(2, shopId);
+            ps.setString(3, ally.toString());
+            if (ps.executeUpdate() == 0) throw new IllegalArgumentException("Este jogador não é aliado desta loja.");
+        }
+    }
+
     public void removeAlly(long shopId, UUID owner, UUID ally) throws SQLException {
         if (!isOwner(shopId, owner)) throw new IllegalArgumentException("Essa loja não pertence a você.");
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
