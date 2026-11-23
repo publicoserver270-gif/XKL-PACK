@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
@@ -211,6 +212,21 @@ public final class PlayerShopRuntime implements Listener {
         } catch (SQLException exception) {
             event.setCancelled(true);
             plugin.getLogger().severe("Falha ao validar acesso ao estoque: " + exception.getMessage());
+        }
+    }
+
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void preventStockChestMerge(BlockPlaceEvent event) {
+        if (!event.getBlockPlaced().getType().name().endsWith("_CHEST")) return;
+        for (org.bukkit.block.BlockFace face : new org.bukkit.block.BlockFace[]{
+                org.bukkit.block.BlockFace.NORTH, org.bukkit.block.BlockFace.SOUTH,
+                org.bukkit.block.BlockFace.EAST, org.bukkit.block.BlockFace.WEST}) {
+            if (isProtectedStock(event.getBlockPlaced().getRelative(face).getState())) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage("§cNão é permitido conectar outro baú ao ESTOQUE protegido.");
+                return;
+            }
         }
     }
 
