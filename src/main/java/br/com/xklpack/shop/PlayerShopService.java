@@ -113,6 +113,7 @@ public final class PlayerShopService {
         }
         ensureColumn(connection, "player_shops", "merchant_entity_uuid", "TEXT");
         ensureColumn(connection, "player_shops", "vault_coins", "INTEGER NOT NULL DEFAULT 0");
+        ensureColumn(connection, "player_shops", "area_size", "INTEGER NOT NULL DEFAULT 9");
     }
 
     private void ensureColumn(Connection connection, String table, String column, String type) throws SQLException {
@@ -128,7 +129,7 @@ public final class PlayerShopService {
 
     public List<ShopRecord> shopsDueForActivation(long now) throws SQLException {
         List<ShopRecord> result = new java.util.ArrayList<>();
-        String sql = "SELECT id, owner_uuid, world_uuid, world_name, center_x, center_y, center_z, area_radius, merchant_name, activation_at, stock_x, stock_y, stock_z, merchant_entity_uuid FROM player_shops WHERE status='PREPARING' AND activation_at<=?";
+        String sql = "SELECT id, owner_uuid, world_uuid, world_name, center_x, center_y, center_z, area_radius, area_size, merchant_name, activation_at, stock_x, stock_y, stock_z, merchant_entity_uuid FROM player_shops WHERE status='PREPARING' AND activation_at<=?";
         try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
             statement.setLong(1, now);
             try (ResultSet rows = statement.executeQuery()) {
@@ -136,7 +137,7 @@ public final class PlayerShopService {
                         rows.getLong("id"), UUID.fromString(rows.getString("owner_uuid")),
                         UUID.fromString(rows.getString("world_uuid")), rows.getString("world_name"),
                         rows.getInt("center_x"), rows.getInt("center_y"), rows.getInt("center_z"),
-                        rows.getInt("area_radius"), rows.getString("merchant_name"),
+                        rows.getInt("area_radius"), rows.getInt("area_size"), rows.getString("merchant_name"),
                         rows.getLong("activation_at"), rows.getInt("stock_x"), rows.getInt("stock_y"),
                         rows.getInt("stock_z"), rows.getString("merchant_entity_uuid")));
             }
@@ -157,7 +158,7 @@ public final class PlayerShopService {
     }
 
     public record ShopRecord(long id, UUID owner, UUID worldId, String worldName,
-                             int x, int y, int z, int radius, String merchantName,
+                             int x, int y, int z, int radius, int size, String merchantName,
                              long activationAt, int stockX, int stockY, int stockZ,
                              String merchantEntityUuid) {}
 
@@ -170,16 +171,26 @@ public final class PlayerShopService {
                 SELECT 1 FROM player_shops
                 WHERE world_uuid = ?
                   AND status <> 'REMOVED'
-                  AND ABS(center_x - ?) <= area_radius + ?
-                  AND ABS(center_z - ?) <= area_radius + ?
+                  AND (center_x - ((area_size - 1) / 2)) <= (? + ((? - 1) / 2) + ?)
+                  AND (center_x - ((area_size - 1) / 2) + area_size - 1) >= (? - ((? - 1) / 2))
+                  AND (center_z - ((area_size - 1) / 2)) <= (? + ((? - 1) / 2) + ?)
+                  AND (center_z - ((area_size - 1) / 2) + area_size - 1) >= (? - ((? - 1) / 2))
                 LIMIT 1
                 """;
         try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
+            int requestedSize = Math.max(1, requestedRadius * 2 + 1);
+            int requestedHalf = (requestedSize - 1) / 2;
             statement.setString(1, worldId.toString());
             statement.setInt(2, x);
-            statement.setInt(3, Math.max(1, requestedRadius));
-            statement.setInt(4, z);
-            statement.setInt(5, Math.max(1, requestedRadius));
+            statement.setInt(3, requestedSize);
+            statement.setInt(4, 0);
+            statement.setInt(5, x);
+            statement.setInt(6, requestedSize);
+            statement.setInt(7, z);
+            statement.setInt(8, requestedSize);
+            statement.setInt(9, 0);
+            statement.setInt(10, z);
+            statement.setInt(11, requestedSize);
             try (ResultSet result = statement.executeQuery()) {
                 return result.next();
             }
@@ -218,8 +229,8 @@ public final class PlayerShopService {
             try (PreparedStatement statement = connection.prepareStatement("""
                     INSERT INTO player_shops
                     (owner_uuid, world_uuid, world_name, center_x, center_y, center_z,
-                     area_radius, status, created_at, activation_at, merchant_name)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, 'PREPARING', ?, ?, ?)
+                     area_radius, area_size, status, created_at, activation_at, merchant_name)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'PREPARING', ?, ?, ?)
                     """, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, owner.toString());
                 statement.setString(2, worldId.toString());
@@ -228,9 +239,10 @@ public final class PlayerShopService {
                 statement.setInt(5, y);
                 statement.setInt(6, z);
                 statement.setInt(7, safeRadius);
-                statement.setLong(8, now);
-                statement.setLong(9, activationAt);
-                statement.setString(10, merchantName);
+                statement.setInt(8, Math.max(1, requestedRadius * 2 + 1));
+                statement.setLong(9, now);
+                statement.setLong(10, activationAt);
+                statement.setString(11, merchantName);
                 statement.executeUpdate();
                 try (ResultSet keys = statement.getGeneratedKeys()) {
                     if (!keys.next()) throw new SQLException("Não foi possível obter o ID da loja criada.");
