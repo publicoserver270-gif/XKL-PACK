@@ -46,12 +46,11 @@ jobs:
         display-name: "&6Picareta do Minerador"
         tiers:
           1: {material: WOODEN_PICKAXE}
-          5: {material: STONE_PICKAXE, enchantments: {efficiency: 1}}
-          10: {material: IRON_PICKAXE, enchantments: {efficiency: 2, unbreaking: 1}}
-          20: {material: GOLDEN_PICKAXE, enchantments: {efficiency: 3, unbreaking: 1}}
-          40: {material: DIAMOND_PICKAXE, enchantments: {efficiency: 4, unbreaking: 2}}
-          80: {material: NETHERITE_PICKAXE, enchantments: {efficiency: 5, unbreaking: 3}}
-          160: {material: NETHERITE_PICKAXE, enchantments: {efficiency: 6, unbreaking: 3}}
+          11: {material: STONE_PICKAXE, enchantments: {efficiency: 1}}
+          26: {material: IRON_PICKAXE, enchantments: {efficiency: 2, unbreaking: 1}}
+          51: {material: GOLDEN_PICKAXE, enchantments: {efficiency: 3, unbreaking: 1}}
+          101: {material: DIAMOND_PICKAXE, enchantments: {efficiency: 4, unbreaking: 2}}
+          160: {material: DIAMOND_PICKAXE, enchantments: {efficiency: 5, unbreaking: 3}}
       lenhador:
         display-name: "&6Machado do Lenhador"
         tiers:
