@@ -23,7 +23,7 @@ import java.sql.SQLException;
  */
 public final class PermitUseListener implements Listener {
     private static final String[] PROTECTION_PLUGINS = {
-            "WorldGuard", "GriefPrevention", "Lands", "Towny", "Residence",
+            "WorldGuard", "GriefPrevention", "Lands", "Towny", "Residence", "EasyClaim", "DyClaim",
             "RedProtect", "PlotSquared", "GriefDefender", "SuperiorSkyblock2"
     };
 
