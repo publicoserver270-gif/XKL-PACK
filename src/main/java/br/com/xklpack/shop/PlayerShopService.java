@@ -251,6 +251,65 @@ public final class PlayerShopService {
         throw new IllegalStateException("Não foi possível gerar um nome único para o comerciante.");
     }
 
+
+    public boolean isOwner(long shopId, UUID playerId) throws SQLException {
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT 1 FROM player_shops WHERE id=? AND owner_uuid=? AND status<>'REMOVED'")) {
+            ps.setLong(1, shopId); ps.setString(2, playerId.toString());
+            try (ResultSet rs = ps.executeQuery()) { return rs.next(); }
+        }
+    }
+
+    public boolean isAuthorizedForStock(long shopId, UUID playerId) throws SQLException {
+        if (isOwner(shopId, playerId)) return true;
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT can_stock FROM player_shop_allies WHERE shop_id=? AND player_uuid=?")) {
+            ps.setLong(1, shopId); ps.setString(2, playerId.toString());
+            try (ResultSet rs = ps.executeQuery()) { return rs.next() && rs.getInt(1) == 1; }
+        }
+    }
+
+    public void addAlly(long shopId, UUID owner, UUID ally) throws SQLException {
+        if (!isOwner(shopId, owner)) throw new IllegalArgumentException("Essa loja não pertence a você.");
+        if (owner.equals(ally)) throw new IllegalArgumentException("O dono já possui todas as permissões.");
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement("""
+                INSERT INTO player_shop_allies(shop_id, player_uuid, can_stock, can_manage_products, can_withdraw, can_configure)
+                VALUES(?,?,1,1,1,1)
+                ON CONFLICT(shop_id, player_uuid) DO UPDATE SET can_stock=1, can_manage_products=1, can_withdraw=1, can_configure=1
+                """)) {
+            ps.setLong(1, shopId); ps.setString(2, ally.toString()); ps.executeUpdate();
+        }
+    }
+
+    public void removeAlly(long shopId, UUID owner, UUID ally) throws SQLException {
+        if (!isOwner(shopId, owner)) throw new IllegalArgumentException("Essa loja não pertence a você.");
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "DELETE FROM player_shop_allies WHERE shop_id=? AND player_uuid=?")) {
+            ps.setLong(1, shopId); ps.setString(2, ally.toString()); ps.executeUpdate();
+        }
+    }
+
+    public List<UUID> listAllies(long shopId, UUID owner) throws SQLException {
+        if (!isOwner(shopId, owner)) throw new IllegalArgumentException("Essa loja não pertence a você.");
+        List<UUID> result = new java.util.ArrayList<>();
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT player_uuid FROM player_shop_allies WHERE shop_id=? ORDER BY player_uuid")) {
+            ps.setLong(1, shopId);
+            try (ResultSet rs = ps.executeQuery()) { while (rs.next()) result.add(UUID.fromString(rs.getString(1))); }
+        }
+        return result;
+    }
+
+    public List<Long> listOwnedShops(UUID owner) throws SQLException {
+        List<Long> result = new java.util.ArrayList<>();
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT id FROM player_shops WHERE owner_uuid=? AND status<>'REMOVED' ORDER BY id")) {
+            ps.setString(1, owner.toString());
+            try (ResultSet rs = ps.executeQuery()) { while (rs.next()) result.add(rs.getLong(1)); }
+        }
+        return result;
+    }
+
     public int areaRadius() {
         return areaRadius;
     }
