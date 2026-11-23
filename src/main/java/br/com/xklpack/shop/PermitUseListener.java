@@ -1,7 +1,10 @@
 package br.com.xklpack.shop;
 
 import br.com.xklpack.XKLPack;
-import org.bukkit.Material;\nimport org.bukkit.Location;\nimport java.lang.reflect.Method;\nimport java.util.UUID;
+import org.bukkit.Material;
+import org.bukkit.Location;
+import java.lang.reflect.Method;
+import java.util.UUID;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
