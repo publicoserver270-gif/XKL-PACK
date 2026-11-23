@@ -1,0 +1,44 @@
+settings:
+  title: '&8&lALVARÁS COMERCIAIS'
+  # Ordem dos alvarás exibidos na loja.
+  order:
+    - basico
+    - comercial
+    - premium
+    - empresarial
+
+# Preços e tamanhos são editáveis sem alterar o código.
+# O pagamento é feito com Coins do saldo virtual, como nas compras da /loja.
+permits:
+  basico:
+    enabled: true
+    name: '&aAlvará Básico'
+    item-name: '&aAlvará Comercial - Básico'
+    icon: PAPER
+    price: '1000'
+    area-radius: 3
+    description: 'Ideal para uma pequena loja.'
+  comercial:
+    enabled: true
+    name: '&eAlvará Comercial'
+    item-name: '&eAlvará Comercial - Médio'
+    icon: BOOK
+    price: '2500'
+    area-radius: 5
+    description: 'Para lojas de tamanho médio.'
+  premium:
+    enabled: true
+    name: '&bAlvará Premium'
+    item-name: '&bAlvará Comercial - Premium'
+    icon: WRITABLE_BOOK
+    price: '5000'
+    area-radius: 8
+    description: 'Para lojas maiores.'
+  empresarial:
+    enabled: true
+    name: '&6Alvará Empresarial'
+    item-name: '&6Alvará Comercial - Empresarial'
+    icon: ENCHANTED_BOOK
+    price: '10000'
+    area-radius: 12
+    description: 'A maior área comercial disponível.';
