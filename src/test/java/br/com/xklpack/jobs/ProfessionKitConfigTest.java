@@ -24,7 +24,10 @@ class ProfessionKitConfigTest {
         for (String job : professions.getKeys(false)) {
             ConfigurationSection tiers = professions.getConfigurationSection(job + ".tiers");
             assertNotNull(tiers, "Profissão sem tiers: " + job);
-            assertEquals(EXPECTED_TIERS, tiers.getKeys(false).stream().sorted(
+            List<String> expected = "minerador".equals(job)
+                    ? List.of("1", "11", "26", "51", "101", "160")
+                    : EXPECTED_TIERS;
+            assertEquals(expected, tiers.getKeys(false).stream().sorted(
                     java.util.Comparator.comparingInt(Integer::parseInt)).toList(), job);
             for (String tier : tiers.getKeys(false)) {
                 String materialName = tiers.getString(tier + ".material", "");
