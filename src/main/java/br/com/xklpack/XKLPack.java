@@ -27,6 +27,7 @@ import br.com.xklpack.shop.SellCommand;
 import br.com.xklpack.shop.ShopCommand;
 import br.com.xklpack.shop.ExcavatorListener;
 import br.com.xklpack.shop.EquipmentService;
+import br.com.xklpack.shop.PlayerShopService;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -50,6 +51,7 @@ public final class XKLPack extends JavaPlugin {
     private SellCommand sellCommand;
     private EquipmentService equipmentService;
     private BugReportService bugReportService;
+    private PlayerShopService playerShopService;
 
     @Override
     public void onEnable() {
@@ -151,6 +153,8 @@ public final class XKLPack extends JavaPlugin {
             }
 
             if (getConfig().getBoolean("modules.shops", true)) {
+                playerShopService = new PlayerShopService(this);
+                getLogger().info("Persistência das lojas de jogadores preparada (área configurada: raio " + playerShopService.areaRadius() + ").");
                 equipmentService = new EquipmentService(this);
                 ShopCommand shopCommand = new ShopCommand(this, economyService, equipmentService);
                 registerCommand("loja", shopCommand);
@@ -203,6 +207,7 @@ public final class XKLPack extends JavaPlugin {
     public BankService getBankService() { return bankService; }
     public MoneyPouchService getMoneyPouchService() { return moneyPouchService; }
     public BugReportService getBugReportService() { return bugReportService; }
+    public PlayerShopService getPlayerShopService() { return playerShopService; }
 
     @Override
     public void onDisable() {
