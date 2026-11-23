@@ -91,8 +91,8 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 ### 5.3 Lojas de jogadores (sistema próprio XKL PACK)
 
 - O sistema será um módulo próprio do XKL PACK, inspirado no fluxo do Shopkeepers; não dependerá do ShopkeepersAddon.
-- Para abrir uma loja, o jogador compra um Alvará Comercial na loja administrativa do servidor. O preço/moeda do alvará ainda precisa ser definido; não presumir valor.
-- O jogador usa o alvará no ponto exato em que deseja estabelecer a loja. O XKL PACK valida terreno, espaço, sobreposição e permissões antes de consumir o documento.
+- Para abrir uma loja, o jogador compra um dos seis Alvarás Comerciais na loja `/alvaras`. Os preços e dimensões iniciais ficam configuráveis em `permits.yml`: 7x7 (1.000 Coins), 11x11 (2.500 Coins), 17x17 (5.000 Coins), 25x25 (10.000 Coins), 64x64 (100.000 Coins) e 128x128 (1.000.000 Coins).
+- O jogador usa o alvará no ponto exato em que deseja estabelecer a loja. Antes de consumir o documento, o XKL PACK verifica toda a área quadrada do alvará, inclusive os limites, e consulta as regiões/claims protegidos que cruzem essa área. Se existir qualquer proteção pertencente a outro jogador, a criação é recusada. A única exceção é quando o proprietário de cada área protegida envolvida é o próprio jogador que está usando o alvará. Claims próprios e áreas sem proteção são permitidos, desde que não haja conflito com outra loja. A checagem não pode se limitar ao bloco central.
 - Após a validação, inicia uma preparação de 2 minutos; ao final, o comerciante NPC chega/aparece no ponto da loja. O processo precisa persistir após reinicializações e não duplicar NPCs.
 - Cada NPC recebe automaticamente um nome próprio de pessoa, único no servidor, exibido acima da cabeça. O nome é permanente e o dono não pode alterá-lo.
 - O NPC circula livremente dentro da área delimitada da loja, sem sair dela, atravessar limites ou perder a interação de comércio.
@@ -101,8 +101,8 @@ Cada moeda possui identificador, nome, símbolo, casas decimais, saldo virtual, 
 - O pagamento recebido fica guardado como dinheiro físico da loja e pode ser retirado pelo dono/aliados com permissão. Não aceitar Coins virtuais nem Gemas nas transações entre jogadores.
 - O painel de cada loja seguirá o padrão visual e de navegação do painel administrativo do XKL PACK, com seções de estoque, produtos/preços, aliados, dinheiro, aparência e configurações. A aparência permite configurar a loja, mas não alterar o nome próprio permanente do NPC.
 - O proprietário poderá convidar/remover aliados e definir permissões específicas (abrir estoque, gerenciar produtos/preços e retirar dinheiro). O dono mantém controle total.
-- A integração com proteção de terrenos deve autorizar somente as ações necessárias do NPC e do estoque, sem desproteger o terreno inteiro. O NPC não pode ser usado como brecha para quebrar, abrir ou modificar blocos protegidos.
-- A integração inicial deve considerar Citizens e EasyClaim, presentes no servidor do usuário, mas as APIs/versões precisam ser verificadas antes de implementar o bypass de proteção e a navegação delimitada. Se uma API não estiver disponível, o módulo deve falhar de forma segura e informar no log, sem desativar a proteção.
+- A integração com proteção de terrenos deve autorizar somente as ações necessárias do NPC e do estoque, sem desproteger o terreno inteiro. O NPC não pode ser usado como brecha para quebrar, abrir ou modificar blocos protegidos. A consulta deve identificar com segurança o dono de cada claim/região na área completa: se qualquer dono for diferente do jogador que usa o alvará, bloquear a criação. Se houver plugin de proteção instalado sem adaptador compatível ou não for possível determinar o dono, falhar de forma segura e bloquear a criação; nunca ignorar a proteção.
+- A integração com Citizens e com os plugins de proteção efetivamente instalados deve ser validada por adaptadores/API compatíveis. Não presumir EasyClaim nem qualquer plugin específico. Se uma API não estiver disponível, o módulo deve falhar de forma segura e informar no log, sem desativar a proteção.
 - Mercado/leilão global de jogadores não está incluído nesta funcionalidade.
 
 ## 6. Banco, transferências e rankings
@@ -150,4 +150,4 @@ Não criar comandos principais extras para jogadores sem autorização. Comandos
 2. Confirmar os valores finais de espaços para possuir ferramentas e quantidade equipada simultaneamente; os valores atuais são configuráveis e iniciais.
 3. Definir o destino contábil das taxas bancárias.
 4. Definir acesso e regras do mercado de jogadores, caso ainda seja desejado.
-5. Concluir testes integrados em servidor Paper 26.3 com Citizens, EasyClaim e os inventários do servidor.
+5. Concluir testes integrados em servidor Paper 26.3 com Citizens, os plugins de proteção realmente instalados e os inventários do servidor.
