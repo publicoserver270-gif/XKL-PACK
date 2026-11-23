@@ -177,16 +177,21 @@ public final class PlayerShopService {
     }
 
     private String chooseUnusedMerchantName(Connection connection) throws SQLException {
-        for (String name : MERCHANT_NAMES) {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT 1 FROM player_shops WHERE merchant_name = ? AND status <> 'REMOVED' LIMIT 1")) {
-                statement.setString(1, name);
-                try (ResultSet result = statement.executeQuery()) {
-                    if (!result.next()) return name;
+        // O nome nunca é reciclado, mesmo depois que uma loja é removida.
+        // Sufixos permitem quantidade ilimitada de comerciantes sem repetir nomes.
+        for (String base : MERCHANT_NAMES) {
+            for (int suffix = 1; suffix < Integer.MAX_VALUE; suffix++) {
+                String candidate = suffix == 1 ? base : base + " " + suffix;
+                try (PreparedStatement statement = connection.prepareStatement(
+                        "SELECT 1 FROM player_shops WHERE merchant_name = ? LIMIT 1")) {
+                    statement.setString(1, candidate);
+                    try (ResultSet result = statement.executeQuery()) {
+                        if (!result.next()) return candidate;
+                    }
                 }
             }
         }
-        return null;
+        throw new IllegalStateException("Não foi possível gerar um nome único para o comerciante.");
     }
 
     public int areaRadius() {
