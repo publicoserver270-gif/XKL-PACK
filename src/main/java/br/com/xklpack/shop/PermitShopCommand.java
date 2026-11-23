@@ -66,10 +66,10 @@ public final class PermitShopCommand implements CommandExecutor, Listener {
             if (icon == null) icon = Material.PAPER;
             String name = plugin.getPermitsConfig().getString(path + "name", id);
             BigDecimal price = price(id);
-            int radius = Math.max(2, plugin.getPermitsConfig().getInt(path + "area-radius", 4));
+            int areaSize = Math.max(1, plugin.getPermitsConfig().getInt(path + "area-size",
+                    plugin.getPermitsConfig().getInt(path + "area-radius", 4) * 2 + 1));
             ItemStack display = button(icon, color(name), List.of(
-                    "§7Área reservada: §f" + ((radius * 2) + 1) + "x" + ((radius * 2) + 1) + " blocos",
-                    "§7Raio: §f" + radius + " blocos",
+                    "§7Área reservada: §f" + areaSize + "x" + areaSize + " blocos",
                     "§7Preço: §a" + price.toPlainString() + " Coins",
                     "", "§eClique para comprar este alvará."));
             inventory.setItem(SLOTS[i], display);
@@ -126,8 +126,10 @@ public final class PermitShopCommand implements CommandExecutor, Listener {
         meta.setDisplayName(color(plugin.getPermitsConfig().getString(path + "item-name", "&6Alvará Comercial")));
         meta.setLore(List.of(
                 color("&7Tipo: &f" + plugin.getPermitsConfig().getString(path + "name", id)),
-                color("&7Área: &f" + (plugin.getPermitsConfig().getInt(path + "area-radius", 4) * 2 + 1)
-                        + "x" + (plugin.getPermitsConfig().getInt(path + "area-radius", 4) * 2 + 1) + " blocos"),
+                color("&7Área: &f" + plugin.getPermitsConfig().getInt(path + "area-size",
+                        plugin.getPermitsConfig().getInt(path + "area-radius", 4) * 2 + 1)
+                        + "x" + plugin.getPermitsConfig().getInt(path + "area-size",
+                        plugin.getPermitsConfig().getInt(path + "area-radius", 4) * 2 + 1) + " blocos"),
                 color("&8Documento oficial do XKL PACK")
         ));
         meta.getPersistentDataContainer().set(permitKey, PersistentDataType.STRING, id);
