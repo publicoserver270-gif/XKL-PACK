@@ -7,6 +7,10 @@ import br.com.xklpack.bank.BankListener;
 import br.com.xklpack.bank.BankMenu;
 import br.com.xklpack.bank.BankService;
 import br.com.xklpack.admin.AdminPanelCommand;
+import br.com.xklpack.bug.BugAdminListener;
+import br.com.xklpack.bug.BugCommand;
+import br.com.xklpack.bug.BugReportService;
+import br.com.xklpack.pvp.PvPListener;
 import br.com.xklpack.economy.EconomyService;
 import br.com.xklpack.economy.WalletCommand;
 import br.com.xklpack.economy.EconomyStorage;
@@ -45,6 +49,7 @@ public final class XKLPack extends JavaPlugin {
     private MoneyPouchService moneyPouchService;
     private SellCommand sellCommand;
     private EquipmentService equipmentService;
+    private BugReportService bugReportService;
 
     @Override
     public void onEnable() {
@@ -83,6 +88,11 @@ public final class XKLPack extends JavaPlugin {
         adminShopConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "admin-shop.yml"));
 
         try {
+            bugReportService = new BugReportService(this);
+            registerCommand("bug", new BugCommand(this));
+            getServer().getPluginManager().registerEvents(new BugAdminListener(this), this);
+            getServer().getPluginManager().registerEvents(new PvPListener(this), this);
+
             economyStorage = new EconomyStorage(this);
             economyStorage.open();
             economyService = new EconomyService(this, economyStorage);
@@ -191,6 +201,7 @@ public final class XKLPack extends JavaPlugin {
     public EconomyStorage getEconomyStorage() { return economyStorage; }
     public BankService getBankService() { return bankService; }
     public MoneyPouchService getMoneyPouchService() { return moneyPouchService; }
+    public BugReportService getBugReportService() { return bugReportService; }
 
     @Override
     public void onDisable() {
