@@ -38,7 +38,7 @@ public final class PermitUseListener implements Listener {
     }
 
 
-    private boolean isWorldGuardAreaOwnedBy(UUID playerId, Location center, int radius) {
+    private boolean isWorldGuardAreaOwnedBy(UUID playerId, Location origin, int size) {
         try {
             Class<?> worldGuardClass = Class.forName("com.sk89q.worldguard.WorldGuard");
             Object worldGuard = worldGuardClass.getMethod("getInstance").invoke(null);
@@ -54,9 +54,9 @@ public final class PermitUseListener implements Listener {
                 }
             }
             if (applicable == null) return false;
-            for (int x = center.getBlockX() - radius; x <= center.getBlockX() + radius; x++) {
-                for (int z = center.getBlockZ() - radius; z <= center.getBlockZ() + radius; z++) {
-                    Location sample = new Location(center.getWorld(), x + 0.5, center.getY(), z + 0.5);
+            for (int x = origin.getBlockX(); x < origin.getBlockX() + size; x++) {
+                for (int z = origin.getBlockZ(); z < origin.getBlockZ() + size; z++) {
+                    Location sample = new Location(origin.getWorld(), x + 0.5, origin.getY(), z + 0.5);
                     Object worldEditLocation = adapt.invoke(null, sample);
                     Object applicableSet = applicable.invoke(query, worldEditLocation);
                     Object regions = applicableSet.getClass().getMethod("getRegions").invoke(applicableSet);
@@ -117,18 +117,19 @@ public final class PermitUseListener implements Listener {
         int radius = Math.max(1, (size - 1) / 2);
         try {
             if (plugin.getServer().getPluginManager().getPlugin("WorldGuard") != null
-                    && !isWorldGuardAreaOwnedBy(player.getUniqueId(), target.getLocation(), radius)) {
+                    && !isWorldGuardAreaOwnedBy(player.getUniqueId(), target.getLocation(), size)) {
                 player.sendMessage("§cA área precisa estar totalmente sem proteção ou pertencer a você no WorldGuard.");
                 player.sendMessage("§7Nenhum alvará foi consumido.");
                 return;
             }
-            if (shops.overlapsExistingShop(target.getWorld().getUID(), target.getBlockX(), target.getBlockZ(), radius)) {
+            int centerX = target.getBlockX() + (size - 1) / 2;
+            int centerZ = target.getBlockZ() + (size - 1) / 2;
+            if (shops.overlapsExistingShopSize(target.getWorld().getUID(), centerX, centerZ, size)) {
                 player.sendMessage("§cEsta área cruza o espaço reservado de outra loja.");
                 return;
             }
             long shopId = shops.createPreparingShop(player.getUniqueId(), target.getWorld().getUID(),
-                    target.getWorld().getName(), target.getBlockX(), target.getBlockY(),
-                    target.getBlockZ(), radius);
+                    target.getWorld().getName(), centerX, target.getBlockY(), centerZ, radius, size);
             if (hand != null && hand.getAmount() > 1) hand.setAmount(hand.getAmount() - 1);
             else player.getInventory().setItemInMainHand(null);
             player.sendMessage("§aÁrea comercial reservada! ID da loja: §f#" + shopId);
