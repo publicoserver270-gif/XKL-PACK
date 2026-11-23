@@ -6,38 +6,81 @@ authors: [XKL]
 description: Plugin modular de economia, banco e profissões.
 website: https://github.com/publicoserver270-gif/XKL-PACK
 softdepend: [Citizens]
+
 commands:
   pay:
     description: Transfere saldo virtual para outro jogador.
     usage: /pay <jogador> <valor> [moeda]
+    permission: xklpack.command.pay
   top:
     description: Mostra o ranking de saldos.
     usage: /top [online] [coins|gems]
+    permission: xklpack.command.top
   job:
     description: Abre o menu de profissões.
     usage: /job [status|sair]
+    permission: xklpack.command.job
   atm:
     description: Abre o caixa eletrônico do Banco XKL.
     usage: /atm
+    permission: xklpack.command.atm
+  carteira:
+    description: Abre a carteira virtual XKL.
+    usage: /carteira
+    permission: xklpack.command.wallet
+  sell:
+    description: Vende itens elegíveis ao servidor.
+    usage: /sell
+    permission: xklpack.command.sell
+  loja:
+    description: Abre a loja de compras XKL.
+    usage: /loja
+    permission: xklpack.command.shop
+  xkladmin:
+    description: Abre o painel administrativo XKL.
+    usage: /xkladmin [bugs|bugs limpar]
+    permission: xklpack.admin.panel
   xklpouch:
     description: Administração dos sacos de moedas XKL.
     usage: /xklpouch give <jogador>
+    permission: xklpack.admin.pouch
   xklatm:
     description: Administração dos NPCs de caixa eletrônico.
     usage: /xklatm npc <link|unlink|list> [id]
+    permission: xklpack.admin.atm
+  bug:
+    description: Envia um relatório de bug para a administração.
+    usage: /bug <descrição>
+    permission: xklpack.command.bug
+
 permissions:
   xklpack.command.pay:
-    description: Permite usar /pay.
-    default: true
+    description: Permite executar /pay (jogadores acessam por NPC).
+    default: op
   xklpack.command.top:
-    description: Permite consultar rankings.
-    default: true
+    description: Permite executar /top (jogadores acessam por NPC).
+    default: op
   xklpack.command.job:
-    description: Permite usar o sistema de profissões.
-    default: true
+    description: Permite executar /job (jogadores acessam por NPC).
+    default: op
   xklpack.command.atm:
-    description: Permite usar o caixa eletrônico.
+    description: Permite executar /atm (jogadores acessam por NPC).
+    default: op
+  xklpack.command.wallet:
+    description: Permite executar /carteira.
+    default: op
+  xklpack.command.sell:
+    description: Permite executar /sell (jogadores acessam por NPC).
+    default: op
+  xklpack.command.shop:
+    description: Permite executar /loja (jogadores acessam por NPC).
+    default: op
+  xklpack.command.bug:
+    description: Permite enviar relatórios de bugs.
     default: true
+  xklpack.admin.panel:
+    description: Permite usar o painel e as ferramentas administrativas XKL.
+    default: op
   xklpack.admin.pouch:
     description: Permite criar e entregar sacos de moedas.
     default: op
