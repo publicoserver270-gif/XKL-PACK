@@ -38,7 +38,7 @@ jobs:
   max-level: 500
 
   # Kits vinculados à profissão. A ferramenta evolui automaticamente nos níveis configurados.
-  # A durabilidade é preservada proporcionalmente quando o material muda.
+  # Todas as ferramentas dos kits são indestrutíveis e não perdem durabilidade.
   kits:
     enabled: true
     professions:
