@@ -53,6 +53,7 @@ public final class PlayerShopCommand implements CommandExecutor, Listener {
                 case "produto" -> handleProduct(player, args);
                 case "loja" -> handleShopState(player, args);
                 case "cofre" -> handleVault(player, args);
+                case "vendas" -> handleSales(player, args);
                 case "aliado" -> handleAlly(player, args);
                 default -> player.sendMessage("§6XKL LOJAS §7| painel, produto, cofre, aliado");
             }
@@ -115,6 +116,24 @@ public final class PlayerShopCommand implements CommandExecutor, Listener {
             shops.removeOffer(shopId, Long.parseLong(args[3]), player.getUniqueId());
             player.sendMessage("§aProduto removido.");
         } else throw new IllegalArgumentException("Use adicionar, listar ou remover.");
+    }
+
+
+    private void handleSales(Player player, String[] args) throws SQLException {
+        requireArgs(args, 2, "/lojaplayer vendas <id> [limite]");
+        long id = Long.parseLong(args[1]);
+        int limit = args.length >= 3 ? Integer.parseInt(args[2]) : 10;
+        var sales = shops.recentSales(id, player.getUniqueId(), limit);
+        player.sendMessage("§6Últimas vendas da loja #" + id + ":");
+        if (sales.isEmpty()) {
+            player.sendMessage("§7Nenhuma venda registrada.");
+            return;
+        }
+        for (var sale : sales) {
+            String date = new java.text.SimpleDateFormat("dd/MM HH:mm").format(new java.util.Date(sale.createdAt()));
+            player.sendMessage("§7" + date + " §f" + sale.itemAmount() + " itens §e"
+                    + sale.coinValue() + " coins §8comprador " + sale.buyer());
+        }
     }
 
     private void handleVault(Player player, String[] args) throws SQLException {
