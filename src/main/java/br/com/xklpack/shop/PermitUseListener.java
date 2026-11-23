@@ -1,7 +1,7 @@
 package br.com.xklpack.shop;
 
 import br.com.xklpack.XKLPack;
-import org.bukkit.Material;
+import org.bukkit.Material;\nimport org.bukkit.Location;\nimport java.lang.reflect.Method;\nimport java.util.UUID;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,6 +34,44 @@ public final class PermitUseListener implements Listener {
         this.shops = shops;
     }
 
+
+    private boolean isWorldGuardAreaOwnedBy(UUID playerId, Location center, int radius) {
+        try {
+            Class<?> worldGuardClass = Class.forName("com.sk89q.worldguard.WorldGuard");
+            Object worldGuard = worldGuardClass.getMethod("getInstance").invoke(null);
+            Object platform = worldGuardClass.getMethod("getPlatform").invoke(worldGuard);
+            Object container = platform.getClass().getMethod("getRegionContainer").invoke(platform);
+            Object query = container.getClass().getMethod("createQuery").invoke(container);
+            Class<?> adapterClass = Class.forName("com.sk89q.worldedit.bukkit.BukkitAdapter");
+            Method adapt = adapterClass.getMethod("adapt", Location.class);
+            Method applicable = null;
+            for (Method method : query.getClass().getMethods()) {
+                if (method.getName().equals("getApplicableRegions") && method.getParameterCount() == 1) {
+                    applicable = method; break;
+                }
+            }
+            if (applicable == null) return false;
+            for (int x = center.getBlockX() - radius; x <= center.getBlockX() + radius; x++) {
+                for (int z = center.getBlockZ() - radius; z <= center.getBlockZ() + radius; z++) {
+                    Location sample = new Location(center.getWorld(), x + 0.5, center.getY(), z + 0.5);
+                    Object worldEditLocation = adapt.invoke(null, sample);
+                    Object applicableSet = applicable.invoke(query, worldEditLocation);
+                    Object regions = applicableSet.getClass().getMethod("getRegions").invoke(applicableSet);
+                    if (!(regions instanceof Iterable<?> iterable)) return false;
+                    for (Object region : iterable) {
+                        Object owners = region.getClass().getMethod("getOwners").invoke(region);
+                        Method contains = owners.getClass().getMethod("contains", UUID.class);
+                        if (!Boolean.TRUE.equals(contains.invoke(owners, playerId))) return false;
+                    }
+                }
+            }
+            return true;
+        } catch (ReflectiveOperationException | LinkageError exception) {
+            plugin.getLogger().warning("WorldGuard detectado, mas não foi possível confirmar a propriedade da área: " + exception.getMessage());
+            return false;
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onUse(PlayerInteractEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
@@ -50,12 +88,13 @@ public final class PermitUseListener implements Listener {
             return;
         }
 
-        // Não tenta adivinhar proprietário de regiões. Sem adaptador confiável,
-        // qualquer plugin de proteção conhecido faz a operação falhar com segurança.
+        // WorldGuard é consultado por reflexão para não obrigar o servidor a instalá-lo.
+        // Qualquer outra proteção sem adaptador conhecido continua bloqueando a criação.
         for (String protection : PROTECTION_PLUGINS) {
+            if (protection.equals("WorldGuard")) continue;
             if (plugin.getServer().getPluginManager().getPlugin(protection) != null) {
-                player.sendMessage("§cNão foi possível validar a propriedade desta área com o sistema de proteção instalado.");
-                player.sendMessage("§7A criação foi bloqueada para não invadir terreno protegido. Nenhum alvará foi consumido.");
+                player.sendMessage("§cA proteção " + protection + " ainda não possui integração segura no XKL PACK.");
+                player.sendMessage("§7Criação bloqueada; seu alvará não foi consumido.");
                 return;
             }
         }
@@ -72,6 +111,12 @@ public final class PermitUseListener implements Listener {
                 plugin.getPermitsConfig().getInt(path + "area-radius", 4) * 2 + 1));
         int radius = Math.max(1, (size - 1) / 2);
         try {
+            if (plugin.getServer().getPluginManager().getPlugin("WorldGuard") != null
+                    && !isWorldGuardAreaOwnedBy(player.getUniqueId(), target.getLocation(), radius)) {
+                player.sendMessage("§cA área precisa estar totalmente sem proteção ou pertencer a você no WorldGuard.");
+                player.sendMessage("§7Nenhum alvará foi consumido.");
+                return;
+            }
             if (shops.overlapsExistingShop(target.getWorld().getUID(), target.getBlockX(), target.getBlockZ(), radius)) {
                 player.sendMessage("§cEsta área cruza o espaço reservado de outra loja.");
                 return;
