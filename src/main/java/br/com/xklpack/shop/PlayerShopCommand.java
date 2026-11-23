@@ -189,6 +189,7 @@ public final class PlayerShopCommand implements CommandExecutor, Listener {
         if (!shops.isOwner(id, player.getUniqueId())
                 && !shops.canManageProducts(id, player.getUniqueId())
                 && !shops.canWithdraw(id, player.getUniqueId())
+                && !shops.canConfigure(id, player.getUniqueId())
                 && !shops.isAuthorizedForStock(id, player.getUniqueId()))
             throw new IllegalArgumentException("Você não tem acesso a esta loja.");
         PanelHolder holder = new PanelHolder(player.getUniqueId(), id);
