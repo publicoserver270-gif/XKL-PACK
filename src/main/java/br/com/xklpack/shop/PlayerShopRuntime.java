@@ -92,6 +92,7 @@ public final class PlayerShopRuntime implements Listener {
                 villager.setCustomName("§6" + shop.merchantName());
                 villager.setCustomNameVisible(true);
                 villager.setInvulnerable(true);
+                villager.setCollidable(false);
                 villager.setPersistent(true);
                 villager.setRemoveWhenFarAway(false);
                 villager.setCanPickupItems(false);
