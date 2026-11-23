@@ -879,6 +879,7 @@ items:
     price: 20000
     display-name: '&d&lPicareta Escavadora 3x3'
     currency: gems
+    coin-price: 200000
     special: excavator_3x3
     lore:
     - '&7Minera uma área de 3x3 blocos.'
