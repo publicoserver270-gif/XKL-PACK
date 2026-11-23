@@ -1,6 +1,6 @@
 package br.com.xklpack.shop;
 
-import br.com.xklpack.XKLPack;
+import br.com.xklpack.XKLPack;\nimport br.com.xklpack.bank.BankService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,7 +32,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.sql.SQLException;
-import java.util.UUID;
+import java.util.UUID;\nimport java.util.HashMap;\nimport java.util.Map;
 
 /**
  * Cria o comerciante e o baú de estoque quando termina o prazo do alvará.
@@ -47,7 +47,7 @@ public final class PlayerShopRuntime implements Listener {
     private final NamespacedKey centerXKey;
     private final NamespacedKey centerZKey;
     private final NamespacedKey centerYKey;
-    private final NamespacedKey radiusKey;
+    private final NamespacedKey radiusKey;\n    private final NamespacedKey shopMarkerKey;
 
     public PlayerShopRuntime(XKLPack plugin, PlayerShopService shops) {
         this.plugin = plugin;
@@ -58,7 +58,7 @@ public final class PlayerShopRuntime implements Listener {
         this.centerXKey = new NamespacedKey(plugin, "player_shop_center_x");
         this.centerZKey = new NamespacedKey(plugin, "player_shop_center_z");
         this.centerYKey = new NamespacedKey(plugin, "player_shop_center_y");
-        this.radiusKey = new NamespacedKey(plugin, "player_shop_radius");
+        this.radiusKey = new NamespacedKey(plugin, "player_shop_radius");\n        this.shopMarkerKey = new NamespacedKey(plugin, "player_shop_menu");
         Bukkit.getScheduler().runTaskTimer(plugin, this::activateDueShops, 20L, 20L);
         Bukkit.getScheduler().runTaskTimer(plugin, this::keepMerchantsInsideArea, 10L, 10L);
     }
@@ -179,7 +179,9 @@ public final class PlayerShopRuntime implements Listener {
         if (!(event.getRightClicked() instanceof Villager villager)
                 || !villager.getPersistentDataContainer().has(merchantKey, PersistentDataType.BYTE)) return;
         event.setCancelled(true);
-        event.getPlayer().sendMessage("§eEsta loja está sendo preparada. O catálogo de vendas será aberto quando estiver configurado.");
+        Long shopId = villager.getPersistentDataContainer().get(shopIdKey, PersistentDataType.LONG);
+        if (shopId == null) return;
+        openCatalog(event.getPlayer(), shopId);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
