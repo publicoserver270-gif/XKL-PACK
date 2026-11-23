@@ -166,7 +166,9 @@ public final class XKLPack extends JavaPlugin {
                 playerShopService = new PlayerShopService(this);
                 PermitShopCommand permitShop = new PermitShopCommand(this, economyService);
                 registerCommand("alvaras", permitShop);
-                PlayerShopCommand playerShopCommand = new PlayerShopCommand(this, playerShopService);\n                registerCommand("lojaplayer", playerShopCommand);\n                getServer().getPluginManager().registerEvents(playerShopCommand, this);
+                PlayerShopCommand playerShopCommand = new PlayerShopCommand(this, playerShopService);
+                registerCommand("lojaplayer", playerShopCommand);
+                getServer().getPluginManager().registerEvents(playerShopCommand, this);
                 getServer().getPluginManager().registerEvents(permitShop, this);
                 getServer().getPluginManager().registerEvents(new PermitUseListener(this, permitShop, playerShopService), this);
                 getServer().getPluginManager().registerEvents(new PlayerShopRuntime(this, playerShopService), this);
