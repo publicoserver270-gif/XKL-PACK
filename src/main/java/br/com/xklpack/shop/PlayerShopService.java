@@ -636,6 +636,26 @@ public final class PlayerShopService {
         }
     }
 
+
+    public record SaleRecord(UUID buyer, long offerId, int itemAmount, long coinValue, long createdAt) {}
+
+    public List<SaleRecord> recentSales(long shopId, UUID actor, int limit) throws SQLException {
+        if (!canWithdraw(shopId, actor) && !canManageProducts(shopId, actor))
+            throw new IllegalArgumentException("Você não tem permissão para consultar as vendas.");
+        int safeLimit = Math.max(1, Math.min(50, limit));
+        List<SaleRecord> sales = new ArrayList<>();
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT buyer_uuid,offer_id,item_amount,physical_coin_value,created_at FROM player_shop_sales WHERE shop_id=? ORDER BY id DESC LIMIT ?")) {
+            ps.setLong(1, shopId); ps.setInt(2, safeLimit);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) sales.add(new SaleRecord(UUID.fromString(rs.getString("buyer_uuid")),
+                        rs.getLong("offer_id"), rs.getInt("item_amount"),
+                        rs.getLong("physical_coin_value"), rs.getLong("created_at")));
+            }
+        }
+        return sales;
+    }
+
     public int areaRadius() {
         return areaRadius;
     }
