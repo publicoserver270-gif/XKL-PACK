@@ -137,6 +137,7 @@ public final class XKLPack extends JavaPlugin {
                 registerCommand("job", jobCommand);
                 getServer().getPluginManager().registerEvents(jobCommand, this);
                 getServer().getPluginManager().registerEvents(new JobListener(this, jobService, kitService), this);
+                getServer().getPluginManager().registerEvents(new br.com.xklpack.jobs.TreeFellerListener(this, jobService, kitService), this);
                 getServer().getPluginManager().registerEvents(kitService, this);
             }
 
