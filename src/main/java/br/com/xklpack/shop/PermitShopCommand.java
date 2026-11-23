@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class PermitShopCommand implements CommandExecutor, Listener {
-    private static final int[] SLOTS = {10, 12, 14, 16};
+    private static final int[] SLOTS = {10, 11, 12, 14, 15, 16};
     private final XKLPack plugin;
     private final EconomyService economy;
     private final NamespacedKey permitKey;
