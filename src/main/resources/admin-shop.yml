@@ -1,7 +1,7 @@
 settings:
   title: '&8&lLOJA XKL'
   category-title: '&8&l{category}'
-  page-size: 45
+  page-size: 9
 categories:
   minerios:
     name: '&b&lMINÉRIOS E MATERIAIS'
@@ -47,9 +47,9 @@ categories:
     - redstone_maquinas
     - redstone_carrinhos
     - redstone_mecanismos
-  itens_especiais:
-    name: '&5&lITENS ESPECIAIS'
-    icon: ENDER_PEARL
+  drops_mob:
+    name: '&5&lDROPS DE MOB'
+    icon: ROTTEN_FLESH
     slot: 18
   pedras:
     name: '&7&lPEDRAS'
@@ -665,7 +665,7 @@ items:
     display-name: '&aCana-de-açúcar'
   rotten_flesh:
     material: ROTTEN_FLESH
-    category: itens_especiais
+    category: drops_mob
     price: 2
     display-name: '&cCarne Podre'
   bone:
@@ -725,13 +725,13 @@ items:
     display-name: '&7Funil'
   arrow:
     material: ARROW
-    category: variados
+    category: armas
     price: 50
     display-name: '&fFlecha'
     amount: 16
   shield:
     material: SHIELD
-    category: variados
+    category: armas
     price: 100
     display-name: '&fEscudo'
   bucket:
@@ -887,3 +887,597 @@ items:
     - '&7Respeita as proteções do servidor.'
     required-profession: minerador
     required-level: 160
+# ARMAS
+  wooden_sword:
+    material: WOODEN_SWORD
+    category: armas
+    price: 80
+    display-name: '&fEspada de Madeira'
+  stone_sword:
+    material: STONE_SWORD
+    category: armas
+    price: 180
+    display-name: '&7Espada de Pedra'
+  iron_sword:
+    material: IRON_SWORD
+    category: armas
+    price: 450
+    display-name: '&fEspada de Ferro'
+  golden_sword:
+    material: GOLDEN_SWORD
+    category: armas
+    price: 550
+    display-name: '&6Espada de Ouro'
+  diamond_sword:
+    material: DIAMOND_SWORD
+    category: armas
+    price: 1800
+    display-name: '&bEspada de Diamante'
+  netherite_sword:
+    material: NETHERITE_SWORD
+    category: armas
+    price: 6500
+    display-name: '&8Espada de Netherita'
+  bow:
+    material: BOW
+    category: armas
+    price: 350
+    display-name: '&fArco'
+  crossbow:
+    material: CROSSBOW
+    category: armas
+    price: 650
+    display-name: '&6Besta'
+  trident:
+    material: TRIDENT
+    category: armas
+    price: 4500
+    display-name: '&bTridente'
+  mace:
+    material: MACE
+    category: armas
+    price: 9000
+    display-name: '&dMaça'
+
+  # ARMADURAS
+  leather_helmet:
+    material: LEATHER_HELMET
+    category: armaduras
+    price: 120
+    display-name: '&6Capacete de Couro'
+  leather_chestplate:
+    material: LEATHER_CHESTPLATE
+    category: armaduras
+    price: 180
+    display-name: '&6Peitoral de Couro'
+  leather_leggings:
+    material: LEATHER_LEGGINGS
+    category: armaduras
+    price: 160
+    display-name: '&6Calças de Couro'
+  leather_boots:
+    material: LEATHER_BOOTS
+    category: armaduras
+    price: 100
+    display-name: '&6Botas de Couro'
+  chainmail_helmet:
+    material: CHAINMAIL_HELMET
+    category: armaduras
+    price: 500
+    display-name: '&7Capacete de Malha'
+  chainmail_chestplate:
+    material: CHAINMAIL_CHESTPLATE
+    category: armaduras
+    price: 800
+    display-name: '&7Peitoral de Malha'
+  chainmail_leggings:
+    material: CHAINMAIL_LEGGINGS
+    category: armaduras
+    price: 700
+    display-name: '&7Calças de Malha'
+  chainmail_boots:
+    material: CHAINMAIL_BOOTS
+    category: armaduras
+    price: 450
+    display-name: '&7Botas de Malha'
+  iron_helmet:
+    material: IRON_HELMET
+    category: armaduras
+    price: 650
+    display-name: '&fCapacete de Ferro'
+  iron_chestplate:
+    material: IRON_CHESTPLATE
+    category: armaduras
+    price: 1100
+    display-name: '&fPeitoral de Ferro'
+  iron_leggings:
+    material: IRON_LEGGINGS
+    category: armaduras
+    price: 950
+    display-name: '&fCalças de Ferro'
+  iron_boots:
+    material: IRON_BOOTS
+    category: armaduras
+    price: 600
+    display-name: '&fBotas de Ferro'
+  golden_helmet:
+    material: GOLDEN_HELMET
+    category: armaduras
+    price: 750
+    display-name: '&6Capacete de Ouro'
+  golden_chestplate:
+    material: GOLDEN_CHESTPLATE
+    category: armaduras
+    price: 1250
+    display-name: '&6Peitoral de Ouro'
+  golden_leggings:
+    material: GOLDEN_LEGGINGS
+    category: armaduras
+    price: 1050
+    display-name: '&6Calças de Ouro'
+  golden_boots:
+    material: GOLDEN_BOOTS
+    category: armaduras
+    price: 700
+    display-name: '&6Botas de Ouro'
+  diamond_helmet:
+    material: DIAMOND_HELMET
+    category: armaduras
+    price: 2800
+    display-name: '&bCapacete de Diamante'
+  diamond_chestplate:
+    material: DIAMOND_CHESTPLATE
+    category: armaduras
+    price: 4500
+    display-name: '&bPeitoral de Diamante'
+  diamond_leggings:
+    material: DIAMOND_LEGGINGS
+    category: armaduras
+    price: 3900
+    display-name: '&bCalças de Diamante'
+  diamond_boots:
+    material: DIAMOND_BOOTS
+    category: armaduras
+    price: 2600
+    display-name: '&bBotas de Diamante'
+  netherite_helmet:
+    material: NETHERITE_HELMET
+    category: armaduras
+    price: 9500
+    display-name: '&8Capacete de Netherita'
+  netherite_chestplate:
+    material: NETHERITE_CHESTPLATE
+    category: armaduras
+    price: 15000
+    display-name: '&8Peitoral de Netherita'
+  netherite_leggings:
+    material: NETHERITE_LEGGINGS
+    category: armaduras
+    price: 13000
+    display-name: '&8Calças de Netherita'
+  netherite_boots:
+    material: NETHERITE_BOOTS
+    category: armaduras
+    price: 9000
+    display-name: '&8Botas de Netherita'
+
+  # DROPS DE MOB
+  spider_eye:
+    material: SPIDER_EYE
+    category: drops_mob
+    price: 12
+    display-name: '&cOlho de Aranha'
+  string:
+    material: STRING
+    category: drops_mob
+    price: 8
+    display-name: '&fLinha'
+  slime_ball:
+    material: SLIME_BALL
+    category: drops_mob
+    price: 25
+    display-name: '&aBola de Slime'
+  magma_cream:
+    material: MAGMA_CREAM
+    category: drops_mob
+    price: 45
+    display-name: '&6Creme de Magma'
+  blaze_rod:
+    material: BLAZE_ROD
+    category: drops_mob
+    price: 80
+    display-name: '&6Vara de Blaze'
+  ghast_tear:
+    material: GHAST_TEAR
+    category: drops_mob
+    price: 120
+    display-name: '&fLágrima de Ghast'
+  phantom_membrane:
+    material: PHANTOM_MEMBRANE
+    category: drops_mob
+    price: 75
+    display-name: '&dMembrana de Fantasma'
+  shulker_shell:
+    material: SHULKER_SHELL
+    category: drops_mob
+    price: 250
+    display-name: '&dCasco de Shulker'
+  prismarine_shard:
+    material: PRISMARINE_SHARD
+    category: drops_mob
+    price: 30
+    display-name: '&bFragmento de Prismarinho'
+  prismarine_crystals:
+    material: PRISMARINE_CRYSTALS
+    category: drops_mob
+    price: 45
+    display-name: '&bCristais de Prismarinho'
+  nautilus_shell:
+    material: NAUTILUS_SHELL
+    category: drops_mob
+    price: 180
+    display-name: '&fConcha de Náutilo'
+  rabbit_hide:
+    material: RABBIT_HIDE
+    category: drops_mob
+    price: 15
+    display-name: '&6Pele de Coelho'
+  rabbit_foot:
+    material: RABBIT_FOOT
+    category: drops_mob
+    price: 35
+    display-name: '&6Pé de Coelho'
+  feather:
+    material: FEATHER
+    category: drops_mob
+    price: 6
+    display-name: '&fPena'
+  ink_sac:
+    material: INK_SAC
+    category: drops_mob
+    price: 10
+    display-name: '&8Bolsa de Tinta'
+  glow_ink_sac:
+    material: GLOW_INK_SAC
+    category: drops_mob
+    price: 35
+    display-name: '&bBolsa de Tinta Brilhante'
+  turtle_scute:
+    material: TURTLE_SCUTE
+    category: drops_mob
+    price: 90
+    display-name: '&aEscama de Tartaruga'
+  armadillo_scute:
+    material: ARMADILLO_SCUTE
+    category: drops_mob
+    price: 50
+    display-name: '&6Escama de Tatu'
+  breeze_rod:
+    material: BREEZE_ROD
+    category: drops_mob
+    price: 100
+    display-name: '&bVara de Brisa'
+  wind_charge:
+    material: WIND_CHARGE
+    category: drops_mob
+    price: 55
+    display-name: '&fCarga de Vento'
+
+  # REDSTONE E AUTOMAÇÃO - CARRINHOS
+  rail:
+    material: RAIL
+    category: redstone_carrinhos
+    price: 120
+    display-name: '&7Trilho'
+    amount: 16
+  powered_rail:
+    material: POWERED_RAIL
+    category: redstone_carrinhos
+    price: 420
+    display-name: '&6Trilho Elétrico'
+    amount: 8
+  detector_rail:
+    material: DETECTOR_RAIL
+    category: redstone_carrinhos
+    price: 300
+    display-name: '&eTrilho Detector'
+    amount: 8
+  activator_rail:
+    material: ACTIVATOR_RAIL
+    category: redstone_carrinhos
+    price: 280
+    display-name: '&cTrilho Ativador'
+    amount: 8
+  minecart:
+    material: MINECART
+    category: redstone_carrinhos
+    price: 350
+    display-name: '&fCarrinho'
+  chest_minecart:
+    material: CHEST_MINECART
+    category: redstone_carrinhos
+    price: 600
+    display-name: '&6Carrinho com Baú'
+  hopper_minecart:
+    material: HOPPER_MINECART
+    category: redstone_carrinhos
+    price: 900
+    display-name: '&7Carrinho com Funil'
+  furnace_minecart:
+    material: FURNACE_MINECART
+    category: redstone_carrinhos
+    price: 700
+    display-name: '&8Carrinho com Fornalha'
+
+  # REDSTONE E AUTOMAÇÃO - MECANISMOS
+  lever:
+    material: LEVER
+    category: redstone_mecanismos
+    price: 40
+    display-name: '&7Alavanca'
+  stone_button:
+    material: STONE_BUTTON
+    category: redstone_mecanismos
+    price: 25
+    display-name: '&7Botão de Pedra'
+  oak_button:
+    material: OAK_BUTTON
+    category: redstone_mecanismos
+    price: 25
+    display-name: '&6Botão de Carvalho'
+  stone_pressure_plate:
+    material: STONE_PRESSURE_PLATE
+    category: redstone_mecanismos
+    price: 60
+    display-name: '&7Placa de Pressão de Pedra'
+  heavy_weighted_pressure_plate:
+    material: HEAVY_WEIGHTED_PRESSURE_PLATE
+    category: redstone_mecanismos
+    price: 180
+    display-name: '&fPlaca de Pressão Pesada'
+  light_weighted_pressure_plate:
+    material: LIGHT_WEIGHTED_PRESSURE_PLATE
+    category: redstone_mecanismos
+    price: 150
+    display-name: '&6Placa de Pressão Leve'
+  tripwire_hook:
+    material: TRIPWIRE_HOOK
+    category: redstone_mecanismos
+    price: 80
+    display-name: '&6Gancho de Armadilha'
+  target:
+    material: TARGET
+    category: redstone_mecanismos
+    price: 220
+    display-name: '&cAlvo'
+  daylight_detector:
+    material: DAYLIGHT_DETECTOR
+    category: redstone_mecanismos
+    price: 500
+    display-name: '&eSensor de Luz Solar'
+  dispenser:
+    material: DISPENSER
+    category: redstone_mecanismos
+    price: 650
+    display-name: '&7Liberador'
+  dropper:
+    material: DROPPER
+    category: redstone_mecanismos
+    price: 550
+    display-name: '&7Ejetor'
+  crafter:
+    material: CRAFTER
+    category: redstone_mecanismos
+    price: 1800
+    display-name: '&6Fabricador Automático'
+  sculk_sensor:
+    material: SCULK_SENSOR
+    category: redstone_mecanismos
+    price: 900
+    display-name: '&9Sensor de Sculk'
+  calibrated_sculk_sensor:
+    material: CALIBRATED_SCULK_SENSOR
+    category: redstone_mecanismos
+    price: 1600
+    display-name: '&9Sensor de Sculk Calibrado'
+
+  # REDSTONE E AUTOMAÇÃO - MÁQUINAS
+  redstone_block:
+    material: REDSTONE_BLOCK
+    category: redstone_componentes
+    price: 180
+    display-name: '&cBloco de Redstone'
+  target_block:
+    material: TARGET
+    category: redstone_componentes
+    price: 220
+    display-name: '&cBloco-Alvo'
+  slime_block:
+    material: SLIME_BLOCK
+    category: redstone_maquinas
+    price: 450
+    display-name: '&aBloco de Slime'
+  honey_block:
+    material: HONEY_BLOCK
+    category: redstone_maquinas
+    price: 500
+    display-name: '&6Bloco de Mel'
+
+  # MINÉRIOS E MATERIAIS
+  copper_ingot:
+    material: COPPER_INGOT
+    category: minerios
+    price: 18
+    display-name: '&6Barra de Cobre'
+  raw_iron:
+    material: RAW_IRON
+    category: minerios
+    price: 16
+    display-name: '&fFerro Bruto'
+  raw_gold:
+    material: RAW_GOLD
+    category: minerios
+    price: 30
+    display-name: '&6Ouro Bruto'
+  raw_copper:
+    material: RAW_COPPER
+    category: minerios
+    price: 12
+    display-name: '&6Cobre Bruto'
+  emerald:
+    material: EMERALD
+    category: minerios
+    price: 100
+    display-name: '&aEsmeralda'
+  lapis_lazuli:
+    material: LAPIS_LAZULI
+    category: minerios
+    price: 12
+    display-name: '&9Lápis-Lazúli'
+  quartz:
+    material: QUARTZ
+    category: minerios
+    price: 20
+    display-name: '&fQuartzo do Nether'
+  amethyst_shard:
+    material: AMETHYST_SHARD
+    category: minerios
+    price: 25
+    display-name: '&dFragmento de Ametista'
+  copper_block:
+    material: COPPER_BLOCK
+    category: minerios
+    price: 160
+    display-name: '&6Bloco de Cobre'
+  iron_block:
+    material: IRON_BLOCK
+    category: minerios
+    price: 220
+    display-name: '&fBloco de Ferro'
+  gold_block:
+    material: GOLD_BLOCK
+    category: minerios
+    price: 450
+    display-name: '&6Bloco de Ouro'
+  diamond_block:
+    material: DIAMOND_BLOCK
+    category: minerios
+    price: 1800
+    display-name: '&bBloco de Diamante'
+  emerald_block:
+    material: EMERALD_BLOCK
+    category: minerios
+    price: 900
+    display-name: '&aBloco de Esmeralda'
+  lapis_block:
+    material: LAPIS_BLOCK
+    category: minerios
+    price: 100
+    display-name: '&9Bloco de Lápis-Lazúli'
+  coal_block:
+    material: COAL_BLOCK
+    category: minerios
+    price: 90
+    display-name: '&8Bloco de Carvão'
+
+  # COMIDA
+  bread:
+    material: BREAD
+    category: comida
+    price: 18
+    display-name: '&6Pão'
+  cooked_beef:
+    material: COOKED_BEEF
+    category: comida
+    price: 35
+    display-name: '&6Carne Assada'
+  cooked_porkchop:
+    material: COOKED_PORKCHOP
+    category: comida
+    price: 32
+    display-name: '&6Costeleta Assada'
+  cooked_chicken:
+    material: COOKED_CHICKEN
+    category: comida
+    price: 24
+    display-name: '&eFrango Assado'
+  cooked_mutton:
+    material: COOKED_MUTTON
+    category: comida
+    price: 28
+    display-name: '&6Carneiro Assado'
+  cooked_rabbit:
+    material: COOKED_RABBIT
+    category: comida
+    price: 30
+    display-name: '&6Coelho Assado'
+  cooked_cod:
+    material: COOKED_COD
+    category: comida
+    price: 22
+    display-name: '&fBacalhau Assado'
+  cooked_salmon:
+    material: COOKED_SALMON
+    category: comida
+    price: 28
+    display-name: '&6Salmão Assado'
+  baked_potato:
+    material: BAKED_POTATO
+    category: comida
+    price: 12
+    display-name: '&eBatata Assada'
+  golden_carrot:
+    material: GOLDEN_CARROT
+    category: comida
+    price: 85
+    display-name: '&6Cenoura Dourada'
+  golden_apple:
+    material: GOLDEN_APPLE
+    category: comida
+    price: 450
+    display-name: '&6Maçã Dourada'
+  pumpkin_pie:
+    material: PUMPKIN_PIE
+    category: comida
+    price: 45
+    display-name: '&6Torta de Abóbora'
+  cookie:
+    material: COOKIE
+    category: comida
+    price: 8
+    display-name: '&6Biscoito'
+  melon_slice:
+    material: MELON_SLICE
+    category: comida
+    price: 5
+    display-name: '&aFatia de Melancia'
+  sweet_berries:
+    material: SWEET_BERRIES
+    category: comida
+    price: 5
+    display-name: '&cFrutas Silvestres'
+  glow_berries:
+    material: GLOW_BERRIES
+    category: comida
+    price: 12
+    display-name: '&eBagas Luminosas'
+  dried_kelp:
+    material: DRIED_KELP
+    category: comida
+    price: 4
+    display-name: '&aAlga Seca'
+  beetroot:
+    material: BEETROOT
+    category: comida
+    price: 6
+    display-name: '&cBeterraba'
+  beetroot_soup:
+    material: BEETROOT_SOUP
+    category: comida
+    price: 20
+    display-name: '&cSopa de Beterraba'
+  mushroom_stew:
+    material: MUSHROOM_STEW
+    category: comida
+    price: 22
+    display-name: '&6Ensopado de Cogumelos'
