@@ -98,6 +98,10 @@ public final class XKLPack extends JavaPlugin {
             economyStorage = new EconomyStorage(this);
             economyStorage.open();
             economyService = new EconomyService(this, economyStorage);
+            // As lojas de jogadores também autenticam moedas físicas; isso não pode depender do ATM.
+            if (getConfig().getBoolean("modules.bank", true) || getConfig().getBoolean("modules.shops", true)) {
+                bankService = new BankService(this);
+            }
             registerCommand("pay", new PayCommand(economyService));
             registerCommand("top", new TopCommand(economyService));
 
@@ -109,7 +113,6 @@ public final class XKLPack extends JavaPlugin {
             }
 
             if (getConfig().getBoolean("modules.bank", false) && bankConfig.getBoolean("atm.enabled", true)) {
-                bankService = new BankService(this);
                 BankMenu bankMenu = new BankMenu(this, bankService);
                 registerCommand("atm", new BankCommand(bankMenu));
                 registerCommand("xklatm", new AtmNpcCommand(this));
