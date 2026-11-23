@@ -10,6 +10,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -94,25 +95,26 @@ public final class MoneyPouchListener implements Listener {
             return true;
         });
         if (!protectedPouches.isEmpty()) {
-            deathPouches.put(event.getEntity().getUniqueId(), protectedPouches);
+            Player player = event.getEntity();
+            for (ItemStack pouch : protectedPouches) {
+                try {
+                    pouches.storePending(player, pouch);
+                } catch (java.sql.SQLException exception) {
+                    plugin.getLogger().severe("Não foi possível preservar Trouxa na morte de " + player.getName() + ": " + exception.getMessage());
+                }
+            }
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void restoreAfterRespawn(PlayerRespawnEvent event) {
-        List<ItemStack> protectedPouches = deathPouches.remove(event.getPlayer().getUniqueId());
-        if (protectedPouches == null || protectedPouches.isEmpty()) return;
         Player player = event.getPlayer();
-        for (ItemStack pouch : protectedPouches) {
-            var overflow = player.getInventory().addItem(pouch);
-            if (!overflow.isEmpty()) {
-                var enderOverflow = player.getEnderChest().addItem(overflow.values().toArray(new ItemStack[0]));
-                if (!enderOverflow.isEmpty()) {
-                    // Não descarta a Trouxa caso ambos os inventários estejam cheios.
-                    deathPouches.put(player.getUniqueId(), new ArrayList<>(enderOverflow.values()));
-                    player.sendMessage("§eLibere espaço no inventário ou no baú do Ender para recuperar sua Trouxa XKL.");
-                }
-            }
-        }
+        plugin.getServer().getScheduler().runTask(plugin, () -> pouches.deliverPending(player));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void restorePendingOnJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        plugin.getServer().getScheduler().runTask(plugin, () -> pouches.deliverPending(player));
     }
 }
