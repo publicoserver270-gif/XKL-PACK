@@ -189,49 +189,60 @@ public final class MoneyPouchService {
 
     /** Tenta entregar todas as Trouxas pendentes; o que não couber continua salvo no SQLite. */
     public void deliverPending(Player player) {
+        record Pending(String id, byte[] data) {}
+        List<Pending> pending = new java.util.ArrayList<>();
         synchronized (plugin.getEconomyStorage()) {
             try (PreparedStatement query = plugin.getEconomyStorage().connection().prepareStatement(
                     "SELECT pouch_id, item_data FROM money_pouch_pending WHERE player_uuid=? ORDER BY updated_at")) {
                 query.setString(1, player.getUniqueId().toString());
                 try (ResultSet rows = query.executeQuery()) {
-                    while (rows.next()) {
-                        String id = rows.getString("pouch_id");
-                        ItemStack pouch;
-                        try (BukkitObjectInputStream input = new BukkitObjectInputStream(
-                                new ByteArrayInputStream(rows.getBytes("item_data")))) {
-                            Object value = input.readObject();
-                            pouch = value instanceof ItemStack item ? item : null;
-                        } catch (Exception exception) {
-                            plugin.getLogger().severe("Trouxa pendente corrompida (" + id + "): " + exception.getMessage());
-                            continue;
-                        }
-                        if (!isPouch(pouch)) continue;
-                        Map<Integer, ItemStack> overflow = player.getInventory().addItem(pouch);
-                        if (!overflow.isEmpty()) overflow = player.getEnderChest().addItem(overflow.values().toArray(new ItemStack[0]));
-                        try (PreparedStatement update = plugin.getEconomyStorage().connection().prepareStatement(
-                                overflow.isEmpty()
-                                        ? "DELETE FROM money_pouch_pending WHERE pouch_id=?"
-                                        : "UPDATE money_pouch_pending SET item_data=?, updated_at=? WHERE pouch_id=?")) {
-                            if (overflow.isEmpty()) {
-                                update.setString(1, id);
-                            } else {
-                                ItemStack remaining = overflow.values().iterator().next();
-                                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                                try (BukkitObjectOutputStream output = new BukkitObjectOutputStream(bytes)) {
-                                    output.writeObject(remaining);
-                                }
-                                update.setBytes(1, bytes.toByteArray());
-                                update.setLong(2, System.currentTimeMillis());
-                                update.setString(3, id);
-                            }
-                            update.executeUpdate();
-                        }
-                        if (overflow.isEmpty()) player.sendMessage("§aSua Trouxa XKL pendente foi recuperada.");
-                    }
+                    while (rows.next()) pending.add(new Pending(rows.getString("pouch_id"), rows.getBytes("item_data")));
                 }
-            } catch (Exception exception) {
-                plugin.getLogger().severe("Falha ao entregar Trouxas pendentes para " + player.getName() + ": " + exception.getMessage());
+            } catch (SQLException exception) {
+                plugin.getLogger().severe("Falha ao consultar Trouxas pendentes para " + player.getName() + ": " + exception.getMessage());
+                return;
             }
+        }
+
+        for (Pending row : pending) {
+            ItemStack pouch;
+            try (BukkitObjectInputStream input = new BukkitObjectInputStream(new ByteArrayInputStream(row.data()))) {
+                Object value = input.readObject();
+                pouch = value instanceof ItemStack item ? item : null;
+            } catch (Exception exception) {
+                plugin.getLogger().severe("Trouxa pendente corrompida (" + row.id() + "): " + exception.getMessage());
+                continue;
+            }
+            if (!isPouch(pouch) || !containsOnlyOfficialCoins(pouch)) {
+                plugin.getLogger().severe("Trouxa pendente inválida ou com conteúdo não autorizado (" + row.id() + ").");
+                continue;
+            }
+
+            Map<Integer, ItemStack> overflow = player.getInventory().addItem(pouch);
+            if (!overflow.isEmpty()) overflow = player.getEnderChest().addItem(overflow.values().toArray(new ItemStack[0]));
+            synchronized (plugin.getEconomyStorage()) {
+                try (PreparedStatement update = plugin.getEconomyStorage().connection().prepareStatement(
+                        overflow.isEmpty()
+                                ? "DELETE FROM money_pouch_pending WHERE pouch_id=?"
+                                : "UPDATE money_pouch_pending SET item_data=?, updated_at=? WHERE pouch_id=?")) {
+                    if (overflow.isEmpty()) {
+                        update.setString(1, row.id());
+                    } else {
+                        ItemStack remaining = overflow.values().iterator().next();
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        try (BukkitObjectOutputStream output = new BukkitObjectOutputStream(bytes)) {
+                            output.writeObject(remaining);
+                        }
+                        update.setBytes(1, bytes.toByteArray());
+                        update.setLong(2, System.currentTimeMillis());
+                        update.setString(3, row.id());
+                    }
+                    update.executeUpdate();
+                } catch (Exception exception) {
+                    plugin.getLogger().severe("Falha ao atualizar entrega pendente " + row.id() + ": " + exception.getMessage());
+                }
+            }
+            if (overflow.isEmpty()) player.sendMessage("§aSua Trouxa XKL pendente foi recuperada.");
         }
     }
 
