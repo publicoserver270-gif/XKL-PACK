@@ -147,10 +147,17 @@ public final class PlayerShopRuntime implements Listener {
                 Integer centerZ = data.get(centerZKey, PersistentDataType.INTEGER);
                 Integer centerY = data.get(centerYKey, PersistentDataType.INTEGER);
                 Integer radius = data.get(radiusKey, PersistentDataType.INTEGER);
-                if (centerX == null || centerZ == null || centerY == null || radius == null) continue;
+                Long shopId = data.get(shopIdKey, PersistentDataType.LONG);
+                if (centerX == null || centerZ == null || centerY == null || radius == null || shopId == null) continue;
+                int size;
+                try { size = shops.getShopSize(shopId); } catch (SQLException ex) { continue; }
+                int minX = centerX - (size - 1) / 2;
+                int minZ = centerZ - (size - 1) / 2;
+                int maxX = minX + size - 1;
+                int maxZ = minZ + size - 1;
                 int x = villager.getLocation().getBlockX();
                 int z = villager.getLocation().getBlockZ();
-                if (Math.abs(x - centerX) > radius || Math.abs(z - centerZ) > radius) {
+                if (x < minX || x > maxX || z < minZ || z > maxZ) {
                     villager.teleport(new Location(world, centerX + 0.5, centerY, centerZ + 0.5));
                 }
             }
