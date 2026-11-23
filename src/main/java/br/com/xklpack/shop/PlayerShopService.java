@@ -409,6 +409,35 @@ public final class PlayerShopService {
         }
     }
 
+
+    public void updateOfferPrice(long shopId, long offerId, UUID actor, int price) throws SQLException {
+        if (!canManageProducts(shopId, actor)) throw new IllegalArgumentException("Você não tem permissão para gerenciar produtos.");
+        if (price < 1) throw new IllegalArgumentException("O preço precisa ser maior que zero.");
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "UPDATE player_shop_offers SET price_coins=? WHERE id=? AND shop_id=? AND amount>0")) {
+            ps.setInt(1, price); ps.setLong(2, offerId); ps.setLong(3, shopId);
+            if (ps.executeUpdate() != 1) throw new IllegalArgumentException("Produto ativo não encontrado.");
+        }
+    }
+
+    public boolean setShopOpen(long shopId, UUID owner, boolean open) throws SQLException {
+        if (!isOwner(shopId, owner)) throw new IllegalArgumentException("Somente o dono pode abrir ou fechar a loja.");
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "UPDATE player_shops SET status=? WHERE id=? AND status IN ('ACTIVE','CLOSED')")) {
+            ps.setString(1, open ? "ACTIVE" : "CLOSED"); ps.setLong(2, shopId);
+            if (ps.executeUpdate() != 1) throw new IllegalArgumentException("A loja ainda não está ativa.");
+        }
+        return open;
+    }
+
+    public boolean isShopOpen(long shopId) throws SQLException {
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT 1 FROM player_shops WHERE id=? AND status='ACTIVE'")) {
+            ps.setLong(1, shopId);
+            try (ResultSet rs = ps.executeQuery()) { return rs.next(); }
+        }
+    }
+
     public long vaultBalance(long shopId, UUID actor) throws SQLException {
         if (!canWithdraw(shopId, actor)) throw new IllegalArgumentException("Você não tem permissão para consultar o cofre.");
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
