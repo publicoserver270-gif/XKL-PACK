@@ -34,7 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 public final class ShopCommand implements CommandExecutor, Listener {
-    private static final int PAGE_SIZE = 45;
+    private static final int[] PRODUCT_SLOTS = {10, 11, 12, 19, 20, 21, 28, 29, 30};
+    private static final int PAGE_SIZE = PRODUCT_SLOTS.length;
     private final XKLPack plugin;
     private final EconomyService economy;
     private final EquipmentService equipment;
@@ -117,6 +118,7 @@ public final class ShopCommand implements CommandExecutor, Listener {
         ShopHolder holder = new ShopHolder(player.getUniqueId(), category, page);
         Inventory inventory = Bukkit.createInventory(holder, 54, title);
         holder.inventory = inventory;
+        decorateCategoryInventory(inventory);
         holder.parentCategory = categories == null ? null : categories.getString(category + ".parent");
 
         List<String> products = productsFor(category);
@@ -128,7 +130,7 @@ public final class ShopCommand implements CommandExecutor, Listener {
             String id = products.get(start + i);
             ItemStack display = createProduct(id, true);
             if (display != null) {
-                inventory.setItem(i, display);
+                inventory.setItem(PRODUCT_SLOTS[i], display);
                 holder.actions.put(i, id);
             }
         }
@@ -149,6 +151,13 @@ public final class ShopCommand implements CommandExecutor, Listener {
             inventory.setItem(22, button(Material.BARRIER, "§cCategoria sem itens", List.of("§7A administração ainda não cadastrou produtos.")));
         }
         player.openInventory(inventory);
+    }
+
+    private void decorateCategoryInventory(Inventory inventory) {
+        ItemStack pane = button(Material.GRAY_STAINED_GLASS_PANE, " ", List.of());
+        for (int slot = 0; slot <= 8; slot++) inventory.setItem(slot, pane);
+        int[] frameSlots = {9, 13, 18, 22, 27, 31, 36, 37, 38, 39, 40, 41, 42, 43, 44};
+        for (int slot : frameSlots) inventory.setItem(slot, pane);
     }
 
     private List<String> productsFor(String category) {
