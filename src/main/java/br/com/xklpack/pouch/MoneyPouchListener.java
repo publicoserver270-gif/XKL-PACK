@@ -2,8 +2,6 @@ package br.com.xklpack.pouch;
 
 import br.com.xklpack.XKLPack;
 import br.com.xklpack.bank.BankService;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,17 +10,20 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BundleMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class MoneyPouchListener implements Listener {
     private final XKLPack plugin;
     private final MoneyPouchService pouches;
     private final BankService bank;
+    private final Map<UUID, List<ItemStack>> deathPouches = new ConcurrentHashMap<>();
 
     public MoneyPouchListener(XKLPack plugin, MoneyPouchService pouches, BankService bank) {
         this.plugin = plugin;
@@ -46,25 +47,21 @@ public final class MoneyPouchListener implements Listener {
         boolean cursorPouch = pouches.isPouch(cursor);
         if (!currentPouch && !cursorPouch) return;
 
-        // A Trouxa pode ser reorganizada no inventário do jogador, mas não movida
-        // para baús, bancadas, fornalhas ou qualquer inventário externo.
-        boolean playerInventoryView = event.getView().getTopInventory() == event.getWhoClicked().getInventory();
-        if (!playerInventoryView && (currentPouch || cursorPouch)) {
+        // Só permite manipular a Trouxa dentro do inventário pessoal do jogador.
+        boolean clickedPlayerInventory = event.getClickedInventory() == event.getWhoClicked().getInventory();
+        if (!clickedPlayerInventory && (currentPouch || cursorPouch)) {
             event.setCancelled(true);
             return;
         }
 
-        // O clique com a Trouxa sobre uma pilha só aceita moedas autenticadas.
+        // O armazenamento nativo aceita exclusivamente moedas autenticadas pelo Banco XKL.
         if (cursorPouch && current != null && !current.getType().isAir()
                 && !pouches.isOfficialCoin(current)) {
             event.setCancelled(true);
             return;
         }
-        // Não permita trocar a Trouxa por item comum via tecla numérica ou offhand.
-        if ((currentPouch || cursorPouch)
-                && (event.getHotbarButton() >= 0
-                || event.getClick().name().equals("SWAP_OFFHAND")
-                || event.getClick().name().equals("DOUBLE_CLICK"))) {
+        if (currentPouch && cursor != null && !cursor.getType().isAir()
+                && !pouches.isOfficialCoin(cursor)) {
             event.setCancelled(true);
             return;
         }
@@ -76,25 +73,15 @@ public final class MoneyPouchListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void protectDrag(InventoryDragEvent event) {
-        ItemStack oldCursor = event.getOldCursor();
-        if (!pouches.isPouch(oldCursor)) {
-            for (ItemStack item : event.getNewItems().values()) {
-                if (pouches.isPouch(item)) {
-                    event.setCancelled(true);
-                    return;
-                }
-            }
+        if (pouches.isPouch(event.getOldCursor())) {
+            event.setCancelled(true);
             return;
         }
         for (ItemStack item : event.getNewItems().values()) {
-            if (!pouches.isOfficialCoin(item)) {
+            if (pouches.isPouch(item)) {
                 event.setCancelled(true);
                 return;
             }
-        }
-        if (event.getRawSlots().stream().anyMatch(slot -> slot < event.getView().getTopInventory().getSize())
-                && event.getView().getTopInventory() != event.getWhoClicked().getInventory()) {
-            event.setCancelled(true);
         }
     }
 
@@ -107,15 +94,25 @@ public final class MoneyPouchListener implements Listener {
             return true;
         });
         if (!protectedPouches.isEmpty()) {
-            event.getEntity().getScheduler().runDelayed(plugin, task -> {
-                Player player = event.getEntity();
-                for (ItemStack pouch : protectedPouches) pouches.restorePouch(player, pouch);
-            }, null, 1L);
+            deathPouches.put(event.getEntity().getUniqueId(), protectedPouches);
         }
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        // Nada é criado novamente aqui: a entrega inicial é única e registrada no banco.
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void restoreAfterRespawn(PlayerRespawnEvent event) {
+        List<ItemStack> protectedPouches = deathPouches.remove(event.getPlayer().getUniqueId());
+        if (protectedPouches == null || protectedPouches.isEmpty()) return;
+        Player player = event.getPlayer();
+        for (ItemStack pouch : protectedPouches) {
+            var overflow = player.getInventory().addItem(pouch);
+            if (!overflow.isEmpty()) {
+                var enderOverflow = player.getEnderChest().addItem(overflow.values().toArray(new ItemStack[0]));
+                if (!enderOverflow.isEmpty()) {
+                    // Não descarta a Trouxa caso ambos os inventários estejam cheios.
+                    deathPouches.put(player.getUniqueId(), new ArrayList<>(enderOverflow.values()));
+                    player.sendMessage("§eLibere espaço no inventário ou no baú do Ender para recuperar sua Trouxa XKL.");
+                }
+            }
+        }
     }
 }
