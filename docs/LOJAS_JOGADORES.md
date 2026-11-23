@@ -1,6 +1,6 @@
 # Lojas de jogadores — XKL PACK
 
-**Status: especificação aprovada; implementação ainda não iniciada.** Este documento é a referência funcional para desenvolver o módulo.
+**Status: implementação iniciada.** A primeira etapa adiciona a estrutura SQLite e a reserva de área/nome; NPC, alvará, baú, painel e transações ainda estão em desenvolvimento.
 
 ## Objetivo
 
@@ -34,7 +34,7 @@ O preço e a moeda de compra do alvará ainda não foram definidos. Não colocar
 - O movimento do NPC fica restrito a essa área.
 - O XKL PACK concede somente a autorização técnica mínima para o NPC circular e para as operações da loja.
 - Não desativar nem ignorar a proteção geral do terreno.
-- A integração deve validar a API e a versão do EasyClaim instalado. Se não houver integração segura, bloquear a criação/ativação e informar o motivo; nunca abrir o terreno como alternativa.
+- O XKL PACK não exige EasyClaim. A proteção interna reserva a área da loja e protege seus próprios recursos. Se outro plugin de terrenos estiver instalado, a integração deve respeitar suas permissões; se não for possível confirmar autorização, bloquear a criação e nunca ignorar a proteção externa.
 - A área, o baú e o NPC permanecem vinculados à mesma loja e ao mesmo proprietário.
 
 ## Baú ESTOQUE
@@ -91,13 +91,13 @@ Categorias:
 
 ## Dependências e ordem de implementação
 
-1. Confirmar as APIs/versões de Citizens e EasyClaim e definir o limite físico da loja.
+1. Validar a integração opcional com Citizens e com plugins de proteção existentes; a loja não depende do EasyClaim. O raio padrão inicial é configurável e está definido em 4 blocos.
 2. Implementar persistência, alvará autenticado e fluxo de preparação de 2 minutos.
 3. Implementar criação/reconciliação do NPC, nome único e movimento delimitado.
 4. Implementar baú ESTOQUE protegido e permissões de aliados.
 5. Implementar catálogo, painel, preços e compra com moedas físicas.
 6. Implementar cofre/retirada, histórico, recuperação e testes anti-duplicação.
-7. Testar em servidor Paper 26.3 com Citizens e EasyClaim reais.
+7. Testar em servidor Paper 26.3 com Citizens e com os plugins de proteção que o servidor realmente utilizar.
 
 ## Critérios de aceite
 
