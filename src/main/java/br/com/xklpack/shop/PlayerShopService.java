@@ -466,6 +466,16 @@ public final class PlayerShopService {
     }
 
 
+
+    public boolean canConfigure(long shopId, UUID player) throws SQLException {
+        if (isOwner(shopId, player)) return true;
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT can_configure FROM player_shop_allies WHERE shop_id=? AND player_uuid=?")) {
+            ps.setLong(1, shopId); ps.setString(2, player.toString());
+            try (ResultSet rs = ps.executeQuery()) { return rs.next() && rs.getInt(1) == 1; }
+        }
+    }
+
     public void updateOfferPrice(long shopId, long offerId, UUID actor, int price) throws SQLException {
         if (!canManageProducts(shopId, actor)) throw new IllegalArgumentException("Você não tem permissão para gerenciar produtos.");
         if (price < 1) throw new IllegalArgumentException("O preço precisa ser maior que zero.");
@@ -477,7 +487,7 @@ public final class PlayerShopService {
     }
 
     public boolean setShopOpen(long shopId, UUID owner, boolean open) throws SQLException {
-        if (!isOwner(shopId, owner)) throw new IllegalArgumentException("Somente o dono pode abrir ou fechar a loja.");
+        if (!canConfigure(shopId, owner)) throw new IllegalArgumentException("Você não tem permissão para configurar esta loja.");
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
                 "UPDATE player_shops SET status=? WHERE id=? AND status IN ('ACTIVE','CLOSED')")) {
             ps.setString(1, open ? "ACTIVE" : "CLOSED"); ps.setLong(2, shopId);
