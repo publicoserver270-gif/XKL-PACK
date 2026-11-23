@@ -219,6 +219,7 @@ public final class PlayerShopCommand implements CommandExecutor, Listener {
         inv.setItem(14, button(Material.GOLD_INGOT, "§eCofre", "§7/lojaplayer cofre " + id + " saldo ou retirar"));
 inv.setItem(16, button(Material.PLAYER_HEAD, "§bAliados", "§7/lojaplayer aliado adicionar " + id + " <jogador>"));
         inv.setItem(22, button(Material.LEVER, "§eAbrir / fechar", "§7/lojaplayer loja " + id + " <abrir|fechar>"));
+        inv.setItem(4, button(Material.BOOK, "§bHistórico de vendas", "§7/lojaplayer vendas " + id));
         player.openInventory(inv);
     }
 
@@ -245,6 +246,7 @@ inv.setItem(16, button(Material.PLAYER_HEAD, "§bAliados", "§7/lojaplayer aliad
         if (event.getRawSlot() == 14) player.sendMessage("§eUse /lojaplayer cofre " + holder.shopId + " saldo ou retirar.");
         if (event.getRawSlot() == 16) player.sendMessage("§eUse /lojaplayer aliado adicionar " + holder.shopId + " <jogador>.");
         if (event.getRawSlot() == 22) player.sendMessage("§eUse /lojaplayer loja " + holder.shopId + " abrir ou fechar.");
+        if (event.getRawSlot() == 4) player.sendMessage("§eUse /lojaplayer vendas " + holder.shopId + " [limite].");
     }
 
     @EventHandler
