@@ -1,6 +1,7 @@
 package br.com.xklpack.shop;
 
-import br.com.xklpack.XKLPack;\nimport br.com.xklpack.bank.BankService;
+import br.com.xklpack.XKLPack;
+import br.com.xklpack.bank.BankService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,7 +33,9 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.sql.SQLException;
-import java.util.UUID;\nimport java.util.HashMap;\nimport java.util.Map;
+import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -52,7 +55,7 @@ public final class PlayerShopRuntime implements Listener {
     private final NamespacedKey centerXKey;
     private final NamespacedKey centerZKey;
     private final NamespacedKey centerYKey;
-    private final NamespacedKey radiusKey;\n    private final NamespacedKey shopMarkerKey;
+    private final NamespacedKey radiusKey;
 
     public PlayerShopRuntime(XKLPack plugin, PlayerShopService shops) {
         this.plugin = plugin;
@@ -63,7 +66,7 @@ public final class PlayerShopRuntime implements Listener {
         this.centerXKey = new NamespacedKey(plugin, "player_shop_center_x");
         this.centerZKey = new NamespacedKey(plugin, "player_shop_center_z");
         this.centerYKey = new NamespacedKey(plugin, "player_shop_center_y");
-        this.radiusKey = new NamespacedKey(plugin, "player_shop_radius");\n        this.shopMarkerKey = new NamespacedKey(plugin, "player_shop_menu");
+        this.radiusKey = new NamespacedKey(plugin, "player_shop_radius");
         Bukkit.getScheduler().runTaskTimer(plugin, this::activateDueShops, 20L, 20L);
         Bukkit.getScheduler().runTaskTimer(plugin, this::keepMerchantsInsideArea, 10L, 10L);
     }
@@ -235,6 +238,129 @@ public final class PlayerShopRuntime implements Listener {
         if (isProtectedStock(event.getSource().getHolder()) || isProtectedStock(event.getDestination().getHolder())) {
             event.setCancelled(true);
         }
+    }
+
+
+    private void openCatalog(Player player, long shopId) {
+        try {
+            var offers = shops.listOffers(shopId, true);
+            CatalogHolder holder = new CatalogHolder(player.getUniqueId(), shopId);
+            Inventory inv = Bukkit.createInventory(holder, 54, "§8Loja de jogador #" + shopId);
+            holder.inventory = inv;
+            int slot = 0;
+            for (var offer : offers) {
+                if (slot >= 45) break;
+                ItemStack display = offer.item().clone();
+                display.setAmount(Math.min(display.getMaxStackSize(), Math.max(1, offer.amount())));
+                ItemMeta meta = display.getItemMeta();
+                java.util.List<String> lore = meta.hasLore()
+                        ? new java.util.ArrayList<>(meta.getLore()) : new java.util.ArrayList<>();
+                lore.add("§7Estoque: §f" + offer.amount());
+                lore.add("§7Preço do lote: §e" + offer.price() + " coins físicas");
+                lore.add("§eClique para comprar o lote.");
+                meta.setLore(lore);
+                display.setItemMeta(meta);
+                inv.setItem(slot, display);
+                holder.offers.put(slot, offer.id());
+                slot++;
+            }
+            ItemStack close = new ItemStack(Material.BARRIER);
+            ItemMeta closeMeta = close.getItemMeta();
+            closeMeta.setDisplayName("§cFechar");
+            close.setItemMeta(closeMeta);
+            inv.setItem(49, close);
+            player.openInventory(inv);
+        } catch (SQLException exception) {
+            player.sendMessage("§cNão foi possível carregar o catálogo.");
+            plugin.getLogger().severe("Falha ao abrir catálogo da loja " + shopId + ": " + exception.getMessage());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void catalogClick(InventoryClickEvent event) {
+        if (!(event.getView().getTopInventory().getHolder() instanceof CatalogHolder holder)) return;
+        event.setCancelled(true);
+        if (!(event.getWhoClicked() instanceof Player player) || !holder.owner.equals(player.getUniqueId())) return;
+        if (event.getRawSlot() == 49) {
+            player.closeInventory();
+            return;
+        }
+        Long offerId = holder.offers.get(event.getRawSlot());
+        if (offerId == null) return;
+        BankService bank = plugin.getBankService();
+        if (bank == null) {
+            player.sendMessage("§cSistema de moedas físicas indisponível.");
+            return;
+        }
+        try {
+            var result = shops.purchase(holder.shopId, offerId, player, bank);
+            player.sendMessage("§aCompra concluída: " + result.itemAmount() + " itens por " + result.price() + " coins.");
+            if (result.change() > 0) player.sendMessage("§7Troco devolvido: §e" + result.change() + " coins.");
+            player.closeInventory();
+        } catch (IllegalArgumentException exception) {
+            player.sendMessage("§c" + exception.getMessage());
+        } catch (SQLException exception) {
+            player.sendMessage("§cFalha ao processar a compra. Nenhuma moeda foi debitada.");
+            plugin.getLogger().severe("Falha na compra da loja " + holder.shopId + ": " + exception.getMessage());
+        }
+    }
+
+    @EventHandler
+    public void catalogDrag(InventoryDragEvent event) {
+        if (event.getView().getTopInventory().getHolder() instanceof CatalogHolder) event.setCancelled(true);
+    }
+
+    private static final class CatalogHolder implements InventoryHolder {
+        final UUID owner;
+        final long shopId;
+        final Map<Integer, Long> offers = new HashMap<>();
+        Inventory inventory;
+        CatalogHolder(UUID owner, long shopId) { this.owner = owner; this.shopId = shopId; }
+        @Override public Inventory getInventory() { return inventory; }
+    }
+
+    private boolean containsProtectedStock(java.util.List<Block> blocks) {
+        for (Block block : blocks) {
+            BlockState state = block.getState();
+            if (state instanceof Container container
+                    && container.getPersistentDataContainer().has(shopIdKey, PersistentDataType.LONG)) return true;
+        }
+        return false;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void preventStockBlockExplosion(BlockExplodeEvent event) {
+        if (containsProtectedStock(event.blockList())) event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void preventStockEntityExplosion(EntityExplodeEvent event) {
+        if (containsProtectedStock(event.blockList())) event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void preventStockPistonExtend(BlockPistonExtendEvent event) {
+        if (containsProtectedStock(event.getBlocks())) event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void preventStockPistonRetract(BlockPistonRetractEvent event) {
+        if (containsProtectedStock(event.getBlocks())) event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void preventStockBurn(BlockBurnEvent event) {
+        if (isProtectedStock(event.getBlock().getState())) event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void preventStockFluid(BlockFromToEvent event) {
+        if (isProtectedStock(event.getToBlock().getState())) event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void preventHopperMinecartPickup(InventoryPickupItemEvent event) {
+        if (isProtectedStock(event.getInventory().getHolder())) event.setCancelled(true);
     }
 
     private boolean isProtectedStock(Object holder) {
