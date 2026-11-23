@@ -157,6 +157,13 @@ jobs:
       name: Pescador
       description: Pesque peixes e tesouros.
 
+# Lojas de jogadores (módulo em implementação)
+player-shops:
+  enabled: true
+  # Raio horizontal da área reservada ao redor do ponto central da loja.
+  area-radius: 4
+  preparation-seconds: 120
+
 # REGRAS DE EMISSÃO (fontes autorizadas):
 # - Coins: salários por metas de produção profissional e vendas confirmadas em /sell.
 # - Gemas: atividades profissionais elegíveis, calculadas pelo XP próprio acumulado.
