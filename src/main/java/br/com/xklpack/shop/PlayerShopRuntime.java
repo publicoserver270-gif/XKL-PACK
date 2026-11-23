@@ -39,6 +39,7 @@ public final class PlayerShopRuntime implements Listener {
     private final NamespacedKey merchantKey;
     private final NamespacedKey centerXKey;
     private final NamespacedKey centerZKey;
+    private final NamespacedKey centerYKey;
     private final NamespacedKey radiusKey;
 
     public PlayerShopRuntime(XKLPack plugin, PlayerShopService shops) {
@@ -49,6 +50,7 @@ public final class PlayerShopRuntime implements Listener {
         this.merchantKey = new NamespacedKey(plugin, "player_shop_merchant");
         this.centerXKey = new NamespacedKey(plugin, "player_shop_center_x");
         this.centerZKey = new NamespacedKey(plugin, "player_shop_center_z");
+        this.centerYKey = new NamespacedKey(plugin, "player_shop_center_y");
         this.radiusKey = new NamespacedKey(plugin, "player_shop_radius");
         Bukkit.getScheduler().runTaskTimer(plugin, this::activateDueShops, 20L, 20L);
         Bukkit.getScheduler().runTaskTimer(plugin, this::keepMerchantsInsideArea, 10L, 10L);
@@ -82,6 +84,7 @@ public final class PlayerShopRuntime implements Listener {
                 villager.getPersistentDataContainer().set(merchantKey, PersistentDataType.BYTE, (byte) 1);
                 villager.getPersistentDataContainer().set(centerXKey, PersistentDataType.INTEGER, shop.x());
                 villager.getPersistentDataContainer().set(centerZKey, PersistentDataType.INTEGER, shop.z());
+                villager.getPersistentDataContainer().set(centerYKey, PersistentDataType.INTEGER, shop.y());
                 villager.getPersistentDataContainer().set(radiusKey, PersistentDataType.INTEGER, shop.radius());
 
                 Block stockBlock = stockLocation.getBlock();
@@ -110,13 +113,13 @@ public final class PlayerShopRuntime implements Listener {
                 var data = villager.getPersistentDataContainer();
                 Integer centerX = data.get(centerXKey, PersistentDataType.INTEGER);
                 Integer centerZ = data.get(centerZKey, PersistentDataType.INTEGER);
+                Integer centerY = data.get(centerYKey, PersistentDataType.INTEGER);
                 Integer radius = data.get(radiusKey, PersistentDataType.INTEGER);
-                if (centerX == null || centerZ == null || radius == null) continue;
+                if (centerX == null || centerZ == null || centerY == null || radius == null) continue;
                 int x = villager.getLocation().getBlockX();
                 int z = villager.getLocation().getBlockZ();
                 if (Math.abs(x - centerX) > radius || Math.abs(z - centerZ) > radius) {
-                    villager.teleport(new Location(world, centerX + 0.5, villager.getWorld()
-                            .getHighestBlockYAt(centerX, centerZ), centerZ + 0.5));
+                    villager.teleport(new Location(world, centerX + 0.5, centerY, centerZ + 0.5));
                 }
             }
         }
