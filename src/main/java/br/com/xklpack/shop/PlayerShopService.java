@@ -417,7 +417,19 @@ public final class PlayerShopService {
                 offerId = rs.getLong(1);
             }
         }
-        stock.setContents(simulated.getContents());
+        try {
+            stock.setContents(simulated.getContents());
+        } catch (RuntimeException inventoryFailure) {
+            try (PreparedStatement rollback = plugin.getEconomyStorage().connection().prepareStatement(
+                    "DELETE FROM player_shop_offers WHERE id=? AND shop_id=?")) {
+                rollback.setLong(1, offerId);
+                rollback.setLong(2, shopId);
+                rollback.executeUpdate();
+            } catch (SQLException rollbackFailure) {
+                inventoryFailure.addSuppressed(rollbackFailure);
+            }
+            throw new IllegalStateException("Não foi possível guardar os itens no baú ESTOQUE; o cadastro foi desfeito.", inventoryFailure);
+        }
         return offerId;
     }
 
