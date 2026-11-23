@@ -670,17 +670,17 @@ items:
     display-name: '&cCarne Podre'
   bone:
     material: BONE
-    category: itens_especiais
+    category: drops_mob
     price: 6
     display-name: '&fOsso'
   gunpowder:
     material: GUNPOWDER
-    category: itens_especiais
+    category: drops_mob
     price: 15
     display-name: '&7Pólvora'
   ender_pearl:
     material: ENDER_PEARL
-    category: itens_especiais
+    category: drops_mob
     price: 40
     display-name: '&5Pérola do End'
   redstone:
