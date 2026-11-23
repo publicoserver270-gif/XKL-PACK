@@ -29,6 +29,7 @@ import br.com.xklpack.shop.ExcavatorListener;
 import br.com.xklpack.shop.EquipmentService;
 import br.com.xklpack.shop.PlayerShopService;
 import br.com.xklpack.shop.PermitShopCommand;
+import br.com.xklpack.shop.PermitUseListener;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -164,6 +165,7 @@ public final class XKLPack extends JavaPlugin {
                 PermitShopCommand permitShop = new PermitShopCommand(this, economyService);
                 registerCommand("alvaras", permitShop);
                 getServer().getPluginManager().registerEvents(permitShop, this);
+                getServer().getPluginManager().registerEvents(new PermitUseListener(this, permitShop, playerShopService), this);
                 getLogger().info("Loja própria de alvarás /alvaras ativada.");
                 getLogger().info("Persistência das lojas de jogadores preparada (área configurada: raio " + playerShopService.areaRadius() + ").");
                 equipmentService = new EquipmentService(this);
