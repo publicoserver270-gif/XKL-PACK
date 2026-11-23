@@ -27,17 +27,34 @@ public final class PlayerShopCommand implements CommandExecutor {
             if (args.length == 0 || args[0].equalsIgnoreCase("lojas")) {
                 var ids = shops.listOwnedShops(player.getUniqueId());
                 player.sendMessage("§6Suas lojas: §f" + (ids.isEmpty() ? "nenhuma" : ids.toString()));
-                player.sendMessage("§7Use /lojaplayer aliado <adicionar|remover|listar> <id> [jogador]");
+                player.sendMessage("§7Use /lojaplayer aliado <adicionar|remover|listar|permissao> <id> [jogador]");
                 return true;
             }
             if (!args[0].equalsIgnoreCase("aliado") || args.length < 3) {
-                player.sendMessage("§cUso: /lojaplayer aliado <adicionar|remover|listar> <id> [jogador]");
+                player.sendMessage("§cUso: /lojaplayer aliado <adicionar|remover|listar|permissao> <id> [jogador]");
                 return true;
             }
             long shopId = Long.parseLong(args[2]);
             if (args[1].equalsIgnoreCase("listar")) {
                 var allies = shops.listAllies(shopId, player.getUniqueId());
                 player.sendMessage("§6Aliados da loja #" + shopId + ": §f" + allies);
+                return true;
+            }
+            if (args[1].equalsIgnoreCase("permissao") || args[1].equalsIgnoreCase("permissão")) {
+                if (args.length < 6) {
+                    player.sendMessage("§cUso: /lojaplayer aliado permissao <id> <jogador> <estoque|produtos|retirar|configurar> <on|off>");
+                    return true;
+                }
+                OfflinePlayer target = Bukkit.getOfflinePlayer(args[3]);
+                boolean enabled;
+                if (args[5].equalsIgnoreCase("on") || args[5].equalsIgnoreCase("ligar")) enabled = true;
+                else if (args[5].equalsIgnoreCase("off") || args[5].equalsIgnoreCase("desligar")) enabled = false;
+                else {
+                    player.sendMessage("§cUse on ou off.");
+                    return true;
+                }
+                shops.setAllyPermission(shopId, player.getUniqueId(), target.getUniqueId(), args[4], enabled);
+                player.sendMessage("§aPermissão " + args[4] + " atualizada para " + target.getName() + ".");
                 return true;
             }
             if (args.length < 4) {
