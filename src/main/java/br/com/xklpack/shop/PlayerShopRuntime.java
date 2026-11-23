@@ -243,6 +243,10 @@ public final class PlayerShopRuntime implements Listener {
 
     private void openCatalog(Player player, long shopId) {
         try {
+            if (!shops.isShopOpen(shopId)) {
+                player.sendMessage("§cEsta loja está fechada no momento.");
+                return;
+            }
             var offers = shops.listOffers(shopId, true);
             CatalogHolder holder = new CatalogHolder(player.getUniqueId(), shopId);
             Inventory inv = Bukkit.createInventory(holder, 54, "§8Loja de jogador #" + shopId);
