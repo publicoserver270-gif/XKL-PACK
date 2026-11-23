@@ -124,6 +124,13 @@ public final class PermitUseListener implements Listener {
             }
             int centerX = target.getBlockX() + (size - 1) / 2;
             int centerZ = target.getBlockZ() + (size - 1) / 2;
+            Block merchantSpot = target.getWorld().getBlockAt(centerX, target.getBlockY(), centerZ);
+            if (!merchantSpot.getType().isAir()
+                    || !merchantSpot.getRelative(0, 1, 0).getType().isAir()
+                    || !merchantSpot.getRelative(0, -1, 0).getType().isSolid()) {
+                player.sendMessage("§cO centro da área precisa ter espaço livre e chão sólido para o comerciante.");
+                return;
+            }
             if (shops.overlapsExistingShopSize(target.getWorld().getUID(), centerX, centerZ, size)) {
                 player.sendMessage("§cEsta área cruza o espaço reservado de outra loja.");
                 return;
