@@ -16,7 +16,7 @@ Criar lojas de jogadores no próprio XKL PACK, inspiradas na experiência do Sho
 6. Ao terminar a espera, o NPC comerciante é criado/vinculado uma única vez e a loja passa ao estado ACTIVE.
 7. Se o servidor reiniciar durante a espera, o sistema retoma usando o horário salvo; não reinicia os 2 minutos nem cria NPC duplicado.
 
-O catálogo inicial contém Alvará Básico (raio 3; 1.000 Coins), Comercial (raio 5; 2.500 Coins), Premium (raio 8; 5.000 Coins) e Empresarial (raio 12; 10.000 Coins). Esses são valores iniciais editáveis em `permits.yml`, não valores fixos no código.
+O catálogo contém seis opções configuráveis em `permits.yml`: Básico (7x7; 1.000 Coins), Comercial (11x11; 2.500 Coins), Premium (17x17; 5.000 Coins), Empresarial (25x25; 10.000 Coins), Territorial (64x64; 100.000 Coins) e Imperial (128x128; 1.000.000 Coins). Os dois últimos foram adicionados como alvarás de grande porte. Preços e dimensões são valores iniciais editáveis, não valores fixos no código.
 
 ## Comerciante NPC
 
