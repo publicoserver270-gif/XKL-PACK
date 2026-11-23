@@ -389,6 +389,7 @@ public final class PlayerShopService {
 
     public long addOffer(long shopId, UUID actor, ItemStack item, int amount, int price) throws SQLException {
         if (!canManageProducts(shopId, actor)) throw new IllegalArgumentException("Você não tem permissão para gerenciar produtos.");
+        if (!isAuthorizedForStock(shopId, actor)) throw new IllegalArgumentException("Você também precisa da permissão de estoque para cadastrar itens.");
         if (item == null || item.getType().isAir() || amount < 1 || price < 1)
             throw new IllegalArgumentException("Item, quantidade e preço precisam ser válidos.");
         ItemStack template = item.clone();
