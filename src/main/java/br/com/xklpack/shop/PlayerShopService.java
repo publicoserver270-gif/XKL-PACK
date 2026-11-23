@@ -167,6 +167,10 @@ public final class PlayerShopService {
      * validação de proteção/claim, que deve ocorrer antes de consumir alvará.
      */
     public boolean overlapsExistingShop(UUID worldId, int x, int z, int requestedRadius) throws SQLException {
+        return overlapsExistingShopSize(worldId, x, z, Math.max(1, requestedRadius * 2 + 1));
+    }
+
+    public boolean overlapsExistingShopSize(UUID worldId, int x, int z, int requestedAreaSize) throws SQLException {
         String sql = """
                 SELECT 1 FROM player_shops
                 WHERE world_uuid = ?
@@ -178,8 +182,7 @@ public final class PlayerShopService {
                 LIMIT 1
                 """;
         try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
-            int requestedSize = Math.max(1, requestedRadius * 2 + 1);
-            int requestedHalf = (requestedSize - 1) / 2;
+            int requestedSize = Math.max(1, requestedAreaSize);
             statement.setString(1, worldId.toString());
             statement.setInt(2, x);
             statement.setInt(3, requestedSize);
@@ -198,7 +201,7 @@ public final class PlayerShopService {
     }
 
     public boolean overlapsExistingShop(UUID worldId, int x, int z) throws SQLException {
-        return overlapsExistingShop(worldId, x, z, areaRadius);
+        return overlapsExistingShopSize(worldId, x, z, areaRadius * 2 + 1);
     }
 
     /**
@@ -207,13 +210,19 @@ public final class PlayerShopService {
      */
     public long createPreparingShop(UUID owner, UUID worldId, String worldName,
                                     int x, int y, int z) throws SQLException {
-        return createPreparingShop(owner, worldId, worldName, x, y, z, areaRadius);
+        return createPreparingShop(owner, worldId, worldName, x, y, z, areaRadius, areaRadius * 2 + 1);
     }
 
     public long createPreparingShop(UUID owner, UUID worldId, String worldName,
                                     int x, int y, int z, int requestedRadius) throws SQLException {
+        return createPreparingShop(owner, worldId, worldName, x, y, z, requestedRadius, requestedRadius * 2 + 1);
+    }
+
+    public long createPreparingShop(UUID owner, UUID worldId, String worldName,
+                                    int x, int y, int z, int requestedRadius, int requestedSize) throws SQLException {
         int safeRadius = Math.max(1, requestedRadius);
-        if (overlapsExistingShop(worldId, x, z, safeRadius)) {
+        int safeSize = Math.max(1, requestedSize);
+        if (overlapsExistingShopSize(worldId, x, z, safeSize)) {
             throw new IllegalArgumentException("Esta área já está reservada por outra loja.");
         }
         long now = System.currentTimeMillis();
@@ -239,7 +248,7 @@ public final class PlayerShopService {
                 statement.setInt(5, y);
                 statement.setInt(6, z);
                 statement.setInt(7, safeRadius);
-                statement.setInt(8, Math.max(1, requestedRadius * 2 + 1));
+                statement.setInt(8, safeSize);
                 statement.setLong(9, now);
                 statement.setLong(10, activationAt);
                 statement.setString(11, merchantName);
