@@ -36,6 +36,10 @@ commands:
     description: Abre a loja de compras XKL.
     usage: /loja
     permission: xklpack.command.shop
+  alvaras:
+    description: Abre a loja de alvarás comerciais.
+    usage: /alvaras
+    permission: xklpack.command.permits
   xkladmin:
     description: Abre o painel administrativo XKL.
     usage: /xkladmin [bugs|bugs limpar]
@@ -75,6 +79,9 @@ permissions:
   xklpack.command.shop:
     description: Permite executar /loja (jogadores acessam por NPC).
     default: op
+  xklpack.command.permits:
+    description: Permite acessar a loja de alvarás comerciais.
+    default: true
   xklpack.command.bug:
     description: Permite enviar relatórios de bugs.
     default: true
