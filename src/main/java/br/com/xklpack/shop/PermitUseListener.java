@@ -76,15 +76,16 @@ public final class PermitUseListener implements Listener {
                 player.sendMessage("§cEsta área cruza o espaço reservado de outra loja.");
                 return;
             }
-            shops.createPreparingShop(player.getUniqueId(), target.getWorld().getUID(),
+            long shopId = shops.createPreparingShop(player.getUniqueId(), target.getWorld().getUID(),
                     target.getWorld().getName(), target.getBlockX(), target.getBlockY(),
                     target.getBlockZ(), radius);
             if (hand != null && hand.getAmount() > 1) hand.setAmount(hand.getAmount() - 1);
             else player.getInventory().setItemInMainHand(null);
-            player.sendMessage("§aÁrea comercial reservada!");
+            player.sendMessage("§aÁrea comercial reservada! ID da loja: §f#" + shopId);
+            player.sendMessage("§7Gerencie aliados com /lojaplayer aliado adicionar " + shopId + " <jogador>.");
             player.sendMessage("§7Tipo: §f" + plugin.getPermitsConfig().getString(path + "name", permitId));
             player.sendMessage("§7Tamanho: §f" + size + "x" + size + " blocos");
-            player.sendMessage("§eO comerciante será preparado em 2 minutos, assim que o sistema de NPC estiver ativo.");
+            player.sendMessage("§eO comerciante e o estoque serão criados após 2 minutos.");
         } catch (IllegalArgumentException exception) {
             player.sendMessage("§c" + exception.getMessage());
         } catch (SQLException exception) {
