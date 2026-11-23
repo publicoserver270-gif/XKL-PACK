@@ -4,6 +4,10 @@ import br.com.xklpack.XKLPack;
 import br.com.xklpack.bank.BankService;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -370,6 +374,17 @@ public final class PlayerShopService {
         template.setAmount(1);
         String data = Base64.getEncoder().encodeToString(template.serializeAsBytes());
         String fingerprint = Integer.toHexString(java.util.Arrays.hashCode(template.serializeAsBytes()));
+        Inventory stock = stockInventory(shopId);
+        ItemStack[] current = stock.getContents();
+        Inventory simulated = Bukkit.createInventory(null, stock.getSize());
+        ItemStack[] copy = new ItemStack[current.length];
+        for (int i = 0; i < current.length; i++) copy[i] = current[i] == null ? null : current[i].clone();
+        simulated.setContents(copy);
+        ItemStack stockItems = item.clone();
+        stockItems.setAmount(amount);
+        if (!simulated.addItem(stockItems).isEmpty())
+            throw new IllegalArgumentException("O baú ESTOQUE está cheio. Libere espaço antes de cadastrar o produto.");
+        long offerId;
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
                 "INSERT INTO player_shop_offers(shop_id,item_fingerprint,item_data,amount,price_coins,enabled) VALUES(?,?,?,?,?,1)",
                 Statement.RETURN_GENERATED_KEYS)) {
@@ -377,9 +392,11 @@ public final class PlayerShopService {
             ps.setInt(4, amount); ps.setInt(5, price); ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (!rs.next()) throw new SQLException("Não foi possível criar o produto.");
-                return rs.getLong(1);
+                offerId = rs.getLong(1);
             }
         }
+        stock.setContents(simulated.getContents());
+        return offerId;
     }
 
     public List<Offer> listOffers(long shopId, boolean enabledOnly) throws SQLException {
@@ -398,6 +415,24 @@ public final class PlayerShopService {
             }
         }
         return result;
+    }
+
+    private Inventory stockInventory(long shopId) throws SQLException {
+        String sql = "SELECT stock_world_uuid,stock_x,stock_y,stock_z,status FROM player_shops WHERE id=?";
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
+            ps.setLong(1, shopId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next() || !"ACTIVE".equals(rs.getString("status")))
+                    throw new IllegalArgumentException("A loja precisa estar ativa para gerenciar o estoque.");
+                String worldId = rs.getString("stock_world_uuid");
+                if (worldId == null) throw new IllegalArgumentException("O baú ESTOQUE ainda não foi criado.");
+                World world = Bukkit.getWorld(UUID.fromString(worldId));
+                if (world == null) throw new IllegalArgumentException("O mundo do estoque não está carregado.");
+                BlockState state = world.getBlockAt(rs.getInt("stock_x"), rs.getInt("stock_y"), rs.getInt("stock_z")).getState();
+                if (!(state instanceof Container container)) throw new IllegalStateException("O baú ESTOQUE não foi encontrado.");
+                return container.getInventory();
+            }
+        }
     }
 
     public void removeOffer(long shopId, long offerId, UUID actor) throws SQLException {
@@ -507,6 +542,23 @@ public final class PlayerShopService {
                 remaining %= d.value();
             }
             if (remaining != 0) throw new IllegalStateException("Não foi possível formar o troco com as denominações configuradas.");
+            Inventory stock = stockInventory(shopId);
+            ItemStack[] stockBefore = stock.getContents();
+            Inventory stockSimulated = Bukkit.createInventory(null, stock.getSize());
+            ItemStack[] stockCopy = new ItemStack[stockBefore.length];
+            for (int i = 0; i < stockBefore.length; i++) stockCopy[i] = stockBefore[i] == null ? null : stockBefore[i].clone();
+            stockSimulated.setContents(stockCopy);
+            int stockRemaining = offer.amount();
+            for (int i = 0; i < stockCopy.length && stockRemaining > 0; i++) {
+                ItemStack stack = stockSimulated.getItem(i);
+                if (stack == null || !stack.isSimilar(offer.item())) continue;
+                int take = Math.min(stack.getAmount(), stockRemaining);
+                int left = stack.getAmount() - take;
+                if (left <= 0) stockSimulated.setItem(i, null);
+                else { stack.setAmount(left); stockSimulated.setItem(i, stack); }
+                stockRemaining -= take;
+            }
+            if (stockRemaining > 0) throw new IllegalArgumentException("O estoque físico do baú está incompleto. Avise o dono da loja.");
             ItemStack product = offer.item().clone();
             product.setAmount(offer.amount());
             org.bukkit.inventory.Inventory simulated = Bukkit.createInventory(null, 36);
@@ -546,6 +598,7 @@ public final class PlayerShopService {
                 if (e instanceof IllegalArgumentException ia) throw ia;
                 throw new SQLException("Falha ao concluir compra.", e);
             } finally { c.setAutoCommit(auto); }
+            stock.setContents(stockSimulated.getContents());
             buyer.getInventory().setStorageContents(after);
             return new PurchaseResult(offer.amount(), price, change);
         }
