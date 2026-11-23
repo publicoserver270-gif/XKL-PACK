@@ -4,6 +4,7 @@ import br.com.xklpack.XKLPack;
 import br.com.xklpack.bank.BankService;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.Player;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -409,7 +410,7 @@ public final class PlayerShopService {
     }
 
     public long vaultBalance(long shopId, UUID actor) throws SQLException {
-        if (!isOwner(shopId, actor)) throw new IllegalArgumentException("Somente o dono pode consultar o cofre.");
+        if (!canWithdraw(shopId, actor)) throw new IllegalArgumentException("Você não tem permissão para consultar o cofre.");
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
                 "SELECT vault_coins FROM player_shops WHERE id=? AND status='ACTIVE'")) {
             ps.setLong(1, shopId);
@@ -497,8 +498,8 @@ public final class PlayerShopService {
             boolean auto = c.getAutoCommit(); c.setAutoCommit(false);
             try {
                 try (PreparedStatement ps = c.prepareStatement(
-                        "UPDATE player_shop_offers SET amount=amount-? WHERE id=? AND shop_id=? AND enabled=1 AND amount>=?")) {
-                    ps.setInt(1, offer.amount()); ps.setLong(2, offerId); ps.setLong(3, shopId); ps.setInt(4, offer.amount());
+                        "UPDATE player_shop_offers SET amount=amount-?, enabled=CASE WHEN amount-?=0 THEN 0 ELSE enabled END WHERE id=? AND shop_id=? AND enabled=1 AND amount>=?")) {
+                    ps.setInt(1, offer.amount()); ps.setInt(2, offer.amount()); ps.setLong(3, offerId); ps.setLong(4, shopId); ps.setInt(5, offer.amount());
                     if (ps.executeUpdate() != 1) throw new IllegalArgumentException("Estoque insuficiente.");
                 }
                 try (PreparedStatement ps = c.prepareStatement("UPDATE player_shops SET vault_coins=vault_coins+? WHERE id=? AND status='ACTIVE'")) {
