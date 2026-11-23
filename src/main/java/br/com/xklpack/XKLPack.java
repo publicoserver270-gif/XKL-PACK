@@ -31,6 +31,7 @@ import br.com.xklpack.shop.PlayerShopService;
 import br.com.xklpack.shop.PermitShopCommand;
 import br.com.xklpack.shop.PermitUseListener;
 import br.com.xklpack.shop.PlayerShopRuntime;
+import br.com.xklpack.shop.PlayerShopCommand;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -165,6 +166,7 @@ public final class XKLPack extends JavaPlugin {
                 playerShopService = new PlayerShopService(this);
                 PermitShopCommand permitShop = new PermitShopCommand(this, economyService);
                 registerCommand("alvaras", permitShop);
+                registerCommand("lojaplayer", new PlayerShopCommand(playerShopService));
                 getServer().getPluginManager().registerEvents(permitShop, this);
                 getServer().getPluginManager().registerEvents(new PermitUseListener(this, permitShop, playerShopService), this);
                 getServer().getPluginManager().registerEvents(new PlayerShopRuntime(this, playerShopService), this);
