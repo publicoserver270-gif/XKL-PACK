@@ -85,10 +85,12 @@ public final class KitService implements Listener {
                 ensureKit(player, jobId, level);
                 return;
             }
-            ItemStack upgraded = upgrade(current.item(), jobId, level, player.getUniqueId());
-            if (upgraded != current.item()) {
-                player.getInventory().setItem(current.slot(), upgraded);
-                saveState(player.getUniqueId(), jobId, upgraded);
+            int previousTier = current.item().getItemMeta().getPersistentDataContainer()
+                    .getOrDefault(tierKey, PersistentDataType.INTEGER, 0);
+            ItemStack upgraded = makeUnbreakable(upgrade(current.item(), jobId, level, player.getUniqueId()));
+            player.getInventory().setItem(current.slot(), upgraded);
+            saveState(player.getUniqueId(), jobId, upgraded);
+            if (selectedTier(jobId, level) > previousTier) {
                 player.sendMessage("§6§lKIT EVOLUÍDO! §eSua ferramenta profissional evoluiu automaticamente.");
             }
         } catch (Exception exception) {
@@ -126,6 +128,7 @@ public final class KitService implements Listener {
         } else {
             item = upgrade(item, jobId, level, player.getUniqueId());
         }
+        item = makeUnbreakable(item);
 
         Map<Integer, ItemStack> overflow = player.getInventory().addItem(item);
         if (overflow.isEmpty()) {
@@ -141,20 +144,11 @@ public final class KitService implements Listener {
         int targetTier = selectedTier(jobId, level);
         int currentTier = oldItem.getItemMeta().getPersistentDataContainer()
                 .getOrDefault(tierKey, PersistentDataType.INTEGER, 0);
-        if (currentTier >= targetTier) return oldItem;
+        if (currentTier >= targetTier) return makeUnbreakable(oldItem);
 
-        ItemStack replacement = createKit(owner, jobId, level);
-        int oldMax = oldItem.getType().getMaxDurability();
-        int newMax = replacement.getType().getMaxDurability();
-        if (oldItem.getItemMeta() instanceof Damageable oldDamage
-                && replacement.getItemMeta() instanceof Damageable newDamage
-                && oldMax > 0 && newMax > 0) {
-            double damageRatio = Math.min(1.0, (double) oldDamage.getDamage() / oldMax);
-            int newDamageValue = (int) Math.round(damageRatio * newMax);
-            newDamage.setDamage(Math.min(Math.max(0, newMax - 1), newDamageValue));
-            replacement.setItemMeta((ItemMeta) newDamage);
-        }
-        return replacement;
+        // Kits profissionais não sofrem desgaste: ao evoluir, a nova ferramenta
+        // começa sem dano e continua indestrutível.
+        return createKit(owner, jobId, level);
     }
 
     private ItemStack createKit(UUID owner, String jobId, int level) {
@@ -178,6 +172,7 @@ public final class KitService implements Listener {
         lore.add("§7Evolui automaticamente conforme seu nível.");
         lore.add("§8Não pode ser transferida, guardada ou descartada.");
         meta.setLore(lore);
+        meta.setUnbreakable(true);
 
         ConfigurationSection enchantments = plugin.getConfig().getConfigurationSection(tierPath + ".enchantments");
         if (enchantments != null) {
@@ -193,6 +188,15 @@ public final class KitService implements Listener {
         meta.getPersistentDataContainer().set(jobKey, PersistentDataType.STRING, jobId);
         meta.getPersistentDataContainer().set(ownerKey, PersistentDataType.STRING, owner.toString());
         meta.getPersistentDataContainer().set(tierKey, PersistentDataType.INTEGER, tier);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    private ItemStack makeUnbreakable(ItemStack item) {
+        if (item == null || item.getType().isAir() || !item.hasItemMeta()) return item;
+        ItemMeta meta = item.getItemMeta();
+        meta.setUnbreakable(true);
+        if (meta instanceof Damageable damageable) damageable.setDamage(0);
         item.setItemMeta(meta);
         return item;
     }
