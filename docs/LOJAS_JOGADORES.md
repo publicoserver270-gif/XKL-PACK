@@ -118,3 +118,21 @@ Categorias:
 - Venda usa moedas físicas autenticadas, retira o produto e credita o dinheiro físico da loja uma única vez.
 - Coins virtuais, Gemas e itens falsos não compram produtos.
 - A proteção do terreno continua ativa para todos os demais jogadores e ações.
+
+## Comandos disponíveis na implementação atual
+
+- `/alvaras` — comprar alvará com Coins virtuais.
+- `/lojaplayer lojas` — listar IDs das próprias lojas.
+- `/lojaplayer painel <id>` — abrir painel da loja.
+- Segure os itens e use `/lojaplayer produto adicionar <id> <quantidade> <preço>` — cadastrar oferta e guardar os itens no baú ESTOQUE.
+- `/lojaplayer produto listar <id>` — listar ofertas.
+- `/lojaplayer produto preco <id> <produto-id> <novo-preço>` — alterar preço.
+- `/lojaplayer produto remover <id> <produto-id>` — remover oferta; os itens continuam no baú.
+- `/lojaplayer cofre <id> saldo` — consultar o valor físico guardado.
+- `/lojaplayer cofre <id> retirar` — retirar moedas físicas autenticadas.
+- `/lojaplayer vendas <id> [limite]` — consultar o histórico recente.
+- `/lojaplayer loja <id> abrir|fechar` — controlar o catálogo.
+- `/lojaplayer aliado adicionar <id> <jogador>` e `remover` — administrar aliados.
+- `/lojaplayer aliado permissao <id> <jogador> <estoque|produtos|retirar|configurar> <on|off>` — ajustar cada autorização.
+
+Ao adicionar um aliado, todas as permissões começam desligadas. O proprietário deve liberar explicitamente cada categoria necessária.
