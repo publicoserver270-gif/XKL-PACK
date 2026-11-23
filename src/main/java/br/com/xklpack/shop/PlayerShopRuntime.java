@@ -103,8 +103,23 @@ public final class PlayerShopRuntime implements Listener {
                     chest.getPersistentDataContainer().set(ownerKey, PersistentDataType.STRING, shop.owner().toString());
                     chest.update(true, false);
                 }
-                shops.saveShopRuntime(shop.id(), villager.getUniqueId(),
-                        stockBlock.getX(), stockBlock.getY(), stockBlock.getZ());
+                try {
+                    shops.saveShopRuntime(shop.id(), villager.getUniqueId(),
+                            stockBlock.getX(), stockBlock.getY(), stockBlock.getZ());
+                } catch (SQLException persistenceFailure) {
+                    // Se a gravação falhar, desfaz os objetos criados para que a próxima
+                    // tentativa não duplique NPC ou baú.
+                    villager.remove();
+                    BlockState failedState = stockBlock.getState();
+                    if (failedState instanceof Container failedContainer
+                            && failedContainer.getPersistentDataContainer().has(shopIdKey, PersistentDataType.LONG)
+                            && java.util.Objects.equals(
+                                    failedContainer.getPersistentDataContainer().get(shopIdKey, PersistentDataType.LONG),
+                                    shop.id())) {
+                        stockBlock.setType(Material.AIR, false);
+                    }
+                    throw persistenceFailure;
+                }
                 plugin.getLogger().info("Loja " + shop.id() + " ativada: comerciante " + shop.merchantName() + ".");
             }
         } catch (SQLException exception) {
