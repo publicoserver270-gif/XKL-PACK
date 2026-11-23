@@ -62,6 +62,8 @@ public final class PermitUseListener implements Listener {
                     Object regions = applicableSet.getClass().getMethod("getRegions").invoke(applicableSet);
                     if (!(regions instanceof Iterable<?> iterable)) return false;
                     for (Object region : iterable) {
+                        Object regionId = region.getClass().getMethod("getId").invoke(region);
+                        if ("__global__".equals(String.valueOf(regionId))) continue;
                         Object owners = region.getClass().getMethod("getOwners").invoke(region);
                         Method contains = owners.getClass().getMethod("contains", UUID.class);
                         if (!Boolean.TRUE.equals(contains.invoke(owners, playerId))) return false;
