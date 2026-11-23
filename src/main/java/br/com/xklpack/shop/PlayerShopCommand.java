@@ -51,6 +51,7 @@ public final class PlayerShopCommand implements CommandExecutor, Listener {
                     openPanel(player, Long.parseLong(args[1]));
                 }
                 case "produto" -> handleProduct(player, args);
+                case "loja" -> handleShopState(player, args);
                 case "cofre" -> handleVault(player, args);
                 case "aliado" -> handleAlly(player, args);
                 default -> player.sendMessage("§6XKL LOJAS §7| painel, produto, cofre, aliado");
@@ -64,6 +65,18 @@ public final class PlayerShopCommand implements CommandExecutor, Listener {
             plugin.getLogger().severe("Erro nas lojas: " + exception.getMessage());
         }
         return true;
+    }
+
+
+    private void handleShopState(Player player, String[] args) throws SQLException {
+        requireArgs(args, 3, "/lojaplayer loja <id> <abrir|fechar>");
+        long id = Long.parseLong(args[1]);
+        boolean open;
+        if (args[2].equalsIgnoreCase("abrir")) open = true;
+        else if (args[2].equalsIgnoreCase("fechar")) open = false;
+        else throw new IllegalArgumentException("Use abrir ou fechar.");
+        shops.setShopOpen(id, player.getUniqueId(), open);
+        player.sendMessage(open ? "§aSua loja está aberta." : "§eSua loja está fechada.");
     }
 
     private void handleProduct(Player player, String[] args) throws SQLException {
@@ -87,6 +100,10 @@ public final class PlayerShopCommand implements CommandExecutor, Listener {
                 player.getInventory().setItemInMainHand(original);
                 throw failure;
             }
+        } else if (action.equals("preco")) {
+            requireArgs(args, 5, "/lojaplayer produto preco <id> <produto-id> <novo-preço>");
+            shops.updateOfferPrice(shopId, Long.parseLong(args[3]), player.getUniqueId(), Integer.parseInt(args[4]));
+            player.sendMessage("§aPreço do produto atualizado.");
         } else if (action.equals("listar")) {
             for (var offer : shops.listOffers(shopId, false)) {
                 player.sendMessage("§e#" + offer.id() + " §f" + offer.item().getType()
@@ -180,7 +197,8 @@ public final class PlayerShopCommand implements CommandExecutor, Listener {
         inv.setItem(10, button(Material.CHEST, "§6Estoque", "§7Baú ESTOQUE protegido no local da loja."));
         inv.setItem(12, button(Material.EMERALD, "§aProdutos e preços", "§7/lojaplayer produto adicionar " + id + " <qtd> <preço>"));
         inv.setItem(14, button(Material.GOLD_INGOT, "§eCofre", "§7/lojaplayer cofre " + id + " saldo ou retirar"));
-        inv.setItem(16, button(Material.PLAYER_HEAD, "§bAliados", "§7/lojaplayer aliado adicionar " + id + " <jogador>"));
+inv.setItem(16, button(Material.PLAYER_HEAD, "§bAliados", "§7/lojaplayer aliado adicionar " + id + " <jogador>"));
+        inv.setItem(22, button(Material.LEVER, "§eAbrir / fechar", "§7/lojaplayer loja " + id + " <abrir|fechar>"));
         player.openInventory(inv);
     }
 
@@ -206,6 +224,7 @@ public final class PlayerShopCommand implements CommandExecutor, Listener {
         if (event.getRawSlot() == 12) player.sendMessage("§eSegure o item e use /lojaplayer produto adicionar " + holder.shopId + " <quantidade> <preço>.");
         if (event.getRawSlot() == 14) player.sendMessage("§eUse /lojaplayer cofre " + holder.shopId + " saldo ou retirar.");
         if (event.getRawSlot() == 16) player.sendMessage("§eUse /lojaplayer aliado adicionar " + holder.shopId + " <jogador>.");
+        if (event.getRawSlot() == 22) player.sendMessage("§eUse /lojaplayer loja " + holder.shopId + " abrir ou fechar.");
     }
 
     @EventHandler
