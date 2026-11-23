@@ -40,6 +40,10 @@ commands:
     description: Abre a loja de alvarás comerciais.
     usage: /alvaras
     permission: xklpack.command.permits
+  lojaplayer:
+    description: Gerencia lojas comerciais de jogadores.
+    usage: /lojaplayer [lojas|aliado]
+    permission: xklpack.command.player-shops
   xkladmin:
     description: Abre o painel administrativo XKL.
     usage: /xkladmin [bugs|bugs limpar]
@@ -81,6 +85,9 @@ permissions:
     default: op
   xklpack.command.permits:
     description: Permite acessar a loja de alvarás comerciais.
+    default: true
+  xklpack.command.player-shops:
+    description: Permite gerenciar suas lojas comerciais.
     default: true
   xklpack.command.bug:
     description: Permite enviar relatórios de bugs.
