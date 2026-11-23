@@ -166,10 +166,19 @@ public final class PlayerShopRuntime implements Listener {
         var data = container.getPersistentDataContainer();
         if (!data.has(shopIdKey, PersistentDataType.LONG)) return;
         String ownerText = data.get(ownerKey, PersistentDataType.STRING);
-        if (!(event.getPlayer() instanceof Player player) || ownerText == null
-                || !player.getUniqueId().toString().equals(ownerText)) {
+        if (!(event.getPlayer() instanceof Player player) || ownerText == null) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage("§cSomente o dono da loja pode acessar este estoque.");
+            return;
+        }
+        Long shopId = data.get(shopIdKey, PersistentDataType.LONG);
+        try {
+            if (shopId == null || !shops.isAuthorizedForStock(shopId, player.getUniqueId())) {
+                event.setCancelled(true);
+                player.sendMessage("§cSomente o dono ou aliados autorizados podem acessar este estoque.");
+            }
+        } catch (SQLException exception) {
+            event.setCancelled(true);
+            plugin.getLogger().severe("Falha ao validar acesso ao estoque: " + exception.getMessage());
         }
     }
 
@@ -179,9 +188,16 @@ public final class PlayerShopRuntime implements Listener {
         if (!(state instanceof Container container)
                 || !container.getPersistentDataContainer().has(shopIdKey, PersistentDataType.LONG)) return;
         String ownerText = container.getPersistentDataContainer().get(ownerKey, PersistentDataType.STRING);
-        if (ownerText == null || !event.getPlayer().getUniqueId().toString().equals(ownerText)) {
+        Long shopId = container.getPersistentDataContainer().get(shopIdKey, PersistentDataType.LONG);
+        try {
+            if (ownerText == null || shopId == null
+                    || !shops.isAuthorizedForStock(shopId, event.getPlayer().getUniqueId())) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage("§cEste baú ESTOQUE é protegido.");
+            }
+        } catch (SQLException exception) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage("§cEste baú ESTOQUE é protegido.");
+            plugin.getLogger().severe("Falha ao validar quebra do estoque: " + exception.getMessage());
         }
     }
 
