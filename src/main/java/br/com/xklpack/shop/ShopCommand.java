@@ -180,11 +180,22 @@ public final class ShopCommand implements CommandExecutor, Listener {
         if (!lore.isEmpty()) lore.add("");
         String currency = plugin.getAdminShopConfig().getString(path + "currency", "coins").toLowerCase();
         String price = plugin.getAdminShopConfig().getString(path + "price", "0");
+        String coinPrice = plugin.getAdminShopConfig().getString(path + "coin-price", "");
         lore.add("§7Quantidade: §f" + amount);
-        lore.add("§7Preço: " + ("gems".equals(currency) ? "§d" : "§a") + price + ("gems".equals(currency) ? " Gemas" : " Coins"));
-        if (forDisplay) {
-            lore.add("");
-            lore.add("§eClique para comprar!");
+        if (!coinPrice.isBlank() && "gems".equals(currency)) {
+            lore.add("§7Preço: §d" + price + " Gemas");
+            lore.add("§7Ou: §a" + coinPrice + " Coins");
+            if (forDisplay) {
+                lore.add("");
+                lore.add("§eClique esquerdo: comprar com Gemas");
+                lore.add("§eClique direito: comprar com Coins");
+            }
+        } else {
+            lore.add("§7Preço: " + ("gems".equals(currency) ? "§d" : "§a") + price + ("gems".equals(currency) ? " Gemas" : " Coins"));
+            if (forDisplay) {
+                lore.add("");
+                lore.add("§eClique para comprar!");
+            }
         }
         meta.setLore(lore);
         if (!forDisplay && "ferramentas".equalsIgnoreCase(plugin.getAdminShopConfig().getString(path + "category", ""))) {
@@ -251,7 +262,7 @@ public final class ShopCommand implements CommandExecutor, Listener {
         } else if (holder.category.startsWith("__parent:")) {
             openCategory(player, action, 0);
         } else {
-            purchase(player, action);
+            purchase(player, action, event.isRightClick());
         }
     }
 
@@ -260,7 +271,7 @@ public final class ShopCommand implements CommandExecutor, Listener {
         if (event.getView().getTopInventory().getHolder() instanceof ShopHolder) event.setCancelled(true);
     }
 
-    private void purchase(Player player, String id) {
+    private void purchase(Player player, String id, boolean rightClick) {
         String path = "items." + id + ".";
         if (!plugin.getAdminShopConfig().getBoolean(path + "enabled", true)) return;
 
@@ -284,7 +295,9 @@ public final class ShopCommand implements CommandExecutor, Listener {
                 return;
             }
         }
-        String currency = plugin.getAdminShopConfig().getString(path + "currency", "coins").toLowerCase();
+        String configuredCurrency = plugin.getAdminShopConfig().getString(path + "currency", "coins").toLowerCase();
+        boolean hasDualPrice = plugin.getAdminShopConfig().contains(path + "coin-price");
+        String currency = hasDualPrice ? (rightClick ? "coins" : configuredCurrency) : configuredCurrency;
         String category = plugin.getAdminShopConfig().getString(path + "category", "");
         if ("gems".equals(currency) && !"ferramentas".equalsIgnoreCase(category)) {
             player.sendMessage("§cGemas só podem ser usadas para comprar ferramentas.");
@@ -297,7 +310,8 @@ public final class ShopCommand implements CommandExecutor, Listener {
 
         final BigDecimal price;
         try {
-            price = new BigDecimal(plugin.getAdminShopConfig().getString(path + "price", "0"))
+            String pricePath = hasDualPrice && "coins".equals(currency) ? "coin-price" : "price";
+            price = new BigDecimal(plugin.getAdminShopConfig().getString(path + pricePath, "0"))
                     .setScale("gems".equals(currency) ? 0 : 2, RoundingMode.UNNECESSARY);
         } catch (Exception exception) {
             player.sendMessage("§cPreço inválido para este produto. Avise a administração.");
