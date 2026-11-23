@@ -1,6 +1,14 @@
 package br.com.xklpack.shop;
 
 import br.com.xklpack.XKLPack;
+import br.com.xklpack.bank.BankService;
+import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -99,6 +107,7 @@ public final class PlayerShopService {
             statement.execute("CREATE INDEX IF NOT EXISTS idx_player_shop_allies_player ON player_shop_allies(player_uuid)");
         }
         ensureColumn(connection, "player_shops", "merchant_entity_uuid", "TEXT");
+        ensureColumn(connection, "player_shops", "vault_coins", "INTEGER NOT NULL DEFAULT 0");
     }
 
     private void ensureColumn(Connection connection, String table, String column, String type) throws SQLException {
@@ -329,6 +338,189 @@ public final class PlayerShopService {
             try (ResultSet rs = ps.executeQuery()) { while (rs.next()) result.add(rs.getLong(1)); }
         }
         return result;
+    }
+
+
+    public record Offer(long id, long shopId, ItemStack item, int amount, int price, boolean enabled) {}
+
+    public boolean canManageProducts(long shopId, UUID player) throws SQLException {
+        if (isOwner(shopId, player)) return true;
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT can_manage_products FROM player_shop_allies WHERE shop_id=? AND player_uuid=?")) {
+            ps.setLong(1, shopId); ps.setString(2, player.toString());
+            try (ResultSet rs = ps.executeQuery()) { return rs.next() && rs.getInt(1) == 1; }
+        }
+    }
+
+    public boolean canWithdraw(long shopId, UUID player) throws SQLException {
+        if (isOwner(shopId, player)) return true;
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT can_withdraw FROM player_shop_allies WHERE shop_id=? AND player_uuid=?")) {
+            ps.setLong(1, shopId); ps.setString(2, player.toString());
+            try (ResultSet rs = ps.executeQuery()) { return rs.next() && rs.getInt(1) == 1; }
+        }
+    }
+
+    public long addOffer(long shopId, UUID actor, ItemStack item, int amount, int price) throws SQLException {
+        if (!canManageProducts(shopId, actor)) throw new IllegalArgumentException("Você não tem permissão para gerenciar produtos.");
+        if (item == null || item.getType().isAir() || amount < 1 || price < 1)
+            throw new IllegalArgumentException("Item, quantidade e preço precisam ser válidos.");
+        ItemStack template = item.clone();
+        template.setAmount(1);
+        String data = Base64.getEncoder().encodeToString(template.serializeAsBytes());
+        String fingerprint = Integer.toHexString(java.util.Arrays.hashCode(template.serializeAsBytes()));
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "INSERT INTO player_shop_offers(shop_id,item_fingerprint,item_data,amount,price_coins,enabled) VALUES(?,?,?,?,?,1)",
+                Statement.RETURN_GENERATED_KEYS)) {
+            ps.setLong(1, shopId); ps.setString(2, fingerprint); ps.setString(3, data);
+            ps.setInt(4, amount); ps.setInt(5, price); ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (!rs.next()) throw new SQLException("Não foi possível criar o produto.");
+                return rs.getLong(1);
+            }
+        }
+    }
+
+    public List<Offer> listOffers(long shopId, boolean enabledOnly) throws SQLException {
+        List<Offer> result = new ArrayList<>();
+        String sql = "SELECT id,shop_id,item_data,amount,price_coins,enabled FROM player_shop_offers WHERE shop_id=?"
+                + (enabledOnly ? " AND enabled=1" : "") + " ORDER BY id";
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
+            ps.setLong(1, shopId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    byte[] bytes = Base64.getDecoder().decode(rs.getString("item_data"));
+                    ItemStack item = ItemStack.deserializeBytes(bytes);
+                    result.add(new Offer(rs.getLong("id"), rs.getLong("shop_id"), item,
+                            rs.getInt("amount"), rs.getInt("price_coins"), rs.getInt("enabled") == 1));
+                }
+            }
+        }
+        return result;
+    }
+
+    public void removeOffer(long shopId, long offerId, UUID actor) throws SQLException {
+        if (!canManageProducts(shopId, actor)) throw new IllegalArgumentException("Você não tem permissão para gerenciar produtos.");
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "DELETE FROM player_shop_offers WHERE id=? AND shop_id=?")) {
+            ps.setLong(1, offerId); ps.setLong(2, shopId);
+            if (ps.executeUpdate() == 0) throw new IllegalArgumentException("Produto não encontrado.");
+        }
+    }
+
+    public long vaultBalance(long shopId, UUID actor) throws SQLException {
+        if (!isOwner(shopId, actor)) throw new IllegalArgumentException("Somente o dono pode consultar o cofre.");
+        try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement(
+                "SELECT vault_coins FROM player_shops WHERE id=? AND status='ACTIVE'")) {
+            ps.setLong(1, shopId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) throw new IllegalArgumentException("Loja não encontrada ou ainda não ativada.");
+                return rs.getLong(1);
+            }
+        }
+    }
+
+    public long withdrawVault(long shopId, UUID actor) throws SQLException {
+        if (!canWithdraw(shopId, actor)) throw new IllegalArgumentException("Você não tem permissão para retirar o dinheiro.");
+        Connection c = plugin.getEconomyStorage().connection();
+        boolean auto = c.getAutoCommit(); c.setAutoCommit(false);
+        try {
+            long amount;
+            try (PreparedStatement ps = c.prepareStatement("SELECT vault_coins FROM player_shops WHERE id=?")) {
+                ps.setLong(1, shopId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (!rs.next()) throw new IllegalArgumentException("Loja não encontrada.");
+                    amount = rs.getLong(1);
+                }
+            }
+            if (amount <= 0) throw new IllegalArgumentException("O cofre está vazio.");
+            try (PreparedStatement ps = c.prepareStatement("UPDATE player_shops SET vault_coins=0 WHERE id=? AND vault_coins=?")) {
+                ps.setLong(1, shopId); ps.setLong(2, amount);
+                if (ps.executeUpdate() != 1) throw new SQLException("O cofre foi alterado; tente novamente.");
+            }
+            c.commit();
+            return amount;
+        } catch (Exception e) {
+            c.rollback();
+            if (e instanceof SQLException se) throw se;
+            if (e instanceof IllegalArgumentException ia) throw ia;
+            throw new SQLException(e);
+        } finally { c.setAutoCommit(auto); }
+    }
+
+    public record PurchaseResult(int itemAmount, long price, long change) {}
+
+    public PurchaseResult purchase(long shopId, long offerId, Player buyer, BankService bank) throws SQLException {
+        synchronized (plugin.getEconomyStorage()) {
+            Connection c = plugin.getEconomyStorage().connection();
+            Offer offer = listOffers(shopId, true).stream().filter(o -> o.id() == offerId).findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Produto indisponível."));
+            if (offer.amount() <= 0) throw new IllegalArgumentException("Produto sem estoque.");
+            Map<String, Integer> currencyItems = new LinkedHashMap<>();
+            long tender = 0;
+            ItemStack[] before = buyer.getInventory().getStorageContents();
+            for (int i = 0; i < before.length; i++) {
+                BankService.Denomination d = bank.identify(before[i]);
+                if (d == null) continue;
+                currencyItems.put(i + ":" + d.id(), before[i].getAmount());
+                tender = Math.addExact(tender, (long) d.value() * before[i].getAmount());
+            }
+            long price = offer.price();
+            if (tender < price) throw new IllegalArgumentException("Moedas físicas insuficientes. Preço: " + price + " coins.");
+            long change = tender - price;
+            List<ItemStack> changeItems = new ArrayList<>();
+            long remaining = change;
+            for (BankService.Denomination d : bank.denominations()) {
+                long count = remaining / d.value();
+                while (count > 0) {
+                    int stack = (int)Math.min(count, d.material().getMaxStackSize());
+                    changeItems.add(bank.createCoin(d, stack)); count -= stack;
+                }
+                remaining %= d.value();
+            }
+            if (remaining != 0) throw new IllegalStateException("Não foi possível formar o troco com as denominações configuradas.");
+            ItemStack product = offer.item().clone();
+            product.setAmount(offer.amount());
+            org.bukkit.inventory.Inventory simulated = Bukkit.createInventory(null, 36);
+            ItemStack[] copy = new ItemStack[before.length];
+            for (int i=0;i<before.length;i++) copy[i] = before[i] == null ? null : before[i].clone();
+            simulated.setContents(copy);
+            for (int i=0;i<copy.length;i++) {
+                BankService.Denomination d = bank.identify(simulated.getItem(i));
+                if (d != null) simulated.setItem(i, null);
+            }
+            Map<Integer, ItemStack> overflow = simulated.addItem(product);
+            if (!overflow.isEmpty()) throw new IllegalArgumentException("Libere espaço no inventário para receber o produto.");
+            overflow = simulated.addItem(changeItems.toArray(new ItemStack[0]));
+            if (!overflow.isEmpty()) throw new IllegalArgumentException("Libere espaço no inventário para receber o troco.");
+            ItemStack[] after = simulated.getStorageContents();
+            boolean auto = c.getAutoCommit(); c.setAutoCommit(false);
+            try {
+                try (PreparedStatement ps = c.prepareStatement(
+                        "UPDATE player_shop_offers SET amount=amount-? WHERE id=? AND shop_id=? AND enabled=1 AND amount>=?")) {
+                    ps.setInt(1, offer.amount()); ps.setLong(2, offerId); ps.setLong(3, shopId); ps.setInt(4, offer.amount());
+                    if (ps.executeUpdate() != 1) throw new IllegalArgumentException("Estoque insuficiente.");
+                }
+                try (PreparedStatement ps = c.prepareStatement("UPDATE player_shops SET vault_coins=vault_coins+? WHERE id=? AND status='ACTIVE'")) {
+                    ps.setLong(1, price); ps.setLong(2, shopId);
+                    if (ps.executeUpdate() != 1) throw new IllegalArgumentException("Loja não está ativa.");
+                }
+                try (PreparedStatement ps = c.prepareStatement(
+                        "INSERT INTO player_shop_sales(shop_id,buyer_uuid,offer_id,item_amount,physical_coin_value,created_at) VALUES(?,?,?,?,?,?)")) {
+                    ps.setLong(1, shopId); ps.setString(2, buyer.getUniqueId().toString());
+                    ps.setLong(3, offerId); ps.setInt(4, offer.amount()); ps.setLong(5, price);
+                    ps.setLong(6, System.currentTimeMillis()); ps.executeUpdate();
+                }
+                c.commit();
+            } catch (Exception e) {
+                c.rollback();
+                if (e instanceof SQLException se) throw se;
+                if (e instanceof IllegalArgumentException ia) throw ia;
+                throw new SQLException("Falha ao concluir compra.", e);
+            } finally { c.setAutoCommit(auto); }
+            buyer.getInventory().setStorageContents(after);
+            return new PurchaseResult(offer.amount(), price, change);
+        }
     }
 
     public int areaRadius() {
