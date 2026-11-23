@@ -57,6 +57,7 @@ public final class PlayerShopRuntime implements Listener {
     private final NamespacedKey centerZKey;
     private final NamespacedKey centerYKey;
     private final NamespacedKey radiusKey;
+    private final NamespacedKey areaSizeKey;
 
     public PlayerShopRuntime(XKLPack plugin, PlayerShopService shops) {
         this.plugin = plugin;
@@ -68,6 +69,7 @@ public final class PlayerShopRuntime implements Listener {
         this.centerZKey = new NamespacedKey(plugin, "player_shop_center_z");
         this.centerYKey = new NamespacedKey(plugin, "player_shop_center_y");
         this.radiusKey = new NamespacedKey(plugin, "player_shop_radius");
+        this.areaSizeKey = new NamespacedKey(plugin, "player_shop_area_size");
         Bukkit.getScheduler().runTaskTimer(plugin, this::activateDueShops, 20L, 20L);
         Bukkit.getScheduler().runTaskTimer(plugin, this::keepMerchantsInsideArea, 10L, 10L);
     }
@@ -103,6 +105,7 @@ public final class PlayerShopRuntime implements Listener {
                 villager.getPersistentDataContainer().set(centerZKey, PersistentDataType.INTEGER, shop.z());
                 villager.getPersistentDataContainer().set(centerYKey, PersistentDataType.INTEGER, shop.y());
                 villager.getPersistentDataContainer().set(radiusKey, PersistentDataType.INTEGER, shop.radius());
+                villager.getPersistentDataContainer().set(areaSizeKey, PersistentDataType.INTEGER, shop.size());
 
                 Block stockBlock = stockLocation.getBlock();
                 stockBlock.setType(Material.CHEST, false);
@@ -147,10 +150,8 @@ public final class PlayerShopRuntime implements Listener {
                 Integer centerZ = data.get(centerZKey, PersistentDataType.INTEGER);
                 Integer centerY = data.get(centerYKey, PersistentDataType.INTEGER);
                 Integer radius = data.get(radiusKey, PersistentDataType.INTEGER);
-                Long shopId = data.get(shopIdKey, PersistentDataType.LONG);
-                if (centerX == null || centerZ == null || centerY == null || radius == null || shopId == null) continue;
-                int size;
-                try { size = shops.getShopSize(shopId); } catch (SQLException ex) { continue; }
+                Integer size = data.get(areaSizeKey, PersistentDataType.INTEGER);
+                if (centerX == null || centerZ == null || centerY == null || radius == null || size == null) continue;
                 int minX = centerX - (size - 1) / 2;
                 int minZ = centerZ - (size - 1) / 2;
                 int maxX = minX + size - 1;
