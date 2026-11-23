@@ -1,10 +1,10 @@
 # Lojas de jogadores — XKL PACK
 
-**Status: implementação parcial.** A loja própria `/alvaras` e o catálogo configurável de seis alvarás já estão implementados. O uso do alvará para abrir a loja, NPC, baú, painel de gestão e transações entre jogadores ainda estão em desenvolvimento.
+**Status: implementação funcional em andamento — ainda não homologada.** Já existem: compra de alvarás; reserva da área com espera de 2 minutos; comerciante Villager nativo do Paper com nome permanente e único; baú ESTOQUE protegido; catálogo de produtos abastecido pelo baú; pagamento com moedas físicas autenticadas e troco; cofre físico por valor; painel básico; edição de preços; abrir/fechar loja; aliados com permissões separadas; validação da área inteira no WorldGuard. Ainda faltam validação de build/testes, recuperação transacional contra queda no instante exato da compra/retirada e adaptadores para plugins de proteção diferentes do WorldGuard. Nesses plugins sem adaptador, a criação é bloqueada por segurança.
 
 ## Objetivo
 
-Criar lojas de jogadores no próprio XKL PACK, inspiradas na experiência do Shopkeepers, sem depender do ShopkeepersAddon. Citizens será usado para a entidade comerciante quando a integração estiver validada; estoque, pagamentos, permissões, painel e persistência ficam sob controle do XKL PACK.
+Criar lojas de jogadores no próprio XKL PACK, inspiradas na experiência do Shopkeepers, sem depender do ShopkeepersAddon. O comerciante é um Villager nativo do Paper, sem dependência do Citizens; estoque, pagamentos, permissões, painel e persistência ficam sob controle do XKL PACK.
 
 ## Fluxo de abertura
 
@@ -24,7 +24,7 @@ O catálogo contém seis opções configuráveis em `permits.yml`: Básico (7x7;
 - O nome deve ser único entre os comerciantes ativos e persistido. Não pode ser editado pelo dono nem por aliados.
 - O nome fica visível acima da cabeça.
 - O NPC deve andar/passear dentro da área delimitada da loja e nunca sair dela.
-- O clique no NPC abre a interface de compra.
+- O clique no NPC abre a interface de compra, que consulta as ofertas e o estoque físico do baú ESTOQUE.
 - O NPC não pode receber dano, ser empurrado, levado, removido por jogadores ou usado para contornar proteção.
 - Em reinicializações, o XKL PACK reconcilia o NPC salvo com o Citizens e evita duplicatas.
 
@@ -78,7 +78,7 @@ Seguir o padrão visual, navegação por categorias e submenus do /xkladmin, mas
 Categorias:
 1. **Estoque** — abrir/consultar o baú e ver quantidades.
 2. **Produtos e preços** — cadastrar produtos, quantidade por oferta e preço.
-3. **Aliados** — convidar, remover e ajustar permissões.
+3. **Aliados** — convidar, remover e ajustar permissões separadas para estoque, produtos, retirada e configuração.
 4. **Dinheiro** — saldo físico guardado, histórico e retirada.
 5. **Aparência** — configurações visuais da loja; não permite renomear o NPC.
 6. **Configurações** — abrir/fechar, área e opções permitidas.
