@@ -1,6 +1,6 @@
 # Lojas de jogadores — XKL PACK
 
-**Status: implementação parcial.** A loja própria `/alvaras` e o catálogo configurável de quatro alvarás já estão implementados. O uso do alvará para abrir a loja, NPC, baú, painel de gestão e transações entre jogadores ainda estão em desenvolvimento.
+**Status: implementação parcial.** A loja própria `/alvaras` e o catálogo configurável de seis alvarás já estão implementados. O uso do alvará para abrir a loja, NPC, baú, painel de gestão e transações entre jogadores ainda estão em desenvolvimento.
 
 ## Objetivo
 
@@ -8,7 +8,7 @@ Criar lojas de jogadores no próprio XKL PACK, inspiradas na experiência do Sho
 
 ## Fluxo de abertura
 
-1. O jogador abre a loja própria com `/alvaras` e compra um dos quatro alvarás comerciais disponíveis. A loja usa Coins do saldo virtual; nomes, preços, ícones, áreas e disponibilidade são configuráveis em `permits.yml`.
+1. O jogador abre a loja própria com `/alvaras` e compra um dos seis alvarás comerciais disponíveis. A loja usa Coins do saldo virtual; nomes, preços, ícones, áreas e disponibilidade são configuráveis em `permits.yml`.
 2. Usa o alvará no bloco/local exato onde deseja abrir a loja.
 3. Antes de consumir o alvará, o plugin valida que o jogador pode usar o local, que há espaço, que a loja não se sobrepõe a outra e que o local é aceito pela proteção de terrenos.
 4. Após a validação, o alvará é consumido e a loja entra no estado PREPARING.
@@ -34,7 +34,11 @@ O catálogo contém seis opções configuráveis em `permits.yml`: Básico (7x7;
 - O movimento do NPC fica restrito a essa área.
 - O XKL PACK concede somente a autorização técnica mínima para o NPC circular e para as operações da loja.
 - Não desativar nem ignorar a proteção geral do terreno.
-- O XKL PACK não exige EasyClaim. A proteção interna reserva a área da loja e protege seus próprios recursos. Se outro plugin de terrenos estiver instalado, a integração deve respeitar suas permissões; se não for possível confirmar autorização, bloquear a criação e nunca ignorar a proteção externa.
+- Antes de aceitar o alvará, verificar a área quadrada INTEIRA correspondente ao tamanho comprado (inclusive os limites), e não apenas o bloco clicado ou o centro. Consultar todas as regiões/claims protegidos que cruzem ou estejam dentro dessa área.
+- Se qualquer parte da área estiver protegida por outro jogador, recusar a criação. A única exceção é quando o proprietário de cada área protegida envolvida for exatamente o jogador que está usando o alvará. Não permitir que um claim de terceiro seja invadido, mesmo que a maior parte da área esteja livre ou pertença ao comprador.
+- Se a área cruzar claims de mais de um proprietário, recusar quando algum deles não for o próprio comprador. Claims do próprio comprador podem ser utilizados; áreas sem proteção também podem ser utilizadas, desde que não haja conflito com outra loja.
+- A verificação deve acontecer antes de consumir o alvará ou cobrar qualquer valor adicional. Em caso de recusa, manter o item no inventário e informar que existe terreno protegido de outro jogador na área.
+- O XKL PACK não exige EasyClaim. Deve integrar-se às APIs dos plugins de proteção presentes no servidor. Se um plugin de proteção estiver instalado e não houver integração capaz de identificar com segurança o dono da região, bloquear a criação naquela área (fail closed); nunca ignorar ou desativar a proteção externa.
 - A área, o baú e o NPC permanecem vinculados à mesma loja e ao mesmo proprietário.
 
 ## Baú ESTOQUE
@@ -91,7 +95,7 @@ Categorias:
 
 ## Dependências e ordem de implementação
 
-1. Validar a integração opcional com Citizens e com plugins de proteção existentes; a loja não depende do EasyClaim. O raio padrão inicial é configurável e está definido em 4 blocos.
+1. Implementar verificadores/adaptadores para os plugins de proteção instalados e validar a propriedade de toda a área do alvará; a loja não depende do EasyClaim. Se não for possível identificar o proprietário de uma proteção, recusar a criação.
 2. Implementar persistência, alvará autenticado e fluxo de preparação de 2 minutos.
 3. Implementar criação/reconciliação do NPC, nome único e movimento delimitado.
 4. Implementar baú ESTOQUE protegido e permissões de aliados.
@@ -101,7 +105,10 @@ Categorias:
 
 ## Critérios de aceite
 
-- Alvará inválido ou local protegido sem autorização não é consumido.
+- Alvará inválido ou área que contenha proteção de terceiros não é consumido.
+- A verificação percorre a área completa (7x7, 11x11, 17x17, 25x25, 64x64 ou 128x128), não apenas o ponto central.
+- Claims do próprio jogador são permitidos; qualquer claim de outro jogador dentro da área bloqueia a criação.
+- Quando uma proteção existente não puder ser consultada com segurança, a criação é bloqueada.
 - Um alvará válido inicia exatamente 2 minutos de preparação.
 - Reiniciar o servidor durante a espera não perde nem duplica a loja.
 - NPC aparece com nome de pessoa único, permanente e visível.
