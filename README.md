@@ -47,6 +47,10 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - `/xkladmin` — painel administrativo para editar salários, taxas, valores das moedas físicas, preços das lojas e materiais dos kits.
 - `/xklatm npc link|unlink|list <id>` e `/xklpouch give <jogador>` — administração.
 
+## Lojas de jogadores
+
+- A especificação completa do sistema de alvará, NPC ambulante, estoque, aliados, painel e pagamento físico está em [Lojas de jogadores](docs/LOJAS_JOGADORES.md). **A funcionalidade ainda não está implementada no código.**
+
 ## Documentação
 
 - [Especificação funcional](docs/ESPECIFICACAO.md)
