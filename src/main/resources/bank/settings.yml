@@ -52,12 +52,9 @@ citizens:
   click-to-open: true
   linked-npcs: []
 
-# Saco de couro exclusivo para guardar moedas físicas
+# Trouxa vanilla do Minecraft: usa somente o espaço de armazenamento nativo
 money-pouch:
   enabled: true
-  title: "&8Saco de Coins"
-  inventory-rows: 3
-  material: LEATHER
   open-with-right-click: true
   allow-only-authenticated-coins: true
   auto-give-on-first-withdrawal: true
