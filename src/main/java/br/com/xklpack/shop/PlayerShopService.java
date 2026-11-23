@@ -104,7 +104,7 @@ public final class PlayerShopService {
      * Verifica colisão com a área reservada de outra loja. Não substitui a
      * validação de proteção/claim, que deve ocorrer antes de consumir alvará.
      */
-    public boolean overlapsExistingShop(UUID worldId, int x, int z) throws SQLException {
+    public boolean overlapsExistingShop(UUID worldId, int x, int z, int requestedRadius) throws SQLException {
         String sql = """
                 SELECT 1 FROM player_shops
                 WHERE world_uuid = ?
@@ -116,13 +116,17 @@ public final class PlayerShopService {
         try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
             statement.setString(1, worldId.toString());
             statement.setInt(2, x);
-            statement.setInt(3, areaRadius);
+            statement.setInt(3, Math.max(1, requestedRadius));
             statement.setInt(4, z);
-            statement.setInt(5, areaRadius);
+            statement.setInt(5, Math.max(1, requestedRadius));
             try (ResultSet result = statement.executeQuery()) {
                 return result.next();
             }
         }
+    }
+
+    public boolean overlapsExistingShop(UUID worldId, int x, int z) throws SQLException {
+        return overlapsExistingShop(worldId, x, z, areaRadius);
     }
 
     /**
@@ -131,7 +135,13 @@ public final class PlayerShopService {
      */
     public long createPreparingShop(UUID owner, UUID worldId, String worldName,
                                     int x, int y, int z) throws SQLException {
-        if (overlapsExistingShop(worldId, x, z)) {
+        return createPreparingShop(owner, worldId, worldName, x, y, z, areaRadius);
+    }
+
+    public long createPreparingShop(UUID owner, UUID worldId, String worldName,
+                                    int x, int y, int z, int requestedRadius) throws SQLException {
+        int safeRadius = Math.max(1, requestedRadius);
+        if (overlapsExistingShop(worldId, x, z, safeRadius)) {
             throw new IllegalArgumentException("Esta área já está reservada por outra loja.");
         }
         long now = System.currentTimeMillis();
@@ -156,7 +166,7 @@ public final class PlayerShopService {
                 statement.setInt(4, x);
                 statement.setInt(5, y);
                 statement.setInt(6, z);
-                statement.setInt(7, areaRadius);
+                statement.setInt(7, safeRadius);
                 statement.setLong(8, now);
                 statement.setLong(9, activationAt);
                 statement.setString(10, merchantName);
