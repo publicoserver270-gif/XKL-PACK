@@ -75,6 +75,10 @@ class AdminShopConfigTest {
         assertEquals("excavator_3x3", config.getString("items.excavator_3x3.special"));
         assertEquals("NETHERITE_PICKAXE", config.getString("items.excavator_3x3.material"));
         assertEquals("gems", config.getString("items.excavator_3x3.currency"));
+        assertEquals("20000", config.getString("items.excavator_3x3.price"));
+        assertEquals("200000", config.getString("items.excavator_3x3.coin-price"));
+        assertEquals(new BigDecimal(config.getString("items.excavator_3x3.price")).multiply(BigDecimal.TEN),
+                new BigDecimal(config.getString("items.excavator_3x3.coin-price")));
     }
 
     private YamlConfiguration loadConfig() throws Exception {
