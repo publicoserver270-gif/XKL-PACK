@@ -284,8 +284,8 @@ public final class PlayerShopService {
         if (owner.equals(ally)) throw new IllegalArgumentException("O dono já possui todas as permissões.");
         try (PreparedStatement ps = plugin.getEconomyStorage().connection().prepareStatement("""
                 INSERT INTO player_shop_allies(shop_id, player_uuid, can_stock, can_manage_products, can_withdraw, can_configure)
-                VALUES(?,?,1,1,1,1)
-                ON CONFLICT(shop_id, player_uuid) DO UPDATE SET can_stock=1, can_manage_products=1, can_withdraw=1, can_configure=1
+                VALUES(?,?,0,0,0,0)
+                ON CONFLICT(shop_id, player_uuid) DO NOTHING
                 """)) {
             ps.setLong(1, shopId); ps.setString(2, ally.toString()); ps.executeUpdate();
         }
@@ -457,13 +457,11 @@ public final class PlayerShopService {
             Offer offer = listOffers(shopId, true).stream().filter(o -> o.id() == offerId).findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Produto indisponível."));
             if (offer.amount() <= 0) throw new IllegalArgumentException("Produto sem estoque.");
-            Map<String, Integer> currencyItems = new LinkedHashMap<>();
             long tender = 0;
             ItemStack[] before = buyer.getInventory().getStorageContents();
             for (int i = 0; i < before.length; i++) {
                 BankService.Denomination d = bank.identify(before[i]);
                 if (d == null) continue;
-                currencyItems.put(i + ":" + d.id(), before[i].getAmount());
                 tender = Math.addExact(tender, (long) d.value() * before[i].getAmount());
             }
             long price = offer.price();
