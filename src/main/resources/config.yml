@@ -181,3 +181,12 @@ equipment-limits:
     10: 3
     20: 4
     30: 5
+
+# PvP: somente durante a janela noturna em que dormir é permitido.
+pvp:
+  enabled: true
+  messages: true
+  # Lista vazia aplica a regra a todos os mundos.
+  worlds: []
+  night-start-tick: 12542
+  night-end-tick: 23460
