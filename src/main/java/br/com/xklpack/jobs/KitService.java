@@ -357,6 +357,10 @@ public final class KitService implements Listener {
         return owner.toString().equals(itemOwner) && jobId.equalsIgnoreCase(itemJob);
     }
 
+    public boolean isOwnedProfessionKit(ItemStack item, Player player, String jobId) {
+        return player != null && isOwnedKit(item, player.getUniqueId(), jobId);
+    }
+
     public boolean isKit(ItemStack item) {
         return item != null && item.hasItemMeta()
                 && item.getItemMeta().getPersistentDataContainer().has(markerKey, PersistentDataType.BYTE);
