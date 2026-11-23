@@ -98,7 +98,54 @@ public final class PlayerShopService {
             statement.execute("CREATE INDEX IF NOT EXISTS idx_player_shops_world ON player_shops(world_uuid)");
             statement.execute("CREATE INDEX IF NOT EXISTS idx_player_shop_allies_player ON player_shop_allies(player_uuid)");
         }
+        ensureColumn(connection, "player_shops", "merchant_entity_uuid", "TEXT");
     }
+
+    private void ensureColumn(Connection connection, String table, String column, String type) throws SQLException {
+        boolean found = false;
+        try (Statement statement = connection.createStatement();
+             ResultSet columns = statement.executeQuery("PRAGMA table_info(" + table + ")")) {
+            while (columns.next()) if (column.equalsIgnoreCase(columns.getString("name"))) found = true;
+        }
+        if (!found) try (Statement statement = connection.createStatement()) {
+            statement.execute("ALTER TABLE " + table + " ADD COLUMN " + column + " " + type);
+        }
+    }
+
+    public List<ShopRecord> shopsDueForActivation(long now) throws SQLException {
+        List<ShopRecord> result = new java.util.ArrayList<>();
+        String sql = "SELECT id, owner_uuid, world_uuid, world_name, center_x, center_y, center_z, area_radius, merchant_name, activation_at, stock_x, stock_y, stock_z, merchant_entity_uuid FROM player_shops WHERE status='PREPARING' AND activation_at<=?";
+        try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
+            statement.setLong(1, now);
+            try (ResultSet rows = statement.executeQuery()) {
+                while (rows.next()) result.add(new ShopRecord(
+                        rows.getLong("id"), UUID.fromString(rows.getString("owner_uuid")),
+                        UUID.fromString(rows.getString("world_uuid")), rows.getString("world_name"),
+                        rows.getInt("center_x"), rows.getInt("center_y"), rows.getInt("center_z"),
+                        rows.getInt("area_radius"), rows.getString("merchant_name"),
+                        rows.getLong("activation_at"), rows.getInt("stock_x"), rows.getInt("stock_y"),
+                        rows.getInt("stock_z"), rows.getString("merchant_entity_uuid")));
+            }
+        }
+        return result;
+    }
+
+    public void saveShopRuntime(long shopId, UUID merchantEntity, int stockX, int stockY, int stockZ) throws SQLException {
+        try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement(
+                "UPDATE player_shops SET status='ACTIVE', merchant_entity_uuid=?, stock_world_uuid=world_uuid, stock_x=?, stock_y=?, stock_z=? WHERE id=? AND status='PREPARING'")) {
+            statement.setString(1, merchantEntity.toString());
+            statement.setInt(2, stockX);
+            statement.setInt(3, stockY);
+            statement.setInt(4, stockZ);
+            statement.setLong(5, shopId);
+            statement.executeUpdate();
+        }
+    }
+
+    public record ShopRecord(long id, UUID owner, UUID worldId, String worldName,
+                             int x, int y, int z, int radius, String merchantName,
+                             long activationAt, int stockX, int stockY, int stockZ,
+                             String merchantEntityUuid) {}
 
     /**
      * Verifica colisão com a área reservada de outra loja. Não substitui a
