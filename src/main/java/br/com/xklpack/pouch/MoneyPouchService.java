@@ -9,6 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BundleMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.sql.Connection;
@@ -39,6 +44,14 @@ public final class MoneyPouchService {
                     player_uuid TEXT PRIMARY KEY,
                     pouch_id TEXT NOT NULL UNIQUE,
                     claimed_at INTEGER NOT NULL
+                )
+                """);
+            statement.execute("""
+                CREATE TABLE IF NOT EXISTS money_pouch_pending (
+                    pouch_id TEXT PRIMARY KEY,
+                    player_uuid TEXT NOT NULL,
+                    item_data BLOB NOT NULL,
+                    updated_at INTEGER NOT NULL
                 )
                 """);
         }
@@ -90,8 +103,11 @@ public final class MoneyPouchService {
         // A Trouxa é protegida contra descarte; se não houver espaço, fica guardada
         // no inventário extra do jogador até o próximo login, em vez de cair no chão.
         if (!overflow.isEmpty()) {
-            player.getEnderChest().addItem(overflow.values().toArray(new ItemStack[0]));
-            player.sendMessage("§eSeu inventário estava cheio. A Trouxa XKL foi enviada ao seu baú do Ender.");
+            Map<Integer, ItemStack> enderOverflow = player.getEnderChest().addItem(overflow.values().toArray(new ItemStack[0]));
+            for (ItemStack remaining : enderOverflow.values()) storePending(player, remaining);
+            player.sendMessage(enderOverflow.isEmpty()
+                    ? "§eSeu inventário estava cheio. A Trouxa XKL foi enviada ao seu baú do Ender."
+                    : "§eSua Trouxa ficou guardada com segurança e será entregue quando houver espaço.");
         }
         player.sendMessage("§6§lBANCO XKL §8» §aVocê recebeu sua Trouxa XKL. Ela usa o armazenamento normal de uma Trouxa do Minecraft.");
         return true;
@@ -138,14 +154,94 @@ public final class MoneyPouchService {
         return bank.identify(item) != null;
     }
 
+    /** Persiste uma Trouxa que não coube nem no inventário nem no Ender Chest. */
+    public void storePending(Player player, ItemStack pouch) throws SQLException {
+        if (!isPouch(pouch)) return;
+        String id = pouch.getItemMeta().getPersistentDataContainer().get(pouchIdKey, PersistentDataType.STRING);
+        if (id == null) throw new SQLException("Trouxa sem identificador persistente.");
+        byte[] data;
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            try (BukkitObjectOutputStream output = new BukkitObjectOutputStream(bytes)) {
+                output.writeObject(pouch.clone());
+            }
+            data = bytes.toByteArray();
+        } catch (Exception exception) {
+            throw new SQLException("Não foi possível preservar a Trouxa pendente.", exception);
+        }
+        synchronized (plugin.getEconomyStorage()) {
+            try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement("""
+                    INSERT INTO money_pouch_pending(pouch_id, player_uuid, item_data, updated_at)
+                    VALUES(?, ?, ?, ?)
+                    ON CONFLICT(pouch_id) DO UPDATE SET
+                      player_uuid=excluded.player_uuid,
+                      item_data=excluded.item_data,
+                      updated_at=excluded.updated_at
+                    """)) {
+                statement.setString(1, id);
+                statement.setString(2, player.getUniqueId().toString());
+                statement.setBytes(3, data);
+                statement.setLong(4, System.currentTimeMillis());
+                statement.executeUpdate();
+            }
+        }
+    }
+
+    /** Tenta entregar todas as Trouxas pendentes; o que não couber continua salvo no SQLite. */
+    public void deliverPending(Player player) {
+        synchronized (plugin.getEconomyStorage()) {
+            try (PreparedStatement query = plugin.getEconomyStorage().connection().prepareStatement(
+                    "SELECT pouch_id, item_data FROM money_pouch_pending WHERE player_uuid=? ORDER BY updated_at")) {
+                query.setString(1, player.getUniqueId().toString());
+                try (ResultSet rows = query.executeQuery()) {
+                    while (rows.next()) {
+                        String id = rows.getString("pouch_id");
+                        ItemStack pouch;
+                        try (BukkitObjectInputStream input = new BukkitObjectInputStream(
+                                new ByteArrayInputStream(rows.getBytes("item_data")))) {
+                            Object value = input.readObject();
+                            pouch = value instanceof ItemStack item ? item : null;
+                        } catch (Exception exception) {
+                            plugin.getLogger().severe("Trouxa pendente corrompida (" + id + "): " + exception.getMessage());
+                            continue;
+                        }
+                        if (!isPouch(pouch)) continue;
+                        Map<Integer, ItemStack> overflow = player.getInventory().addItem(pouch);
+                        if (!overflow.isEmpty()) overflow = player.getEnderChest().addItem(overflow.values().toArray(new ItemStack[0]));
+                        try (PreparedStatement update = plugin.getEconomyStorage().connection().prepareStatement(
+                                overflow.isEmpty()
+                                        ? "DELETE FROM money_pouch_pending WHERE pouch_id=?"
+                                        : "UPDATE money_pouch_pending SET item_data=?, updated_at=? WHERE pouch_id=?")) {
+                            if (overflow.isEmpty()) {
+                                update.setString(1, id);
+                            } else {
+                                ItemStack remaining = overflow.values().iterator().next();
+                                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                                try (BukkitObjectOutputStream output = new BukkitObjectOutputStream(bytes)) {
+                                    output.writeObject(remaining);
+                                }
+                                update.setBytes(1, bytes.toByteArray());
+                                update.setLong(2, System.currentTimeMillis());
+                                update.setString(3, id);
+                            }
+                            update.executeUpdate();
+                        }
+                        if (overflow.isEmpty()) player.sendMessage("§aSua Trouxa XKL pendente foi recuperada.");
+                    }
+                }
+            } catch (Exception exception) {
+                plugin.getLogger().severe("Falha ao entregar Trouxas pendentes para " + player.getName() + ": " + exception.getMessage());
+            }
+        }
+    }
+
     public void restorePouch(Player player, ItemStack pouch) {
         if (pouch == null || !isPouch(pouch)) return;
-        if (!player.getInventory().containsAtLeast(pouch, 1)) {
-            Map<Integer, ItemStack> overflow = player.getInventory().addItem(pouch);
-            if (!overflow.isEmpty()) {
-                // Não descarta uma Trouxa protegida; tenta novamente no próximo tick.
-                plugin.getServer().getScheduler().runTask(plugin, () -> restorePouch(player, pouch));
-            }
+        try {
+            storePending(player, pouch);
+            plugin.getServer().getScheduler().runTask(plugin, () -> deliverPending(player));
+        } catch (SQLException exception) {
+            plugin.getLogger().severe("Não foi possível salvar Trouxa para recuperação: " + exception.getMessage());
         }
     }
 
