@@ -653,9 +653,12 @@ public final class PlayerShopService {
             ItemStack[] after = simulated.getStorageContents();
             boolean auto = c.getAutoCommit(); c.setAutoCommit(false);
             try {
+                // Cada oferta é vendida como um lote completo. Ao esgotar o lote,
+                // desativamos a oferta sem gravar amount=0, pois a tabela exige amount > 0
+                // e o registro precisa permanecer para preservar o histórico de vendas.
                 try (PreparedStatement ps = c.prepareStatement(
-                        "UPDATE player_shop_offers SET amount=amount-?, enabled=CASE WHEN amount-?=0 THEN 0 ELSE enabled END WHERE id=? AND shop_id=? AND enabled=1 AND amount>=?")) {
-                    ps.setInt(1, offer.amount()); ps.setInt(2, offer.amount()); ps.setLong(3, offerId); ps.setLong(4, shopId); ps.setInt(5, offer.amount());
+                        "UPDATE player_shop_offers SET enabled=0 WHERE id=? AND shop_id=? AND enabled=1 AND amount>=?")) {
+                    ps.setLong(1, offerId); ps.setLong(2, shopId); ps.setInt(3, offer.amount());
                     if (ps.executeUpdate() != 1) throw new IllegalArgumentException("Estoque insuficiente.");
                 }
                 try (PreparedStatement ps = c.prepareStatement(
