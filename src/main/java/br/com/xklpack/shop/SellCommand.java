@@ -37,6 +37,9 @@ public final class SellCommand implements CommandExecutor, Listener {
     private static final int PREVIEW_SLOT = 47;
     private static final int CONFIRM_SLOT = 49;
     private static final int CANCEL_SLOT = 51;
+    private static final int[] CATEGORY_SLOTS = {10, 12, 14, 16, 22};
+    private static final int[] CATALOG_SLOTS = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25,
+            28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
 
     private final XKLPack plugin;
     private final EconomyService economy;
@@ -93,16 +96,114 @@ public final class SellCommand implements CommandExecutor, Listener {
             player.sendMessage("§cA tabela de preços da loja de vendas não está carregada. Avise a administração.");
             return true;
         }
-        open(player);
+        openCategoryMenu(player);
         return true;
     }
 
-    private void open(Player player) {
+    private void openCategoryMenu(Player player) {
         SellHolder holder = new SellHolder();
-        Inventory inventory = Bukkit.createInventory(holder, 54, "§8§lLOJA DE VENDAS");
+        holder.owner = player.getUniqueId();
+        holder.screen = Screen.CATEGORIES;
+        Inventory inventory = Bukkit.createInventory(holder, 27, "§8§lLOJA DE VENDAS");
+        holder.inventory = inventory;
+        ConfigurationSection categories = plugin.getSellShopConfig().getConfigurationSection("categories");
+        if (categories != null) {
+            int fallback = 10;
+            for (String id : categories.getKeys(false)) {
+                ConfigurationSection category = categories.getConfigurationSection(id);
+                if (category == null) continue;
+                Material icon = Material.matchMaterial(category.getString("icon", "CHEST"));
+                if (icon == null || !icon.isItem()) icon = Material.CHEST;
+                int slot = category.getInt("slot", fallback);
+                if (slot < 0 || slot >= 27) slot = fallback;
+                fallback = nextCategorySlot(fallback);
+                String name = plain(category.getString("display-name", id));
+                int count = countCategoryItems(id);
+                inventory.setItem(slot, button(icon, "§e§l" + name,
+                        List.of("§7" + category.getString("description", "Veja os itens aceitos."),
+                                "§7Produtos disponíveis: §f" + count, "", "§aClique para consultar os preços.")));
+                holder.actions.put(slot, id);
+            }
+        }
+        inventory.setItem(26, button(Material.BARRIER, "§cFechar", List.of("§7Fechar a loja de vendas.")));
+        player.openInventory(inventory);
+    }
+
+    private int nextCategorySlot(int current) {
+        int[] order = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25};
+        for (int slot : order) if (slot > current) return slot;
+        return 25;
+    }
+
+    private int countCategoryItems(String category) {
+        ConfigurationSection items = plugin.getSellShopConfig().getConfigurationSection("items");
+        if (items == null) return 0;
+        int count = 0;
+        for (String id : items.getKeys(false)) {
+            if (category.equalsIgnoreCase(items.getString(id + ".category", ""))) count++;
+        }
+        return count;
+    }
+
+    private void openCatalog(Player player, String category, int page) {
+        ConfigurationSection items = plugin.getSellShopConfig().getConfigurationSection("items");
+        if (items == null) return;
+        List<String> ids = new ArrayList<>();
+        for (String id : items.getKeys(false)) {
+            if (category.equalsIgnoreCase(items.getString(id + ".category", ""))
+                    && prices.containsKey(Material.matchMaterial(items.getString(id + ".material", "")))) {
+                ids.add(id);
+            }
+        }
+        int pages = Math.max(1, (int) Math.ceil(ids.size() / (double) CATALOG_SLOTS.length));
+        int safePage = Math.max(0, Math.min(page, pages - 1));
+        SellHolder holder = new SellHolder();
+        holder.owner = player.getUniqueId();
+        holder.screen = Screen.CATALOG;
+        holder.category = category;
+        holder.page = safePage;
+        Inventory inventory = Bukkit.createInventory(holder, 54, "§8§lPREÇOS • " + categoryName(category));
+        holder.inventory = inventory;
+        for (int slot = 0; slot < 54; slot++) {
+            if (slot < 9 || slot >= 45) inventory.setItem(slot,
+                    button(Material.GRAY_STAINED_GLASS_PANE, " ", List.of()));
+        }
+        int start = safePage * CATALOG_SLOTS.length;
+        for (int i = 0; i < CATALOG_SLOTS.length && start + i < ids.size(); i++) {
+            String id = ids.get(start + i);
+            String path = "items." + id + ".";
+            Material material = Material.matchMaterial(plugin.getSellShopConfig().getString(path + "material", ""));
+            if (material == null || !material.isItem()) continue;
+            BigDecimal price = prices.get(material);
+            String name = plain(plugin.getSellShopConfig().getString(path + "display-name", material.name()));
+            inventory.setItem(CATALOG_SLOTS[i], button(material, "§f" + name,
+                    List.of("§7Preço de venda por unidade:", "§a" + price.setScale(2, RoundingMode.HALF_UP).toPlainString() + " Coins",
+                            "", "§8O pagamento é feito em Coins.")));
+        }
+        inventory.setItem(45, button(Material.ARROW, "§eVoltar às categorias", List.of()));
+        if (safePage > 0) inventory.setItem(47, button(Material.SPECTRAL_ARROW, "§ePágina anterior", List.of()));
+        inventory.setItem(49, button(Material.LIME_DYE, "§a§lVENDER ITENS",
+                List.of("§7Abrir o inventário para colocar", "§7os itens que deseja vender.")));
+        inventory.setItem(51, button(Material.SPECTRAL_ARROW, "§ePróxima página", List.of("§7Página " + (safePage + 1) + "/" + pages)));
+        player.openInventory(inventory);
+    }
+
+    private String categoryName(String id) {
+        String value = plugin.getSellShopConfig().getString("categories." + id + ".display-name", id);
+        return plain(value);
+    }
+
+    private String plain(String value) {
+        if (value == null) return "";
+        return value.replaceAll("<[^>]*>", "").replace("&", "§");
+    }
+
+    private void openSaleInventory(Player player) {
+        SellHolder holder = new SellHolder();
+        Inventory inventory = Bukkit.createInventory(holder, 54, "§8§lENTREGAR ITENS");
         holder.inventory = inventory;
         holder.owner = player.getUniqueId();
-
+        holder.screen = Screen.SALE;
         for (int slot = 45; slot < 54; slot++) {
             inventory.setItem(slot, button(Material.GRAY_STAINED_GLASS_PANE, " ", List.of()));
         }
@@ -111,13 +212,32 @@ public final class SellCommand implements CommandExecutor, Listener {
         inventory.setItem(CONFIRM_SLOT, button(Material.LIME_DYE, "§a§lCONFIRMAR VENDA",
                 List.of("§7Confirme para receber Coins.", "§8Somente itens da tabela são aceitos.")));
         inventory.setItem(CANCEL_SLOT, button(Material.RED_DYE, "§c§lCANCELAR",
-                List.of("§7Fecha a loja e devolve seus itens.")));
+                List.of("§7Fecha e devolve seus itens.")));
         player.openInventory(inventory);
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (!(event.getView().getTopInventory().getHolder() instanceof SellHolder holder)) return;
+        if (holder.screen != Screen.SALE) {
+            event.setCancelled(true);
+            if (!(event.getWhoClicked() instanceof Player menuPlayer) || !holder.owner.equals(menuPlayer.getUniqueId())) return;
+            int slot = event.getRawSlot();
+            if (slot < 0 || slot >= event.getView().getTopInventory().getSize()) return;
+            if (holder.screen == Screen.CATEGORIES) {
+                if (slot == 26) menuPlayer.closeInventory();
+                else {
+                    String category = holder.actions.get(slot);
+                    if (category != null) openCatalog(menuPlayer, category, 0);
+                }
+            } else if (holder.screen == Screen.CATALOG) {
+                if (slot == 45) openCategoryMenu(menuPlayer);
+                else if (slot == 47 && holder.page > 0) openCatalog(menuPlayer, holder.category, holder.page - 1);
+                else if (slot == 51) openCatalog(menuPlayer, holder.category, holder.page + 1);
+                else if (slot == 49) openSaleInventory(menuPlayer);
+            }
+            return;
+        }
         if (!(event.getWhoClicked() instanceof Player player)) return;
         if (!holder.owner.equals(player.getUniqueId())) {
             event.setCancelled(true);
@@ -334,10 +454,16 @@ public final class SellCommand implements CommandExecutor, Listener {
         return item != null && !item.getType().isAir();
     }
 
+    private enum Screen { CATEGORIES, CATALOG, SALE }
+
     private static final class SellHolder implements InventoryHolder {
         private Inventory inventory;
         private java.util.UUID owner;
         private boolean completing;
+        private Screen screen = Screen.SALE;
+        private String category;
+        private int page;
+        private final Map<Integer, String> actions = new HashMap<>();
 
         @Override
         public Inventory getInventory() {
