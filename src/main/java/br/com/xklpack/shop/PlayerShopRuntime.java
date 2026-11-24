@@ -79,65 +79,125 @@ public final class PlayerShopRuntime implements Listener {
             for (PlayerShopService.ShopRecord shop : shops.shopsDueForActivation(System.currentTimeMillis())) {
                 var world = Bukkit.getWorld(shop.worldId());
                 if (world == null) continue;
+
                 Location center = new Location(world, shop.x() + 0.5, shop.y(), shop.z() + 0.5);
                 if (!center.getBlock().isEmpty() || !center.clone().add(0, 1, 0).getBlock().isEmpty()
                         || !center.clone().add(0, -1, 0).getBlock().getType().isSolid()) {
                     plugin.getLogger().warning("Loja " + shop.id() + " aguardando espaço livre para o comerciante.");
                     continue;
                 }
-                Location stockLocation = findStockLocation(center, shop.radius());
-                if (stockLocation == null) {
-                    plugin.getLogger().warning("Loja " + shop.id() + " aguardando espaço para o baú ESTOQUE.");
-                    continue;
-                }
-                Villager villager = (Villager) world.spawnEntity(center, EntityType.VILLAGER);
-                villager.setCustomName("§6" + shop.merchantName());
-                villager.setCustomNameVisible(true);
-                villager.setInvulnerable(true);
-                villager.setCollidable(false);
-                villager.setPersistent(true);
-                villager.setRemoveWhenFarAway(false);
-                villager.setCanPickupItems(false);
-                villager.getPersistentDataContainer().set(shopIdKey, PersistentDataType.LONG, shop.id());
-                villager.getPersistentDataContainer().set(ownerKey, PersistentDataType.STRING, shop.owner().toString());
-                villager.getPersistentDataContainer().set(merchantKey, PersistentDataType.BYTE, (byte) 1);
-                villager.getPersistentDataContainer().set(centerXKey, PersistentDataType.INTEGER, shop.x());
-                villager.getPersistentDataContainer().set(centerZKey, PersistentDataType.INTEGER, shop.z());
-                villager.getPersistentDataContainer().set(centerYKey, PersistentDataType.INTEGER, shop.y());
-                villager.getPersistentDataContainer().set(radiusKey, PersistentDataType.INTEGER, shop.radius());
-                villager.getPersistentDataContainer().set(areaSizeKey, PersistentDataType.INTEGER, shop.size());
 
-                Block stockBlock = stockLocation.getBlock();
-                stockBlock.setType(Material.CHEST, false);
-                BlockState state = stockBlock.getState();
-                if (state instanceof Chest chest) {
+                // Recupera entidades/blocos criados antes de uma queda do servidor.
+                // Assim, uma tentativa interrompida não duplica o NPC nem sobrescreve baús.
+                Villager villager = findExistingMerchant(world, shop.id());
+                boolean createdMerchant = false;
+                if (villager == null) {
+                    villager = (Villager) world.spawnEntity(center, EntityType.VILLAGER);
+                    createdMerchant = true;
+                    villager.setCustomName("§6" + shop.merchantName());
+                    villager.setCustomNameVisible(true);
+                    villager.setInvulnerable(true);
+                    villager.setCollidable(false);
+                    villager.setPersistent(true);
+                    villager.setRemoveWhenFarAway(false);
+                    villager.setCanPickupItems(false);
+                    villager.getPersistentDataContainer().set(shopIdKey, PersistentDataType.LONG, shop.id());
+                    villager.getPersistentDataContainer().set(ownerKey, PersistentDataType.STRING, shop.owner().toString());
+                    villager.getPersistentDataContainer().set(merchantKey, PersistentDataType.BYTE, (byte) 1);
+                    villager.getPersistentDataContainer().set(centerXKey, PersistentDataType.INTEGER, shop.x());
+                    villager.getPersistentDataContainer().set(centerZKey, PersistentDataType.INTEGER, shop.z());
+                    villager.getPersistentDataContainer().set(centerYKey, PersistentDataType.INTEGER, shop.y());
+                    villager.getPersistentDataContainer().set(radiusKey, PersistentDataType.INTEGER, shop.radius());
+                    villager.getPersistentDataContainer().set(areaSizeKey, PersistentDataType.INTEGER, shop.size());
+                }
+
+                Location stockLocation = findExistingStockLocation(center, shop.radius(), shop.id());
+                boolean createdStock = false;
+                if (stockLocation == null) {
+                    stockLocation = findStockLocation(center, shop.radius());
+                    if (stockLocation == null) {
+                        if (createdMerchant) villager.remove();
+                        plugin.getLogger().warning("Loja " + shop.id() + " aguardando espaço para o baú ESTOQUE.");
+                        continue;
+                    }
+                    Block stockBlock = stockLocation.getBlock();
+                    if (!stockBlock.getType().isAir()) {
+                        if (createdMerchant) villager.remove();
+                        plugin.getLogger().warning("Loja " + shop.id() + " não criou estoque: o local deixou de estar livre.");
+                        continue;
+                    }
+                    stockBlock.setType(Material.CHEST, false);
+                    createdStock = true;
+                    BlockState state = stockBlock.getState();
+                    if (!(state instanceof Chest chest)) {
+                        if (createdMerchant) villager.remove();
+                        stockBlock.setType(Material.AIR, false);
+                        plugin.getLogger().warning("Loja " + shop.id() + " não conseguiu inicializar o baú ESTOQUE.");
+                        continue;
+                    }
                     chest.setCustomName("§6ESTOQUE");
                     chest.getPersistentDataContainer().set(shopIdKey, PersistentDataType.LONG, shop.id());
                     chest.getPersistentDataContainer().set(ownerKey, PersistentDataType.STRING, shop.owner().toString());
-                    chest.update(true, false);
+                    if (!chest.update(true, false)) {
+                        if (createdMerchant) villager.remove();
+                        stockBlock.setType(Material.AIR, false);
+                        plugin.getLogger().warning("Loja " + shop.id() + " não conseguiu persistir a proteção do ESTOQUE.");
+                        continue;
+                    }
                 }
+
                 try {
                     shops.saveShopRuntime(shop.id(), villager.getUniqueId(),
-                            stockBlock.getX(), stockBlock.getY(), stockBlock.getZ());
+                            stockLocation.getBlockX(), stockLocation.getBlockY(), stockLocation.getBlockZ());
                 } catch (SQLException persistenceFailure) {
-                    // Se a gravação falhar, desfaz os objetos criados para que a próxima
-                    // tentativa não duplique NPC ou baú.
-                    villager.remove();
-                    BlockState failedState = stockBlock.getState();
-                    if (failedState instanceof Container failedContainer
-                            && failedContainer.getPersistentDataContainer().has(shopIdKey, PersistentDataType.LONG)
-                            && java.util.Objects.equals(
-                                    failedContainer.getPersistentDataContainer().get(shopIdKey, PersistentDataType.LONG),
-                                    shop.id())) {
-                        stockBlock.setType(Material.AIR, false);
+                    if (createdMerchant) villager.remove();
+                    if (createdStock) {
+                        BlockState failedState = stockLocation.getBlock().getState();
+                        if (failedState instanceof Container failedContainer
+                                && java.util.Objects.equals(
+                                        failedContainer.getPersistentDataContainer().get(shopIdKey, PersistentDataType.LONG),
+                                        shop.id())) {
+                            stockLocation.getBlock().setType(Material.AIR, false);
+                        }
                     }
                     throw persistenceFailure;
                 }
-                plugin.getLogger().info("Loja " + shop.id() + " ativada: comerciante " + shop.merchantName() + ".");
+                plugin.getLogger().info("Loja " + shop.id() + " ativada/recuperada: comerciante "
+                        + shop.merchantName() + ".");
             }
         } catch (SQLException exception) {
             plugin.getLogger().severe("Falha ao ativar lojas de jogadores: " + exception.getMessage());
+        } catch (RuntimeException exception) {
+            plugin.getLogger().severe("Falha inesperada ao ativar lojas de jogadores: " + exception.getMessage());
+            exception.printStackTrace();
         }
+    }
+
+    private Villager findExistingMerchant(org.bukkit.World world, long shopId) {
+        for (Entity entity : world.getEntities()) {
+            if (!(entity instanceof Villager villager)) continue;
+            var data = villager.getPersistentDataContainer();
+            Long storedId = data.get(shopIdKey, PersistentDataType.LONG);
+            if (java.util.Objects.equals(storedId, shopId)
+                    && data.has(merchantKey, PersistentDataType.BYTE)) return villager;
+        }
+        return null;
+    }
+
+    private Location findExistingStockLocation(Location center, int radius, long shopId) {
+        int[][] offsets = {{2,0},{-2,0},{0,2},{0,-2},{2,2},{-2,2},{2,-2},{-2,-2}};
+        for (int[] offset : offsets) {
+            if (Math.abs(offset[0]) > radius || Math.abs(offset[1]) > radius) continue;
+            Block block = center.getWorld().getBlockAt(center.getBlockX() + offset[0],
+                    center.getBlockY(), center.getBlockZ() + offset[1]);
+            BlockState state = block.getState();
+            if (state instanceof Container container
+                    && java.util.Objects.equals(
+                            container.getPersistentDataContainer().get(shopIdKey, PersistentDataType.LONG), shopId)) {
+                return block.getLocation();
+            }
+        }
+        return null;
     }
 
     private void keepMerchantsInsideArea() {
