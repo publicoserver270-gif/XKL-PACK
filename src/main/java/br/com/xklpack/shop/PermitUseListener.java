@@ -141,10 +141,20 @@ public final class PermitUseListener implements Listener {
                 player.sendMessage("§cEsta área cruza o espaço reservado de outra loja.");
                 return;
             }
+            ItemStack currentPermit = player.getInventory().getItemInMainHand();
+            if (!permitSerial.equals(permits.identifyPermitSerial(currentPermit))) {
+                player.sendMessage("§cO alvará mudou durante a validação. Tente novamente.");
+                return;
+            }
             long shopId = shops.createPreparingShop(player.getUniqueId(), target.getWorld().getUID(),
                     target.getWorld().getName(), centerX, target.getBlockY(), centerZ, radius, size, permitSerial);
-            if (hand != null && hand.getAmount() > 1) hand.setAmount(hand.getAmount() - 1);
-            else player.getInventory().setItemInMainHand(null);
+            if (currentPermit.getAmount() > 1) {
+                ItemStack remainingPermits = currentPermit.clone();
+                remainingPermits.setAmount(currentPermit.getAmount() - 1);
+                player.getInventory().setItemInMainHand(remainingPermits);
+            } else {
+                player.getInventory().setItemInMainHand(null);
+            }
             player.sendMessage("§aÁrea comercial reservada! ID da loja: §f#" + shopId);
             player.sendMessage("§7Gerencie aliados com /lojaplayer aliado adicionar " + shopId + " <jogador>.");
             player.sendMessage("§7Tipo: §f" + plugin.getPermitsConfig().getString(path + "name", permitId));
