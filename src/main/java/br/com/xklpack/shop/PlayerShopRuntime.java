@@ -370,6 +370,7 @@ public final class PlayerShopRuntime implements Listener {
             productLore.add("§7Preço atual: §e" + offer.price() + " Coins");
             productLore.add("§7Clique esquerdo nas moedas para adicionar.");
             productLore.add("§7Clique direito nas moedas para retirar.");
+            productMeta.setLore(productLore);
             product.setItemMeta(productMeta);
             inv.setItem(4, product);
             int[] coinSlots = {10, 11, 12, 13, 14, 15};
