@@ -134,7 +134,7 @@ public final class PlayerShopService {
 
     public List<ShopRecord> shopsDueForActivation(long now) throws SQLException {
         List<ShopRecord> result = new java.util.ArrayList<>();
-        String sql = "SELECT id, owner_uuid, world_uuid, world_name, center_x, center_y, center_z, area_radius, area_size, merchant_name, activation_at, stock_x, stock_y, stock_z, merchant_entity_uuid FROM player_shops WHERE status='PREPARING' AND activation_at<=?";
+        String sql = "SELECT id, owner_uuid, world_uuid, world_name, center_x, center_y, center_z, area_radius, area_size, merchant_name, activation_at, stock_x, stock_y, stock_z, merchant_entity_uuid FROM player_shops WHERE (status='PREPARING' AND activation_at<=?) OR status IN ('ACTIVE','CLOSED')";
         try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement(sql)) {
             statement.setLong(1, now);
             try (ResultSet rows = statement.executeQuery()) {
@@ -152,7 +152,7 @@ public final class PlayerShopService {
 
     public void saveShopRuntime(long shopId, UUID merchantEntity, int stockX, int stockY, int stockZ) throws SQLException {
         try (PreparedStatement statement = plugin.getEconomyStorage().connection().prepareStatement(
-                "UPDATE player_shops SET status='ACTIVE', merchant_entity_uuid=?, stock_world_uuid=world_uuid, stock_x=?, stock_y=?, stock_z=? WHERE id=? AND status='PREPARING'")) {
+                "UPDATE player_shops SET status=CASE WHEN status='PREPARING' THEN 'ACTIVE' ELSE status END, merchant_entity_uuid=?, stock_world_uuid=world_uuid, stock_x=?, stock_y=?, stock_z=? WHERE id=? AND status IN ('PREPARING','ACTIVE','CLOSED')")) {
             statement.setString(1, merchantEntity.toString());
             statement.setInt(2, stockX);
             statement.setInt(3, stockY);
