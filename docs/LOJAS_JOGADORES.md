@@ -136,3 +136,19 @@ Categorias:
 - `/lojaplayer aliado permissao <id> <jogador> <estoque|produtos|retirar|configurar> <on|off>` — ajustar cada autorização.
 
 Ao adicionar um aliado, todas as permissões começam desligadas. O proprietário deve liberar explicitamente cada categoria necessária.
+
+## Endurecimento adicional (23/11/2026)
+
+- Alvarás agora recebem um número de série UUID no PDC. A reserva registra esse número em coluna única no SQLite; cópias do mesmo alvará não conseguem abrir uma segunda loja.
+- A remoção do alvará usa o item que ainda está na mão principal e só acontece depois que a reserva persistente é confirmada.
+- A ativação recupera NPCs e baús ESTOQUE que já tenham sido criados antes de uma interrupção, evitando duplicação durante a retomada.
+- Lojas ativas e fechadas passam por reconciliação periódica: se o comerciante ou o baú protegido desaparecer, o runtime tenta recriá-lo e preserva o estado aberto/fechado.
+- O tamanho de área é limitado a 128 blocos por lado, e o crédito no cofre recusa operações que causariam estouro do inteiro de 64 bits.
+- Falhas de geração do Villager e de persistência do baú são tratadas sem consumir o alvará nem deixar a ativação marcada como concluída.
+
+### Riscos que ainda exigem homologação
+
+- A transação entre SQLite e inventários Bukkit não é atomicamente recuperável em caso de queda exatamente durante compra, cadastro de produto ou retirada do cofre. O sistema valida espaço e estoque antes de alterar dados e falha fechado quando encontra inconsistência, mas ainda precisa de um diário de operações/entrega pendente para garantia de recuperação após crash.
+- Somente WorldGuard possui validação de propriedade implementada. GriefPrevention, Lands, Towny, Residence, EasyClaim, DyClaim, RedProtect, PlotSquared, GriefDefender e SuperiorSkyblock2 bloqueiam a criação enquanto não houver adaptador seguro.
+- A reserva comercial não substitui um sistema completo de proteção de construção para todo o terreno da loja. O baú ESTOQUE é protegido; a proteção de todos os blocos do perímetro precisa de política própria de construção/permissões.
+- Nenhuma build ou teste foi executado nesta etapa; compatibilidade com a API Paper configurada deve ser confirmada antes de produção.
