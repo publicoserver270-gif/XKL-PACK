@@ -70,7 +70,7 @@ public final class PlayerShopRuntime implements Listener {
         this.centerYKey = new NamespacedKey(plugin, "player_shop_center_y");
         this.radiusKey = new NamespacedKey(plugin, "player_shop_radius");
         this.areaSizeKey = new NamespacedKey(plugin, "player_shop_area_size");
-        Bukkit.getScheduler().runTaskTimer(plugin, this::activateDueShops, 20L, 20L);
+        Bukkit.getScheduler().runTaskTimer(plugin, this::activateDueShops, 20L, 100L);
         Bukkit.getScheduler().runTaskTimer(plugin, this::keepMerchantsInsideArea, 10L, 10L);
     }
 
@@ -116,7 +116,7 @@ public final class PlayerShopRuntime implements Listener {
                     villager.getPersistentDataContainer().set(areaSizeKey, PersistentDataType.INTEGER, shop.size());
                 }
 
-                Location stockLocation = findExistingStockLocation(center, shop.radius(), shop.id());
+                Location stockLocation = findExistingStockLocation(center, shop.radius(), shop.id(), shop.stockX(), shop.stockY(), shop.stockZ());
                 boolean createdStock = false;
                 if (stockLocation == null) {
                     stockLocation = findStockLocation(center, shop.radius());
@@ -189,7 +189,16 @@ public final class PlayerShopRuntime implements Listener {
         return null;
     }
 
-    private Location findExistingStockLocation(Location center, int radius, long shopId) {
+    private Location findExistingStockLocation(Location center, int radius, long shopId, int savedX, int savedY, int savedZ) {
+        if (savedX != 0 || savedY != 0 || savedZ != 0) {
+            Block saved = center.getWorld().getBlockAt(savedX, savedY, savedZ);
+            BlockState savedState = saved.getState();
+            if (savedState instanceof Container container
+                    && java.util.Objects.equals(
+                            container.getPersistentDataContainer().get(shopIdKey, PersistentDataType.LONG), shopId)) {
+                return saved.getLocation();
+            }
+        }
         int[][] offsets = {{2,0},{-2,0},{0,2},{0,-2},{2,2},{-2,2},{2,-2},{-2,-2}};
         for (int[] offset : offsets) {
             if (Math.abs(offset[0]) > radius || Math.abs(offset[1]) > radius) continue;
