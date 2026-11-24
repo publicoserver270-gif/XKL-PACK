@@ -37,12 +37,15 @@ import java.sql.SQLException;
 import java.util.UUID;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.List;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.ClickType;
 
 /**
  * Cria o comerciante e o baú de estoque quando termina o prazo do alvará.
@@ -275,7 +278,221 @@ public final class PlayerShopRuntime implements Listener {
         event.setCancelled(true);
         Long shopId = villager.getPersistentDataContainer().get(shopIdKey, PersistentDataType.LONG);
         if (shopId == null) return;
-        openCatalog(event.getPlayer(), shopId);
+        Player player = event.getPlayer();
+        if (player.isSneaking()) {
+            try {
+                if (shops.canManageProducts(shopId, player.getUniqueId())
+                        || shops.canConfigure(shopId, player.getUniqueId())
+                        || shops.canWithdraw(shopId, player.getUniqueId())
+                        || shops.isAuthorizedForStock(shopId, player.getUniqueId())) {
+                    openManagementCatalog(player, shopId);
+                } else {
+                    player.sendMessage("§cVocê não tem permissão para administrar esta loja.");
+                }
+            } catch (SQLException exception) {
+                player.sendMessage("§cNão foi possível verificar suas permissões.");
+                plugin.getLogger().severe("Falha ao abrir gerenciamento da loja " + shopId + ": " + exception.getMessage());
+            }
+            return;
+        }
+        openCatalog(player, shopId);
+    }
+
+    private void openManagementCatalog(Player player, long shopId) {
+        try {
+            if (!shops.canManageProducts(shopId, player.getUniqueId())) {
+                player.sendMessage("§cVocê não tem permissão para editar produtos.");
+                return;
+            }
+            var offers = shops.listOffers(shopId, false);
+            ManagementHolder holder = new ManagementHolder(player.getUniqueId(), shopId);
+            Inventory inv = Bukkit.createInventory(holder, 54, "§8Gerenciar loja #" + shopId);
+            holder.inventory = inv;
+            int slot = 0;
+            for (var offer : offers) {
+                if (slot >= 45) break;
+                ItemStack display = offer.item().clone();
+                display.setAmount(Math.min(display.getMaxStackSize(), offer.amount()));
+                ItemMeta meta = display.getItemMeta();
+                List<String> lore = meta.hasLore() ? new java.util.ArrayList<>(meta.getLore()) : new java.util.ArrayList<>();
+                lore.add("§7Lote: §f" + offer.amount() + " unidades");
+                lore.add("§7Preço atual: §e" + offer.price() + " Coins");
+                lore.add(offer.enabled() ? "§aOferta ativa" : "§cOferta esgotada/desativada");
+                lore.add("§eClique para configurar o preço");
+                meta.setLore(lore);
+                display.setItemMeta(meta);
+                inv.setItem(slot, display);
+                holder.offerIds.put(slot, offer.id());
+                slot++;
+            }
+            inv.setItem(49, namedItem(Material.BARRIER, "§cFechar"));
+            player.openInventory(inv);
+        } catch (SQLException exception) {
+            player.sendMessage("§cNão foi possível carregar os produtos da loja.");
+            plugin.getLogger().severe("Falha ao carregar gerenciamento da loja " + shopId + ": " + exception.getMessage());
+        }
+    }
+
+    private void openPriceEditor(Player player, long shopId, long offerId) {
+        try {
+            if (!shops.canManageProducts(shopId, player.getUniqueId())) {
+                player.sendMessage("§cVocê não tem permissão para editar preços.");
+                return;
+            }
+            var offer = shops.listOffers(shopId, false).stream()
+                    .filter(value -> value.id() == offerId).findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
+            BankService bank = plugin.getBankService();
+            if (bank == null) throw new IllegalStateException("Banco de moedas físicas indisponível.");
+            List<BankService.Denomination> denominations = bank.denominations();
+            if (denominations.size() != 6) {
+                player.sendMessage("§cA configuração precisa conter exatamente as seis moedas oficiais para editar preços.");
+                return;
+            }
+            PriceHolder holder = new PriceHolder(player.getUniqueId(), shopId, offerId, offer);
+            for (BankService.Denomination denomination : denominations) holder.counts.put(denomination.id(), 0L);
+            Inventory inv = Bukkit.createInventory(holder, 27, "§8Definir preço do produto");
+            holder.inventory = inv;
+            ItemStack product = offer.item().clone();
+            product.setAmount(Math.min(product.getMaxStackSize(), offer.amount()));
+            ItemMeta productMeta = product.getItemMeta();
+            List<String> productLore = productMeta.hasLore() ? new java.util.ArrayList<>(productMeta.getLore()) : new java.util.ArrayList<>();
+            productLore.add("§7Quantidade do lote: §f" + offer.amount());
+            productLore.add("§7Clique nas moedas para montar o preço.");
+            product.setItemMeta(productMeta);
+            inv.setItem(4, product);
+            int[] coinSlots = {10, 11, 12, 13, 14, 15};
+            for (int i = 0; i < denominations.size(); i++) {
+                holder.coinSlots.put(coinSlots[i], denominations.get(i).id());
+                inv.setItem(coinSlots[i], coinButton(bank, denominations.get(i), 0));
+            }
+            inv.setItem(22, namedItem(Material.LIME_DYE, "§aConfirmar preço"));
+            inv.setItem(26, namedItem(Material.BARRIER, "§cCancelar"));
+            player.openInventory(inv);
+        } catch (SQLException | IllegalArgumentException exception) {
+            player.sendMessage("§c" + exception.getMessage());
+        }
+    }
+
+    private ItemStack coinButton(BankService bank, BankService.Denomination denomination, long count) {
+        ItemStack item = bank.createCoin(denomination, 1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("§e" + denomination.name() + " §7(" + denomination.value() + " Coins)");
+        meta.setLore(List.of("§7Quantidade: §f" + count, "§aClique esquerdo: +1", "§cClique direito: -1"));
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    private ItemStack namedItem(Material material, String name) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    private long calculatePrice(PriceHolder holder, BankService bank) {
+        long total = 0;
+        for (BankService.Denomination denomination : bank.denominations()) {
+            total = Math.addExact(total, Math.multiplyExact(
+                    holder.counts.getOrDefault(denomination.id(), 0L), (long) denomination.value()));
+        }
+        return total;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void managementClick(InventoryClickEvent event) {
+        if (!(event.getView().getTopInventory().getHolder() instanceof ManagementHolder holder)) return;
+        event.setCancelled(true);
+        if (!(event.getWhoClicked() instanceof Player player) || !holder.viewer.equals(player.getUniqueId())) return;
+        if (event.getRawSlot() == 49) { player.closeInventory(); return; }
+        Long offerId = holder.offerIds.get(event.getRawSlot());
+        if (offerId != null) openPriceEditor(player, holder.shopId, offerId);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void priceEditorClick(InventoryClickEvent event) {
+        if (!(event.getView().getTopInventory().getHolder() instanceof PriceHolder holder)) return;
+        event.setCancelled(true);
+        if (!(event.getWhoClicked() instanceof Player player) || !holder.viewer.equals(player.getUniqueId())) return;
+        int rawSlot = event.getRawSlot();
+        if (rawSlot == 26) { openManagementCatalog(player, holder.shopId); return; }
+        if (rawSlot == 22) {
+            try {
+                if (!shops.canManageProducts(holder.shopId, player.getUniqueId())) {
+                    player.sendMessage("§cVocê perdeu a permissão para editar produtos.");
+                    player.closeInventory();
+                    return;
+                }
+                BankService bank = plugin.getBankService();
+                if (bank == null) throw new IllegalStateException("Banco de moedas físicas indisponível.");
+                long total = calculatePrice(holder, bank);
+                if (total < 1 || total > Integer.MAX_VALUE) {
+                    player.sendMessage("§cO preço precisa ficar entre 1 e " + Integer.MAX_VALUE + " Coins.");
+                    return;
+                }
+                shops.updateOfferPrice(holder.shopId, holder.offerId, player.getUniqueId(), (int) total);
+                player.sendMessage("§aPreço atualizado para " + total + " Coins.");
+                openManagementCatalog(player, holder.shopId);
+            } catch (SQLException | ArithmeticException | IllegalArgumentException exception) {
+                player.sendMessage("§cNão foi possível salvar o preço: " + exception.getMessage());
+            }
+            return;
+        }
+        String denominationId = holder.coinSlots.get(rawSlot);
+        if (denominationId == null) return;
+        long current = holder.counts.getOrDefault(denominationId, 0L);
+        if (event.getClick() == ClickType.LEFT || event.getClick() == ClickType.SHIFT_LEFT) {
+            if (current == Long.MAX_VALUE) return;
+            current++;
+        } else if (event.getClick() == ClickType.RIGHT || event.getClick() == ClickType.SHIFT_RIGHT) {
+            if (current == 0) return;
+            current--;
+        } else return;
+        holder.counts.put(denominationId, current);
+        BankService bank = plugin.getBankService();
+        if (bank == null) return;
+        BankService.Denomination denomination = bank.denominations().stream()
+                .filter(value -> value.id().equals(denominationId)).findFirst().orElse(null);
+        if (denomination == null) return;
+        event.getView().getTopInventory().setItem(rawSlot, coinButton(bank, denomination, current));
+        try {
+            long total = calculatePrice(holder, bank);
+            ItemStack product = holder.offer.item().clone();
+            product.setAmount(Math.min(product.getMaxStackSize(), holder.offer.amount()));
+            ItemMeta meta = product.getItemMeta();
+            List<String> lore = meta.hasLore() ? new java.util.ArrayList<>(meta.getLore()) : new java.util.ArrayList<>();
+            lore.add("§7Lote: §f" + holder.offer.amount() + " unidades");
+            lore.add("§7Preço novo: §e" + total + " Coins");
+            product.setItemMeta(meta);
+            event.getView().getTopInventory().setItem(4, product);
+        } catch (ArithmeticException ignored) {
+            player.sendMessage("§cO valor ficou acima do limite permitido.");
+        }
+    }
+
+    @EventHandler
+    public void customShopMenusDrag(InventoryDragEvent event) {
+        InventoryHolder holder = event.getView().getTopInventory().getHolder();
+        if (holder instanceof ManagementHolder || holder instanceof PriceHolder) event.setCancelled(true);
+    }
+
+    private static final class ManagementHolder implements InventoryHolder {
+        final UUID viewer; final long shopId; final Map<Integer, Long> offerIds = new HashMap<>();
+        Inventory inventory;
+        ManagementHolder(UUID viewer, long shopId) { this.viewer = viewer; this.shopId = shopId; }
+        @Override public Inventory getInventory() { return inventory; }
+    }
+
+    private static final class PriceHolder implements InventoryHolder {
+        final UUID viewer; final long shopId; final long offerId; final PlayerShopService.Offer offer;
+        final Map<String, Long> counts = new LinkedHashMap<>();
+        final Map<Integer, String> coinSlots = new HashMap<>();
+        Inventory inventory;
+        PriceHolder(UUID viewer, long shopId, long offerId, PlayerShopService.Offer offer) {
+            this.viewer = viewer; this.shopId = shopId; this.offerId = offerId; this.offer = offer;
+        }
+        @Override public Inventory getInventory() { return inventory; }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
