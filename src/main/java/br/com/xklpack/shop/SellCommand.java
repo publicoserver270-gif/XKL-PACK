@@ -322,6 +322,7 @@ public final class SellCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         if (!(event.getView().getTopInventory().getHolder() instanceof SellHolder holder)) return;
+        if (holder.screen != Screen.SALE) return;
         if (!(event.getPlayer() instanceof Player player) || holder.completing) return;
         returnItems(player, event.getView().getTopInventory());
     }
