@@ -350,7 +350,16 @@ public final class PlayerShopRuntime implements Listener {
                 return;
             }
             PriceHolder holder = new PriceHolder(player.getUniqueId(), shopId, offerId, offer);
-            for (BankService.Denomination denomination : denominations) holder.counts.put(denomination.id(), 0L);
+            long remainingPrice = offer.price();
+            for (BankService.Denomination denomination : denominations) {
+                long count = remainingPrice / denomination.value();
+                holder.counts.put(denomination.id(), count);
+                remainingPrice %= denomination.value();
+            }
+            if (remainingPrice != 0) {
+                player.sendMessage("§cO preço atual não pode ser representado pelas moedas configuradas.");
+                return;
+            }
             Inventory inv = Bukkit.createInventory(holder, 27, "§8Definir preço do produto");
             holder.inventory = inv;
             ItemStack product = offer.item().clone();
@@ -358,13 +367,15 @@ public final class PlayerShopRuntime implements Listener {
             ItemMeta productMeta = product.getItemMeta();
             List<String> productLore = productMeta.hasLore() ? new java.util.ArrayList<>(productMeta.getLore()) : new java.util.ArrayList<>();
             productLore.add("§7Quantidade do lote: §f" + offer.amount());
-            productLore.add("§7Clique nas moedas para montar o preço.");
+            productLore.add("§7Preço atual: §e" + offer.price() + " Coins");
+            productLore.add("§7Clique esquerdo nas moedas para adicionar.");
+            productLore.add("§7Clique direito nas moedas para retirar.");
             product.setItemMeta(productMeta);
             inv.setItem(4, product);
             int[] coinSlots = {10, 11, 12, 13, 14, 15};
             for (int i = 0; i < denominations.size(); i++) {
                 holder.coinSlots.put(coinSlots[i], denominations.get(i).id());
-                inv.setItem(coinSlots[i], coinButton(bank, denominations.get(i), 0));
+                inv.setItem(coinSlots[i], coinButton(bank, denominations.get(i), holder.counts.get(denominations.get(i).id())));
             }
             inv.setItem(22, namedItem(Material.LIME_DYE, "§aConfirmar preço"));
             inv.setItem(26, namedItem(Material.BARRIER, "§cCancelar"));
