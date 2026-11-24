@@ -128,9 +128,9 @@ public final class PermitUseListener implements Listener {
                 player.sendMessage("§7Nenhum alvará foi consumido.");
                 return;
             }
-            int centerX = target.getBlockX() + (size - 1) / 2;
-            int centerZ = target.getBlockZ() + (size - 1) / 2;
-            Block merchantSpot = target.getWorld().getBlockAt(centerX, target.getBlockY(), centerZ);
+            int centerX = target.getX() + (size - 1) / 2;
+            int centerZ = target.getZ() + (size - 1) / 2;
+            Block merchantSpot = target.getWorld().getBlockAt(centerX, target.getY(), centerZ);
             if (!merchantSpot.getType().isAir()
                     || !merchantSpot.getRelative(0, 1, 0).getType().isAir()
                     || !merchantSpot.getRelative(0, -1, 0).getType().isSolid()) {
@@ -147,7 +147,7 @@ public final class PermitUseListener implements Listener {
                 return;
             }
             long shopId = shops.createPreparingShop(player.getUniqueId(), target.getWorld().getUID(),
-                    target.getWorld().getName(), centerX, target.getBlockY(), centerZ, radius, size, permitSerial);
+                    target.getWorld().getName(), centerX, target.getY(), centerZ, radius, size, permitSerial);
             if (currentPermit.getAmount() > 1) {
                 ItemStack remainingPermits = currentPermit.clone();
                 remainingPermits.setAmount(currentPermit.getAmount() - 1);
