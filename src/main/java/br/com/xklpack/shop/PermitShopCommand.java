@@ -31,11 +31,13 @@ public final class PermitShopCommand implements CommandExecutor, Listener {
     private final XKLPack plugin;
     private final EconomyService economy;
     private final NamespacedKey permitKey;
+    private final NamespacedKey permitSerialKey;
 
     public PermitShopCommand(XKLPack plugin, EconomyService economy) {
         this.plugin = plugin;
         this.economy = economy;
         this.permitKey = new NamespacedKey(plugin, "player_shop_permit");
+        this.permitSerialKey = new NamespacedKey(plugin, "player_shop_permit_serial");
     }
 
     @Override
@@ -133,6 +135,7 @@ public final class PermitShopCommand implements CommandExecutor, Listener {
                 color("&8Documento oficial do XKL PACK")
         ));
         meta.getPersistentDataContainer().set(permitKey, PersistentDataType.STRING, id);
+        meta.getPersistentDataContainer().set(permitSerialKey, PersistentDataType.STRING, java.util.UUID.randomUUID().toString());
         item.setItemMeta(meta);
         return item;
     }
@@ -140,7 +143,20 @@ public final class PermitShopCommand implements CommandExecutor, Listener {
     public String identifyPermit(ItemStack item) {
         if (item == null || item.getType() != Material.PAPER || !item.hasItemMeta()) return null;
         String id = item.getItemMeta().getPersistentDataContainer().get(permitKey, PersistentDataType.STRING);
-        return id != null && plugin.getPermitsConfig().contains("permits." + id) ? id : null;
+        return id != null && plugin.getPermitsConfig().contains("permits." + id)
+                && identifyPermitSerial(item) != null ? id : null;
+    }
+
+    public String identifyPermitSerial(ItemStack item) {
+        if (item == null || item.getType() != Material.PAPER || !item.hasItemMeta()) return null;
+        String serial = item.getItemMeta().getPersistentDataContainer().get(permitSerialKey, PersistentDataType.STRING);
+        if (serial == null) return null;
+        try {
+            String canonical = java.util.UUID.fromString(serial).toString();
+            return canonical.equalsIgnoreCase(serial) ? canonical : null;
+        } catch (IllegalArgumentException invalid) {
+            return null;
+        }
     }
 
     private ItemStack button(Material material, String name, List<String> lore) {
