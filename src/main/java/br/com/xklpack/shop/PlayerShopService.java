@@ -114,6 +114,11 @@ public final class PlayerShopService {
         ensureColumn(connection, "player_shops", "merchant_entity_uuid", "TEXT");
         ensureColumn(connection, "player_shops", "vault_coins", "INTEGER NOT NULL DEFAULT 0");
         ensureColumn(connection, "player_shops", "area_size", "INTEGER NOT NULL DEFAULT 9");
+        ensureColumn(connection, "player_shops", "permit_serial", "TEXT");
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_player_shops_permit_serial "
+                    + "ON player_shops(permit_serial) WHERE permit_serial IS NOT NULL");
+        }
     }
 
     private void ensureColumn(Connection connection, String table, String column, String type) throws SQLException {
@@ -212,16 +217,31 @@ public final class PlayerShopService {
      */
     public long createPreparingShop(UUID owner, UUID worldId, String worldName,
                                     int x, int y, int z) throws SQLException {
-        return createPreparingShop(owner, worldId, worldName, x, y, z, areaRadius, areaRadius * 2 + 1);
+        return createPreparingShop(owner, worldId, worldName, x, y, z, areaRadius, areaRadius * 2 + 1, null);
     }
 
     public long createPreparingShop(UUID owner, UUID worldId, String worldName,
                                     int x, int y, int z, int requestedRadius) throws SQLException {
-        return createPreparingShop(owner, worldId, worldName, x, y, z, requestedRadius, requestedRadius * 2 + 1);
+        return createPreparingShop(owner, worldId, worldName, x, y, z, requestedRadius, requestedRadius * 2 + 1, null);
     }
 
     public long createPreparingShop(UUID owner, UUID worldId, String worldName,
                                     int x, int y, int z, int requestedRadius, int requestedSize) throws SQLException {
+        return createPreparingShop(owner, worldId, worldName, x, y, z, requestedRadius, requestedSize, null);
+    }
+
+    public long createPreparingShop(UUID owner, UUID worldId, String worldName,
+                                    int x, int y, int z, int requestedRadius, int requestedSize,
+                                    String permitSerial) throws SQLException {
+        if (permitSerial != null) {
+            try {
+                if (!UUID.fromString(permitSerial).toString().equalsIgnoreCase(permitSerial)) {
+                    throw new IllegalArgumentException("Identificador do alvará inválido.");
+                }
+            } catch (RuntimeException invalidSerial) {
+                throw new IllegalArgumentException("Identificador do alvará inválido.", invalidSerial);
+            }
+        }
         if (requestedSize < 1 || requestedSize > 128) {
             throw new IllegalArgumentException("O tamanho da área comercial precisa ficar entre 1 e 128 blocos.");
         }
@@ -243,8 +263,8 @@ public final class PlayerShopService {
             try (PreparedStatement statement = connection.prepareStatement("""
                     INSERT INTO player_shops
                     (owner_uuid, world_uuid, world_name, center_x, center_y, center_z,
-                     area_radius, area_size, status, created_at, activation_at, merchant_name)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'PREPARING', ?, ?, ?)
+                     area_radius, area_size, status, created_at, activation_at, merchant_name, permit_serial)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'PREPARING', ?, ?, ?, ?)
                     """, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, owner.toString());
                 statement.setString(2, worldId.toString());
@@ -257,7 +277,15 @@ public final class PlayerShopService {
                 statement.setLong(9, now);
                 statement.setLong(10, activationAt);
                 statement.setString(11, merchantName);
-                statement.executeUpdate();
+                statement.setString(12, permitSerial);
+                try {
+                    statement.executeUpdate();
+                } catch (SQLException duplicatePermit) {
+                    if (permitSerial != null && String.valueOf(duplicatePermit.getMessage()).toLowerCase(java.util.Locale.ROOT).contains("unique")) {
+                        throw new IllegalArgumentException("Este alvará já foi utilizado. Cópias do mesmo documento não podem criar outra loja.", duplicatePermit);
+                    }
+                    throw duplicatePermit;
+                }
                 try (ResultSet keys = statement.getGeneratedKeys()) {
                     if (!keys.next()) throw new SQLException("Não foi possível obter o ID da loja criada.");
                     long id = keys.getLong(1);
