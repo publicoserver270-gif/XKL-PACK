@@ -153,7 +153,9 @@ public final class PlayerShopService {
             statement.setInt(3, stockY);
             statement.setInt(4, stockZ);
             statement.setLong(5, shopId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() != 1) {
+                throw new SQLException("A reserva da loja mudou antes da ativação; a ativação será repetida com segurança.");
+            }
         }
     }
 
@@ -220,8 +222,11 @@ public final class PlayerShopService {
 
     public long createPreparingShop(UUID owner, UUID worldId, String worldName,
                                     int x, int y, int z, int requestedRadius, int requestedSize) throws SQLException {
-        int safeRadius = Math.max(1, requestedRadius);
-        int safeSize = Math.max(1, requestedSize);
+        if (requestedSize < 1 || requestedSize > 128) {
+            throw new IllegalArgumentException("O tamanho da área comercial precisa ficar entre 1 e 128 blocos.");
+        }
+        int safeRadius = Math.max(1, Math.min(64, requestedRadius));
+        int safeSize = requestedSize;
         if (overlapsExistingShopSize(worldId, x, z, safeSize)) {
             throw new IllegalArgumentException("Esta área já está reservada por outra loja.");
         }
@@ -625,9 +630,13 @@ public final class PlayerShopService {
                     ps.setInt(1, offer.amount()); ps.setInt(2, offer.amount()); ps.setLong(3, offerId); ps.setLong(4, shopId); ps.setInt(5, offer.amount());
                     if (ps.executeUpdate() != 1) throw new IllegalArgumentException("Estoque insuficiente.");
                 }
-                try (PreparedStatement ps = c.prepareStatement("UPDATE player_shops SET vault_coins=vault_coins+? WHERE id=? AND status='ACTIVE'")) {
-                    ps.setLong(1, price); ps.setLong(2, shopId);
-                    if (ps.executeUpdate() != 1) throw new IllegalArgumentException("Loja não está ativa.");
+                try (PreparedStatement ps = c.prepareStatement(
+                        "UPDATE player_shops SET vault_coins=vault_coins+? "
+                                + "WHERE id=? AND status='ACTIVE' AND vault_coins<=9223372036854775807-?")) {
+                    ps.setLong(1, price); ps.setLong(2, shopId); ps.setLong(3, price);
+                    if (ps.executeUpdate() != 1) {
+                        throw new IllegalArgumentException("Loja fechada ou limite seguro do cofre atingido.");
+                    }
                 }
                 try (PreparedStatement ps = c.prepareStatement(
                         "INSERT INTO player_shop_sales(shop_id,buyer_uuid,offer_id,item_amount,physical_coin_value,created_at) VALUES(?,?,?,?,?,?)")) {
