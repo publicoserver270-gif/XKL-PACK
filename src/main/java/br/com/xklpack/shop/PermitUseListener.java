@@ -85,6 +85,12 @@ public final class PermitUseListener implements Listener {
         ItemStack hand = event.getItem();
         String permitId = permits.identifyPermit(hand);
         if (permitId == null) return;
+        String permitSerial = permits.identifyPermitSerial(hand);
+        if (permitSerial == null) {
+            event.setCancelled(true);
+            player.sendMessage("§cEste alvará não possui um número de série válido. Solicite outro à administração.");
+            return;
+        }
         event.setCancelled(true);
 
         String path = "permits." + permitId + ".";
@@ -136,7 +142,7 @@ public final class PermitUseListener implements Listener {
                 return;
             }
             long shopId = shops.createPreparingShop(player.getUniqueId(), target.getWorld().getUID(),
-                    target.getWorld().getName(), centerX, target.getBlockY(), centerZ, radius, size);
+                    target.getWorld().getName(), centerX, target.getBlockY(), centerZ, radius, size, permitSerial);
             if (hand != null && hand.getAmount() > 1) hand.setAmount(hand.getAmount() - 1);
             else player.getInventory().setItemInMainHand(null);
             player.sendMessage("§aÁrea comercial reservada! ID da loja: §f#" + shopId);
