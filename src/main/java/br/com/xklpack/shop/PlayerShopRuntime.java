@@ -38,6 +38,7 @@ import java.util.UUID;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.event.inventory.InventoryClickEvent;
