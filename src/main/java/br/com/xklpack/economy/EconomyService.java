@@ -137,6 +137,11 @@ public final class EconomyService {
         creditFromAuthorizedSource(playerId, playerName, "gems", amount, "JOB_ACTIVITY");
     }
 
+    /** Coins podem ser debitadas somente por compras da loja administrativa. */
+    public boolean spendCoinsForShop(UUID playerId, String playerName, BigDecimal amount) throws SQLException {
+        return debitForPurpose(playerId, playerName, "coins", amount, "SHOP_PURCHASE");
+    }
+
     /** Gemas só podem ser debitadas pelo fluxo de compra de ferramentas. */
     public boolean spendGemsForTool(UUID playerId, String playerName, BigDecimal amount) throws SQLException {
         return debitForPurpose(playerId, playerName, "gems", amount, "TOOL_PURCHASE");
@@ -220,6 +225,36 @@ public final class EconomyService {
         return entries.stream().limit(limit).toList();
     }
 
+    public List<TransactionEntry> getRecentTransactions(UUID playerId, int limit) throws SQLException {
+        if (limit < 1 || limit > 50) throw new IllegalArgumentException("O limite do extrato deve estar entre 1 e 50.");
+        List<TransactionEntry> entries = new ArrayList<>();
+        synchronized (storage) {
+            try (PreparedStatement statement = storage.connection().prepareStatement("""
+                    SELECT currency, amount, transaction_type, created_at,
+                           CASE WHEN sender_uuid = ? THEN 'OUT' ELSE 'IN' END AS direction
+                    FROM economy_transactions
+                    WHERE sender_uuid = ? OR receiver_uuid = ?
+                    ORDER BY id DESC
+                    LIMIT ?
+                    """)) {
+                statement.setString(1, playerId.toString());
+                statement.setString(2, playerId.toString());
+                statement.setString(3, playerId.toString());
+                statement.setInt(4, limit);
+                try (ResultSet result = statement.executeQuery()) {
+                    while (result.next()) {
+                        entries.add(new TransactionEntry(result.getString("currency"),
+                                new BigDecimal(result.getString("amount")),
+                                result.getString("transaction_type"),
+                                result.getString("direction"),
+                                result.getLong("created_at")));
+                    }
+                }
+            }
+        }
+        return entries;
+    }
+
     public String format(String currency, BigDecimal amount) {
         return amount.setScale(getCurrencyDecimals(currency), RoundingMode.DOWN).toPlainString()
                 + " " + getCurrencyName(currency);
@@ -284,4 +319,5 @@ public final class EconomyService {
     }
 
     public record RankingEntry(UUID uuid, String playerName, BigDecimal balance) {}
+    public record TransactionEntry(String currency, BigDecimal amount, String type, String direction, long createdAt) {}
 }

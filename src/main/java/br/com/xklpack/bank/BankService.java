@@ -12,16 +12,76 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.*;
 import java.util.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
+import java.util.Base64;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 public final class BankService {
     private final XKLPack plugin;
     private final NamespacedKey coinKey;
     private final NamespacedKey denominationKey;
+    private final NamespacedKey signatureKey;
+    private final byte[] signingSecret;
 
     public BankService(XKLPack plugin) {
         this.plugin = plugin;
         this.coinKey = new NamespacedKey(plugin, "physical_coin");
         this.denominationKey = new NamespacedKey(plugin, "coin_denomination");
+        this.signatureKey = new NamespacedKey(plugin, "coin_signature");
+        this.signingSecret = loadOrCreateSigningSecret(plugin);
+    }
+
+    private byte[] loadOrCreateSigningSecret(XKLPack plugin) {
+        Path path = plugin.getDataFolder().toPath().resolve("coin-signing.key");
+        try {
+            Files.createDirectories(path.getParent());
+            if (Files.exists(path)) {
+                byte[] existing = Files.readAllBytes(path);
+                if (existing.length != 32) {
+                    throw new IllegalStateException("O arquivo coin-signing.key está inválido. Restaure o segredo original; não gere outro com moedas em circulação.");
+                }
+                return existing;
+            }
+            byte[] generated = new byte[32];
+            new SecureRandom().nextBytes(generated);
+            Files.write(path, generated);
+            plugin.getLogger().warning("Segredo HMAC das moedas físicas criado. Faça backup do arquivo coin-signing.key; sem ele, as moedas existentes não serão autenticadas.");
+            return generated;
+        } catch (IOException exception) {
+            throw new IllegalStateException("Não foi possível carregar/criar o segredo de autenticação das moedas físicas.", exception);
+        }
+    }
+
+    private String legacySignature(Denomination denomination) {
+        String payload = "xklpack-coin-v1|" + denomination.id() + "|"
+                + denomination.material().name() + "|" + denomination.value();
+        try {
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(signingSecret, "HmacSHA256"));
+            return Base64.getEncoder().encodeToString(mac.doFinal(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+        } catch (GeneralSecurityException exception) {
+            throw new IllegalStateException("Falha ao autenticar moeda física.", exception);
+        }
+    }
+
+    private String signature(Denomination denomination) {
+        try {
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(signingSecret, "HmacSHA256"));
+            // O valor fica na configuração; a assinatura autentica a identidade e o material.
+            // Assim, o administrador pode reajustar a denominação sem invalidar moedas legítimas.
+            String payload = "xklpack-coin-v1|" + denomination.id() + "|"
+                    + denomination.material().name();
+            return Base64.getEncoder().encodeToString(mac.doFinal(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+        } catch (Exception exception) {
+            throw new IllegalStateException("Não foi possível assinar moeda física.", exception);
+        }
     }
 
     public record Denomination(String id, Material material, int value, int order, String name) {}
@@ -57,6 +117,7 @@ public final class BankService {
                 color("&8Moeda oficial do Banco XKL")));
         meta.getPersistentDataContainer().set(coinKey, PersistentDataType.STRING, "xklpack_coin_v1");
         meta.getPersistentDataContainer().set(denominationKey, PersistentDataType.STRING, denomination.id());
+        meta.getPersistentDataContainer().set(signatureKey, PersistentDataType.STRING, signature(denomination));
         if (plugin.getPhysicalCoinsConfig().getBoolean("physical-coins.enchantment-glint", true)) {
             meta.addEnchant(org.bukkit.enchantments.Enchantment.UNBREAKING, 1, true);
             meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
@@ -70,8 +131,36 @@ public final class BankService {
         ItemMeta meta = item.getItemMeta();
         if (!"xklpack_coin_v1".equals(meta.getPersistentDataContainer().get(coinKey, PersistentDataType.STRING))) return null;
         String id = meta.getPersistentDataContainer().get(denominationKey, PersistentDataType.STRING);
-        if (id == null) return null;
-        return denominations().stream().filter(d -> d.id().equals(id) && d.material() == item.getType()).findFirst().orElse(null);
+        String suppliedSignature = meta.getPersistentDataContainer().get(signatureKey, PersistentDataType.STRING);
+        if (id == null || suppliedSignature == null) return null;
+        Denomination denomination = denominations().stream()
+                .filter(d -> d.id().equals(id) && d.material() == item.getType())
+                .findFirst().orElse(null);
+        if (denomination == null) return null;
+        byte[] supplied = suppliedSignature.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] expected = signature(denomination).getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        boolean valid = MessageDigest.isEqual(expected, supplied);
+        boolean legacyMigrated = false;
+        if (!valid) {
+            byte[] legacy = legacySignature(denomination).getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            valid = MessageDigest.isEqual(legacy, supplied);
+            if (valid) {
+                meta.getPersistentDataContainer().set(signatureKey, PersistentDataType.STRING, signature(denomination));
+                legacyMigrated = true;
+            }
+        }
+        if (!valid) return null;
+
+        // Atualiza o valor exibido quando a administração reajusta uma denominação.
+        String expectedName = color(denomination.name());
+        List<String> expectedLore = List.of(color("&7Valor: &e" + denomination.value() + " Coins"),
+                color("&8Moeda oficial do Banco XKL"));
+        if (legacyMigrated || !expectedName.equals(meta.getDisplayName()) || !expectedLore.equals(meta.getLore())) {
+            meta.setDisplayName(expectedName);
+            meta.setLore(expectedLore);
+            item.setItemMeta(meta);
+        }
+        return denomination;
     }
 
     public BigDecimal balance(UUID uuid) throws SQLException {
@@ -99,6 +188,13 @@ public final class BankService {
                 total = total.add(BigDecimal.valueOf((long) d.value() * item.getAmount()));
             }
             if (totalItems == 0) return BigDecimal.ZERO;
+            BigDecimal feePercent = feePercent("atm.fees.deposit-percent", 0.0);
+            BigDecimal fee = total.multiply(feePercent).divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING);
+            BigDecimal credited = total.subtract(fee).setScale(2, RoundingMode.DOWN);
+            if (credited.signum() <= 0) {
+                throw new IllegalArgumentException("O valor é muito baixo para o depósito com taxa.");
+            }
+
             // Remove apenas itens autenticados. Em falha SQL, restaura os itens removidos.
             for (int slot = 0; slot < player.getInventory().getStorageContents().length; slot++) {
                 ItemStack item = player.getInventory().getItem(slot);
@@ -111,8 +207,9 @@ public final class BankService {
                 try {
                     touch(c, player);
                     BigDecimal old = read(c, player.getUniqueId());
-                    write(c, player.getUniqueId(), old.add(total));
-                    log(c, null, player.getUniqueId(), total, "ATM_DEPOSIT");
+                    write(c, player.getUniqueId(), old.add(credited));
+                    log(c, null, player.getUniqueId(), credited, "ATM_DEPOSIT");
+                    if (fee.signum() > 0) log(c, null, player.getUniqueId(), fee, "ATM_FEE");
                     c.commit();
                 } catch (Exception e) {
                     c.rollback();
@@ -123,14 +220,15 @@ public final class BankService {
                     int left = entry.getValue();
                     while (left > 0) {
                         int amount = Math.min(left, entry.getKey().material().getMaxStackSize());
-                        player.getInventory().addItem(createCoin(entry.getKey(), amount));
+                        Map<Integer, ItemStack> overflow = player.getInventory().addItem(createCoin(entry.getKey(), amount));
+                        overflow.values().forEach(item -> player.getWorld().dropItemNaturally(player.getLocation(), item));
                         left -= amount;
                     }
                 }
                 if (ex instanceof SQLException sql) throw sql;
                 throw new SQLException("Falha ao depositar moedas.", ex);
             }
-            return total;
+            return credited;
         }
     }
 
@@ -138,7 +236,7 @@ public final class BankService {
         if (requested == null || requested.signum() <= 0 || requested.stripTrailingZeros().scale() > 0)
             throw new IllegalArgumentException("Digite um valor inteiro maior que zero.");
         synchronized (plugin.getEconomyStorage()) {
-            BigDecimal feePercent = BigDecimal.valueOf(plugin.getBankConfig().getDouble("atm.fees.withdraw-percent", 2.0));
+            BigDecimal feePercent = feePercent("atm.fees.withdraw-percent", 2.0);
             BigDecimal fee = requested.multiply(feePercent).divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING);
             BigDecimal payout = requested.subtract(fee).setScale(0, RoundingMode.DOWN);
             BigDecimal chargedFee = requested.subtract(payout);
@@ -214,6 +312,14 @@ public final class BankService {
             }
         }
         return rows;
+    }
+
+    private BigDecimal feePercent(String path, double defaultValue) {
+        BigDecimal percent = BigDecimal.valueOf(plugin.getBankConfig().getDouble(path, defaultValue));
+        if (percent.compareTo(BigDecimal.ZERO) < 0 || percent.compareTo(BigDecimal.valueOf(100)) >= 0) {
+            throw new IllegalStateException("A taxa " + path + " precisa ser maior ou igual a 0% e menor que 100%.");
+        }
+        return percent;
     }
 
     private BigDecimal read(Connection c, UUID uuid) throws SQLException {

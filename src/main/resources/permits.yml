@@ -1,0 +1,69 @@
+settings:
+  title: '&8&lALVARÁS COMERCIAIS'
+  # Ordem dos alvarás exibidos na loja.
+  order:
+    - basico
+    - comercial
+    - premium
+    - empresarial
+    - territorial
+    - imperial
+
+# Preços pagos com Coins do saldo virtual.
+# area-size define a dimensão exata da área quadrada em blocos.
+# area-radius permanece como margem técnica para compatibilidade com a reserva interna.
+permits:
+  basico:
+    enabled: true
+    name: '&aAlvará Básico'
+    item-name: '&aAlvará Comercial - Básico'
+    icon: PAPER
+    price: '1000'
+    area-size: 7
+    area-radius: 3
+    description: 'Ideal para uma pequena loja.'
+  comercial:
+    enabled: true
+    name: '&eAlvará Comercial'
+    item-name: '&eAlvará Comercial - Médio'
+    icon: BOOK
+    price: '2500'
+    area-size: 11
+    area-radius: 5
+    description: 'Para lojas de tamanho médio.'
+  premium:
+    enabled: true
+    name: '&bAlvará Premium'
+    item-name: '&bAlvará Comercial - Premium'
+    icon: WRITABLE_BOOK
+    price: '5000'
+    area-size: 17
+    area-radius: 8
+    description: 'Para lojas maiores.'
+  empresarial:
+    enabled: true
+    name: '&6Alvará Empresarial'
+    item-name: '&6Alvará Comercial - Empresarial'
+    icon: ENCHANTED_BOOK
+    price: '10000'
+    area-size: 25
+    area-radius: 12
+    description: 'A maior área comercial padrão.'
+  territorial:
+    enabled: true
+    name: '&cAlvará Territorial'
+    item-name: '&cAlvará Comercial - Territorial'
+    icon: GOLD_BLOCK
+    price: '100000'
+    area-size: 64
+    area-radius: 32
+    description: 'Área comercial ampla de 64 por 64 blocos.'
+  imperial:
+    enabled: true
+    name: '&dAlvará Imperial'
+    item-name: '&dAlvará Comercial - Imperial'
+    icon: DIAMOND_BLOCK
+    price: '1000000'
+    area-size: 128
+    area-radius: 64
+    description: 'Área comercial máxima de 128 por 128 blocos.'

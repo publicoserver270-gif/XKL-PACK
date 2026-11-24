@@ -27,10 +27,10 @@ A denominação Netherite usa lingote de netherite como item-base. A pepita de c
 ## Aparência e autenticidade
 
 - Moedas geradas pelo ATM recebem nome personalizado, valor na lore e brilho.
-- O PDC do XKL PACK identifica a moeda e a denominação.
-- Nome, lore e brilho não são prova de autenticidade.
-- Itens sem PDC válido ou com material diferente da denominação são recusados.
-- **Limite de segurança atual:** o PDC autentica o formato do item, mas ainda não há número de série individual nem livro-razão de emissão para detectar cópias de uma moeda legítima. Não tratar isso como proteção completa contra duplicação por exploits externos.
+- O PDC do XKL PACK identifica a moeda, denominação e assinatura HMAC-SHA256.
+- O segredo fica em `plugins/XKL-PACK/coin-signing.key`; faça backup desse arquivo junto com o banco SQLite.
+- Nome, lore e brilho não são prova de autenticidade. Itens sem assinatura válida ou com material/denominação diferente são recusados.
+- A assinatura impede fabricar moedas apenas copiando nome/lore/PDC sem conhecer o segredo. Uma cópia byte a byte de uma moeda legítima ainda não pode ser distinguida da original; não prometer detecção de clonagem externa.
 
 ## Saque automático
 
@@ -58,9 +58,7 @@ Os valores ficam em `plugins/XKL-PACK/bank/settings.yml`.
 
 ## Estado da implementação
 
-**Programado no repositório:** comando `/atm`, GUI de quatro opções, depósito de todas as moedas válidas, saque por valor digitado no chat, cálculo automático de denominações, consulta das últimas movimentações e visualização das taxas.
-
-**Ainda pendente:** depósito por quantidade personalizada, serialização/controle anti-cópia robusto, testes automatizados de transações e teste real em servidor Paper 26.3. A implementação foi enviada ao GitHub, mas ainda não há confirmação de compilação bem-sucedida para esta versão.
+**Implementado no repositório:** GUI de quatro opções, depósito das moedas válidas do inventário, saque por valor digitado no chat, cálculo automático das denominações, extrato de 7 dias, visualização e aplicação de taxas configuradas, integração com NPCs Citizens e saco físico persistente. O comando `/atm` direto fica reservado à administração; jogadores comuns acessam somente NPCs vinculados.
 
 
 ## Decisões adicionais confirmadas

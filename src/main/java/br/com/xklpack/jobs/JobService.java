@@ -143,7 +143,7 @@ public final class JobService {
             newLevel = oldLevel;
             newXp = current.xp() + amount;
             totalXp = current.totalXp() + amount;
-            int maxLevel = Math.max(1, plugin.getConfig().getInt("jobs.max-level", 140));
+            int maxLevel = getMaxLevel(jobId);
             while (newLevel < maxLevel && newXp >= xpRequired(newLevel)) {
                 newXp -= xpRequired(newLevel);
                 newLevel++;
@@ -202,14 +202,13 @@ public final class JobService {
             if (goalsCompleted > 0) {
                 // O salário é sempre o valor-base da meta multiplicado pelo multiplicador.
                 // A meta de produção (100, 125, 150...) não aumenta o valor-base do salário.
-                BigDecimal goalValue = BigDecimal.valueOf(
-                        plugin.getConfig().getDouble("jobs.salary.base-reward", 500.0));
+                BigDecimal goalValue = BigDecimal.valueOf(goal);
                 double multiplierStart = plugin.getConfig().getDouble("jobs.salary.multiplier-start", 1.3);
                 double multiplierIncrease = plugin.getConfig().getDouble("jobs.salary.multiplier-increase-every-40-goals", 0.1);
                 int multiplierEvery = Math.max(1, plugin.getConfig().getInt("jobs.salary.multiplier-every-goals", 40));
                 for (int i = 0; i < goalsCompleted; i++) {
                     int goalNumber = completedGoals - goalsCompleted + i + 1;
-                    double multiplier = multiplierStart + (goalNumber / multiplierEvery) * multiplierIncrease;
+                    double multiplier = multiplierForGoalNumber(goalNumber, multiplierStart, multiplierIncrease, multiplierEvery);
                     BigDecimal payment = goalValue.multiply(BigDecimal.valueOf(multiplier))
                             .setScale(2, RoundingMode.HALF_UP);
                     economy.paySalary(uuid, playerName, payment);
@@ -233,8 +232,25 @@ public final class JobService {
 
     public double currentMultiplier(int completedGoals) {
         int every = Math.max(1, plugin.getConfig().getInt("jobs.salary.multiplier-every-goals", 40));
-        return plugin.getConfig().getDouble("jobs.salary.multiplier-start", 1.3)
-                + (completedGoals / every) * plugin.getConfig().getDouble("jobs.salary.multiplier-increase-every-40-goals", 0.1);
+        double start = plugin.getConfig().getDouble("jobs.salary.multiplier-start", 1.3);
+        double increase = plugin.getConfig().getDouble("jobs.salary.multiplier-increase-every-40-goals", 0.1);
+        return multiplierForGoalNumber(Math.max(0, completedGoals) + 1, start, increase, every);
+    }
+
+    /**
+     * Returns the multiplier for a goal number using completed goals only.
+     * With a 40-goal interval, goals 1-40 use the starting multiplier and goal 41
+     * is the first to receive the increase.
+     */
+    public static double multiplierForGoalNumber(int goalNumber, double start, double increase, int everyGoals) {
+        int interval = Math.max(1, everyGoals);
+        int completedBeforeThisGoal = Math.max(0, goalNumber - 1);
+        return start + (completedBeforeThisGoal / interval) * increase;
+    }
+
+    public int getMaxLevel(String jobId) {
+        int fallback = Math.max(1, plugin.getConfig().getInt("jobs.max-level", 500));
+        return Math.max(1, plugin.getConfig().getInt("jobs.professions." + jobId + ".max-level", fallback));
     }
 
     public int xpRequired(int currentLevel) {

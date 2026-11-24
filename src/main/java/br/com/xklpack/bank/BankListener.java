@@ -90,9 +90,9 @@ public final class BankListener implements Listener {
                     try {
                         plugin.getMoneyPouchService().giveFirstPouch(player);
                     } catch (SQLException pouchError) {
-                        plugin.getLogger().severe("Saque concluído, mas não foi possível entregar o primeiro Saco de Coins para "
+                        plugin.getLogger().severe("Saque concluído, mas não foi possível entregar o primeira Trouxa XKL para "
                                 + player.getName() + ": " + pouchError.getMessage());
-                        player.sendMessage("§cO saque foi concluído, mas houve um erro ao entregar seu Saco de Coins. Avise a administração.");
+                        player.sendMessage("§cO saque foi concluído, mas houve um erro ao entregar sua Trouxa XKL. Avise a administração.");
                     }
                 }
                 player.sendMessage("§aSaque entregue: §e" + paid.toPlainString() + " Coins");

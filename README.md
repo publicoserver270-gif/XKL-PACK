@@ -2,17 +2,29 @@
 
 Plugin modular de economia para Minecraft, distribuído em **um único arquivo JAR**. Os sistemas ficam organizados em módulos internos e podem ser ativados/configurados sem instalar vários plugins separados.
 
-> **Status:** desenvolvimento inicial. A fundação da economia virtual foi implementada; banco com GUI, profissões, salários automáticos, kits, lojas e venda ainda estão em desenvolvimento.
+> **Status:** desenvolvimento. Economia virtual, transferências, ranking, profissões, salários, ATM, moedas físicas autenticadas por HMAC, saco físico persistente, `/loja`, `/sell` e Picareta Escavadora 3x3 já possuem código. Kits profissionais evolutivos e painel administrativo já possuem implementação inicial. Os limites de ferramentas já possuem implementação configurável, com valores iniciais por nível da profissão ativa; falta confirmar se a referência deve ser nível geral ou profissional e validar no servidor real.
 
 ## O que já está no código
 
-- Persistência SQLite para perfis, saldos e histórico de transações.
+- Persistência SQLite para perfis, saldos, histórico de transações, progresso profissional e conteúdo dos sacos físicos.
+- ATM com depósito/saque, extrato, taxas e acesso de jogadores por NPC Citizens vinculado; comando direto reservado à administração.
+- Moedas físicas com assinatura HMAC e saco de couro que guarda apenas moedas autenticadas.
+- Profissões com progresso de XP, metas salariais independentes por profissão, recompensas de gemas e kits automáticos por nível.
+- Kits profissionais vinculados ao jogador, com evolução automática, durabilidade proporcional e bloqueio de transferência.
+- Carteira virtual `/carteira` separada do saco físico e do ATM; painel administrativo `/xkladmin` para editar salários, metas, taxas bancárias, valores das moedas físicas, preços de compra/venda e materiais dos kits.
 - Moedas independentes configuráveis (coins e gems por padrão).
 - Transferência bancária virtual pelo comando `/pay` (destinatário precisa estar online nesta primeira versão).
 - Ranking geral e de jogadores online por moeda: `/top` e `/top online`.
 - Regras de emissão separadas no serviço: coins pelo fluxo de salário e pelo fluxo de vendas; gemas pelo fluxo de atividade profissional.
 - Débito de gemas reservado ao fluxo de compra de ferramentas.
-- Compilação automatizada com GitHub Actions (Java 21 + Maven).
+- Compilação automatizada com GitHub Actions (Java 25 + Paper API 26.3).
+
+## Catálogos das lojas
+
+- `/sell`: 585 materiais configurados, sem Totem da Imortalidade.
+- `/loja`: 135 produtos, incluindo 86 itens de construção importados do arquivo enviado, minérios, ingredientes, drops, variados, ferramentas e redstone dividido em componentes, máquinas, carrinhos e mecanismos.
+- Ferramentas são compradas com Gemas; as demais categorias usam Coins.
+- As categorias de armas e armaduras estão criadas, mas ainda aguardam os preços aprovados. O autocrafter também aguarda preço.
 
 ## Regras econômicas fundamentais
 
@@ -23,13 +35,21 @@ Plugin modular de economia para Minecraft, distribuído em **um único arquivo J
 - Moedas diferentes são independentes; não existe conversão automática.
 - Lojas administrativas usam saldo virtual; lojas de jogadores usam dinheiro físico.
 
-## Comandos implementados nesta etapa
+## Comandos implementados no código atual
 
-- `/pay <jogador> <valor> [coins|gems]`
-- `/top [coins|gems]`
-- `/top online [coins|gems]`
+- `/loja` — loja administrativa com categorias configuráveis.
+- `/sell` — loja de vendas com prévia, confirmação e catálogo de 585 materiais.
+- `/carteira` — saldo virtual de Coins/Gemas e histórico de transações; não é o saco físico nem o ATM.
+- `/job` — seleção e status das profissões.
+- `/pay <jogador> <valor> [coins|gems]`.
+- `/top [coins|gems]` e `/top online [coins|gems]`.
+- `/atm` — acesso direto reservado à administração; jogadores usam NPC Citizens vinculado.
+- `/xkladmin` — painel administrativo para editar salários, taxas, valores das moedas físicas, preços das lojas e materiais dos kits.
+- `/xklatm npc link|unlink|list <id>` e `/xklpouch give <jogador>` — administração.
 
-Os demais comandos planejados ainda não estão implementados. Não serão adicionados comandos principais de jogador fora da lista aprovada sem decisão explícita.
+## Lojas de jogadores
+
+- A especificação completa do sistema de alvará, NPC ambulante, estoque, aliados, painel e pagamento físico está em [Lojas de jogadores](docs/LOJAS_JOGADORES.md). **A funcionalidade ainda não está implementada no código.**
 
 ## Documentação
 
@@ -38,7 +58,7 @@ Os demais comandos planejados ainda não estão implementados. Não serão adici
 
 ## Compilação
 
-Requisitos: JDK 21 e Maven 3.9+.
+Requisitos: JDK 25 e Maven 3.9+.
 
 ```bash
 mvn clean package
