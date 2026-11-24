@@ -92,7 +92,12 @@ public final class PlayerShopRuntime implements Listener {
                 Villager villager = findExistingMerchant(world, shop.id());
                 boolean createdMerchant = false;
                 if (villager == null) {
-                    villager = (Villager) world.spawnEntity(center, EntityType.VILLAGER);
+                    Entity spawned = world.spawnEntity(center, EntityType.VILLAGER);
+                    if (!(spawned instanceof Villager spawnedVillager)) {
+                        plugin.getLogger().warning("Loja " + shop.id() + " não conseguiu gerar o comerciante; nova tentativa será feita.");
+                        continue;
+                    }
+                    villager = spawnedVillager;
                     createdMerchant = true;
                     villager.setCustomName("§6" + shop.merchantName());
                     villager.setCustomNameVisible(true);
